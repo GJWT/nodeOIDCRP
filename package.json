@@ -1,0 +1,28 @@
+{
+  "name": "oidc-rp",
+  "version": "0.1.0",
+  "description": "Open ID Connect Relying Party library",
+  "main": "index.js",
+  "scripts": {
+    "test": "eslint src test && mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GJWT/nodeOIDCRP.git"
+  },
+  "keywords": [
+    "openid",
+    "oidc"
+  ],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/GJWT/nodeOIDCRP/issues"
+  },
+  "homepage": "https://github.com/GJWT/nodeOIDCRP#readme",
+  "devDependencies": {
+    "eslint": "^4.18.1",
+    "eslint-config-google": "^0.9.1",
+    "mocha": "^5.0.1"
+  }
+}
