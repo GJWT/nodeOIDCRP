@@ -10,6 +10,8 @@ module.exports = {
   rules: {
     'no-shadow': 'error',
     'eqeqeq': 'error',
-    'indent': ['error', 2],
+    'indent': ['error', 2, {
+      'CallExpression': {'arguments': 2}
+    }],
   },
 }

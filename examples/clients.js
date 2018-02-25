@@ -12,7 +12,7 @@ const get = async (iss) => {
   if (client) return client;
 
   console.log(
-    'No client found.  Returning null to initiate dynamic registration'
+      'No client found.  Returning null to initiate dynamic registration'
   );
   return null;
 };
