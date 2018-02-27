@@ -4,7 +4,7 @@
   "description": "Open ID Connect Relying Party library",
   "main": "index.js",
   "scripts": {
-    "test": "eslint src test && mocha"
+    "test": "eslint src test examples/*.js && mocha"
   },
   "repository": {
     "type": "git",

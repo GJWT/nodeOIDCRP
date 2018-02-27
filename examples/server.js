@@ -1,18 +1,9 @@
-OpenID Connect Relying Party
-============================
+const express = require('express');
+const oidcrp = require('..'); // Using the local oidc-rp in parent
 
-[![Build Status](https://secure.travis-ci.org/GJWT/nodeOIDCRP?branch=master)](http://travis-ci.org/GJWT/nodeOIDCRP)
+const clients = require('./clients');
 
-Helper to properly authenticate with OpenID Connect.
-
-
-Example usage (in a connect web application)
---------------------------------------------
-
-The full example can be found in [examples](examples).
-
-```javascript
-const oidcrp = require('oidc-rp');
+const app = express();
 
 const authFlow = oidcrp.authorizationCodeFlow({
   getClient: clients.get,
@@ -44,4 +35,9 @@ app.get('/auth/callback', async (req, res) => {
   req.user = user;
   res.redirect('/loggedIn');
 });
-```
+
+app.get('/', (req, res) => {
+  res.send('TODO: add view with input for OIDC discovery identifier');
+});
+
+app.listen(3000, () => console.log('Example app listening on port 3000!'));
