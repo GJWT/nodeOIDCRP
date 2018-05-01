@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: init.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: init.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const low = require('lowdb');
+const FileSync = require('lowdb/adapters/FileSync');
+
+const adapter = new FileSync('clientsDb.json');
+const db = low(adapter);
+
+db.defaults({posts: [], user: {}, count: 0}).write();
+
+/**
+ * RPHandler
+ * @class
+ */
+class RPHandler{
+    constructor({baseUrl, hashSeed, keyJar, verifySsl,
+    services, serviceFactory, clientConfigs,
+    clientAuthnMethod, clientCls} = {baseUrl:'', hashSeed:"", keyjar:null, verifySsl:false,
+    services:null, serviceFactory:null, clientConfigs:null,
+    clientAuthnMethod:CLIENT_AUTHN_METHOD, clientCls:null}){};
+
+    /**
+     * Fetches the issuer based on state stored in rp ClientInfo's stateDb
+     * @param {State} state OICClient State instance
+     * @return issuer 
+     */
+    state2Issuer(state){
+    }
+
+    /**
+     * Picks the config from clientConfigs based on the appropriate issuer
+     * @param {string} issuer Issuer 
+     * @return config
+     */
+    pickConfig(issuer){
+    }
+
+    /**
+     * If the providerInfo is statically provided not much has to be done. 
+     * If its expected to be gotten dynamically Provider Info discovery 
+     * has to be performed.
+     * @param {Client} client OIC Client instance 
+     * @param {string} issuer Issuer
+     */
+    loadProviderInfo(client, issuer){
+    }
+
+    /**
+     * If the client has been  statically registered that information must
+     * be provided during the configuration. If expected to be done 
+     * dynamically, this method will do dynamic client registration.
+     * @param {Client} client OIC Client instance
+     */
+    loadRegistrationResponse(client){
+    }
+
+    /**
+     * Fetch the client based on the issuer,services fetched from the 
+     * config, etc..
+     * @param {*} issuer 
+     * @return Client
+     */
+    getClient(issuer){
+    }
+
+    /**
+     * Either get the provider info from configuration or from dynamic 
+     * discovery by calling loadProviderInfo and updates endpoint
+     * @param {Client} client OIC client instance
+     * @param {string} issuer 
+     * @return Issuer 
+     */
+    doProviderInfo(client, issuer){
+    }
+
+    /**
+     * Prepare for and do client registration if configured to do or so 
+     * by calling loadRegistration and checks for redirectUris
+     * @param {Client} client Client instance
+     * @param {string} issuer The issuer ID
+     */
+    doClientInfo(client, issuer){
+    }
+
+    /**
+     * Prepare for and do client registration if configured to do or so 
+     * by calling loadRegistration and checks for redirectUris
+     * @param {string} issuer The issuer ID.
+     * @return Client instance
+     */
+    setUp(issuer){
+    }
+
+    /**
+     * Fetches the response type from client info
+     * @param {*} client 
+     * @param {*} issuer 
+     */
+    getResponseType(client, issuer){
+    }
+
+    /**
+     * Fetches the auth method based on the token endpoint auth method in
+     * clientInfo
+     * @param {*} client 
+     * @param {*} endpoint 
+     */
+    getClientAuthnMethod(client, endpoint){
+
+    }
+
+    /**
+     * First make sure we have a client and that the client has the
+     * necessary information. Then construct and send an Authorization 
+     * request. The response to that request will be sent to the callback
+     * URL. Sets up the client, updates the stateDb and performs request 
+     * for authorization service. 
+     * @param {string} issuer Issuer ID
+     */
+    begin(issuer){
+    }
+
+    /**
+     * Fetches access token based on client doRequest call 
+     * @param {Client} client 
+     * @param {Object&lt;string, string>} authResp 
+     */
+    getAccessToken(client, authResp){
+    }
+
+    /**
+     * Uses the access token to fetch the user info using client doRequest method
+     * @param {Client} client 
+     * @param {Object&lt;string, string>} authResp 
+     * @param {string} accessToken 
+     */
+    getUserInfo(client, authResp, accessToken){
+    }
+
+    /**
+     * Weed out all claims that belong to the JWT. 
+     * @param {BasicIdToken} idToken 
+     */
+    userInfoInIdToken(idToken){
+    }
+
+    /**
+     * Once the consumer has redirected the user back to the callback URL
+     * you can request the access token the user has approved.
+     * @param {string} issuer Issuer
+     * @param {Object} response 
+     */
+    phaseN(issuer, response){
+    }
+
+    /**
+     * This is where we come back after the OP has done the Authorization 
+     * Request
+     * @param {Object&lt;string, string>} query 
+     * @param {string} hash 
+     */
+    callback(query, hash){
+    }
+
+    /**
+     * Get a class instance of a Request subclass specific to a specified service
+     * @param {Request} request 
+     * @return An initiated subclass of oiccli Request or null if the service or 
+     * the request could not be found
+     */
+    getServiceUniqueRequest(request){
+    }
+
+    /**
+     * Fetches the service instance based on group name
+     * @param {string} reqName The name of the service
+     */
+    factory(reqName){
+    }
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Client.html">Client</a></li><li><a href="RPHandler.html">RPHandler</a></li><li><a href="Util.html">Util</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Mar 22 2018 17:07:53 GMT-0700 (PDT)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
