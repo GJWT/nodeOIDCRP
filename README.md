@@ -22,22 +22,29 @@ The OIDC core standard defines a set of such request-responses. This is a basic 
 
 When a user accessing the web service for some reason needs to be authenticate or the service needs a access token that allows it to access some resources at a resource service on behalf of the user a number of things will happen:
 
-Find out which OP to talk to.
+* Find out which OP to talk to :
 If the RP handler is configured to only communicate to a defined set of OPs then the user is probable presented a list to chose from. If the OP the user wants to authenticated at is unknown to the RP Handler it will use some discovery service to, given some information provided by the user, find out where to learn more about the OP.
-Gather information about the OP
+
+* Gather information about the OP :
 This can be done out-of-band in which case the administrator of the service has gathered the information by contacting the administrator of the OP. In most cases this is done by reading the necessary information on a web page provided by the organization responsible for the OP. One can also chose to gather the information on-the-fly by using the provider info discovery service provided by OIDC.
-Register the client with the OP
+
+* Register the client with the OP :
 Again this can be done beforehand or it can be done on-the-fly when needed. If it’s done before you will have to use a registration service provided by the organization responsible for the OP. If it’s to be done on-the-fly you will have to use the dynamic client registration service OIDC provides
-Authentication/Authorization
+
+* Authentication/Authorization :
 This is done by the user at the OP.
 What happens after this depends on which response_type is used. If the response_type is code then the following step is done:
 
-Access token request
+* Access token request : 
 Base on the information received in the authorization response a request for an access token is made to the OP
 And if the web service wants user information it might also have to do:
 
-Obtain user info
+* Obtain user info
 Using the access token received above a userinfo request will be sent to the OP.
+
+
+
+
 Which of the above listed services that your RP will use when talking to an OP are usually decided by the OP. Just to show you how it can differ between different OPs I’ll give you a couple of examples below:
 
 * Google : 
