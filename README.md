@@ -59,22 +59,29 @@ Now, to begin with Github is not running an OP they basically have an Oauth2 AS 
 This method will initiate a RP/Client instance if none exists for the OP/AS in question. It will then run service 1 if needed, services 2 and 3 according to configuration and finally will asynchronously return a dictionary containing the URL that will redirect the user to the OP/AS and the session key which will allow higher level code to access session information. 
 
 ```
-let rph = new RPHandler()
-let dict = rph.begin(issuerId) 
-let url = dict[‘url’]
+const BASEURL = 'https://example.com/rp';
+
+const CLIENT_CONFIG = {...}
+
+let rph = new RPHandler({baseUrl: BASEURL, clientConfigs: CLIENT_CONFIG});
+let res = rph.begin(issuerId) 
+let url = res[‘url’]
 ```
 
 An http response is sent to the url which redirects to the OP/AS. The OP then sends back a redirect uri which contains the Authorization response with a set of claims. 
 
 Usage example (params are the set of claims in the authorization response):
 ```
-let sessionInfo = rph.stateDbInterface.getState(params[‘state’])
+let sessionInfo = rph.sessionInterface.getState(res['state_key']);
 ```
 
 Will parse the authorization response and depending on the configuration run the services 5 and 6.
 Usage example:
 ```
-let result = rph.finalize(sessionInfo[‘iss’], params)
+ let client = rph.issuer2rp[session.claims['iss']];
+ let authnMethod = rph.getClientAuthnMethod(client, 'token_endpoint');
+ let authResponse = new AuthorizationResponse({code:'access_code', state: res['state_key']});
+ let result = rph.finalizeAuth(client, session.claims['iss'], authResponse.claims);
 ```
 
 RP configuration parameters
