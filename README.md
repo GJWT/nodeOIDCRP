@@ -13,12 +13,13 @@ OAuth2 and thereby OpenID Connect (OIDC) are build on a request-response paradig
 
 The OIDC core standard defines a set of such request-responses. This is a basic list of request-responses and the normal sequence in which they occur:
 
-Provider discovery (WebFinger)
-Provider Info Discovery
-Client registration
-Authorization/Authentication
-Access token
-User info
+* Provider discovery (WebFinger)
+* Provider Info Discovery
+* Client registration
+* Authorization/Authentication
+* Access token
+* User info
+
 When a user accessing the web service for some reason needs to be authenticate or the service needs a access token that allows it to access some resources at a resource service on behalf of the user a number of things will happen:
 
 Find out which OP to talk to.
