@@ -138,13 +138,6 @@ class Util {
     return str.join("&");
   }
 
-  /**
-   * PLaces a cookie (a cookielib.Cookie based on a set-cookie header
-   * line) in the cookie jar.
-   * Always chose the shortest expires time.
-   * @param cookiejar
-   * @param kaka Cookie
-   */
   setCookie(cookieJar, kaka) {
     for (let i = 0; i < Object.keys(kaka); i++) {
       let cookieName = Object.keys(kaka)[i];

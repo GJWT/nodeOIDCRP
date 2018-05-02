@@ -3,7 +3,7 @@
         "allowUnknownTags": true
     },
     "source": {
-        "include": ["oidcRp/oauth2/", "oidcRp/oic/", "oidcRp/"],
+        "include": ["index.js", "oidcRp/oauth2/", "oidcRp/oic/", "oidcRp/provider/", "oidcRp/"],
 	"includePattern": ".+\\.js(doc|x)?$",
         "excludePattern": "(^|\\/|\\\\)_"
     },

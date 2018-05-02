@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: oauth2/init.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: oauth2/init.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const DEFAULT_SERVICES = [
+    'Authorization', 'AccessToken', 'RefreshAccessToken', 'ProviderInfoDiscovery'
+  ];  
+
+/**
+ * Client
+ * @class
+ * @constructor
+ */
+class Client {
+    /**
+     * @param {*} caCerts Certificates used to verify HTTPS certificates
+     * @param {*} clientAuthnMethod Methods that this client can use to
+            authenticate itself. It's a dictionary with method names as
+            keys and method classes as values.
+     * @param {*} verifySsl Whether the SSL certificate should be verified.
+     */
+    constructor(
+        clientAuthnMethod, config, caCerts, keyJar, verifySsl, clientCert,
+        httpLib, services, serviceFactory) {
+      caCerts = caCerts || null;
+      clientAuthnMethod = clientAuthnMethod || null;
+      keyJar = keyJar || null;
+      verifySsl = verifySsl || true;
+      config = config || null;
+      clientCert = clientCert || null;
+      httpLib = httpLib || null;
+      services = services || null;
+      serviceFactory = serviceFactory || null;
+  
+      this.http = httpLib || new HTTPLib(caCerts, verifySsl, clientCert, keyJar);
+  
+      if (!keyJar) {
+        let keyJar = new KeyJar();
+      }
+  
+      this.events = null;
+      let clientInfo = new ClientInfo();
+      this.clientInfo = clientInfo.init(keyJar, config);
+      if (this.clientInfo.clientId) {
+        this.clientId = this.clientInfo.clientId;
+      }
+      let cam = clientAuthnMethod || CLIENT_AUTHN_METHOD;
+      this.serviceFactory = serviceFactory || Factory;
+      let srvs = services || this.getDefaultServices();
+      this.service = buildServices(
+          srvs, this.serviceFactory,
+          {'httpLib': this.http, 'keyJar': keyJar, 'clientAuthnMethod': cam});
+      this.clientInfo.service = this.service;
+      this.verifySsl = verifySsl;
+    }
+  
+    construct(requestType, requestArgs, extraArgs, kwargs) {
+      requestArgs = requestArgs || null;
+      extraArgs = extraArgs || null;
+      try {
+        this.service[requestType];
+      } catch (err) {
+        console.log(err);
+      }
+      let met = this.getAttr('construct_{}_request'.format(requestType));
+      return met(this.clientInfo, requestArgs, extraArgs, kwargs);
+    }
+  
+    doRequest(
+        requestType, scope, responseBodyType, method, requestArgs, extraArgs,
+        httpArgs, authnMethod, kwargs) {
+      scope = scope || '';
+      responseBodyType = responseBodyType || '';
+      method = method || '';
+      requestArgs = requestArgs || null;
+      extraArgs = extraArgs || null;
+      httpArgs = httpArgs || null;
+      authnMethod = authnMethod | '';
+  
+      let srv = this.service[requestType];
+      if (!method) {
+        method = srv.httpMethod;
+      }
+      let info = srv.doRequestInit(
+          this.clientInfo, method, scope, requestArgs, extraArgs, authnMethod,
+          httpArgs, kwargs);
+  
+      if (!responseBodyType) {
+        responseBodyType = srv.responseBodyType;
+      }
+  
+      let body = null;
+      try {
+        body = info['body'];
+      } catch (err) {
+        console.log(err);
+        vbody = null;
+      }
+      return srv.serviceRequest(
+          info['uri'], method, body, requestBodyType, info['httpArgs'],
+          this.clientInfo, kwargs);
+    }
+  
+    setClientId(clientId) {
+      this.clientId = clientId;
+      this.clientInfo.clientId = clientId;
+    }
+
+    /**
+    * The method that sends the request and handles the response returned.
+    * This assumes a synchronous request-response exchange.
+    * @param {string} reqresp The HTTP request response
+    * @param {ClientInfo} clientInfo Information about the client/server session
+    * @param {string} responseBodyType If response in body one of 'json', 'jwt' or
+    *      'urlencoded'
+    * @param {State} state Session identifier
+    * @return Returns a request response
+    */ 
+    serviceRequest(reqresp, clientInfo, responseBodyType, state, kwargs) {
+        if (httpArgs == null) {
+            httpArgs = {};
+        }
+        try {
+            resp = this.httpLib(url, method, data, httpArgs);
+            data = data || body;
+        } catch (err) {
+            console.log('Exception on request');
+        }
+        if (kwargs.indexOf('keyjar') === -1) {
+            kwargs['keyjar'] = this.keyjar;
+        }
+        if (!responseBodyType) {
+            responseBodyType = this.responseBodyType;
+        }
+        return this.parseRequestResponse(
+            resp, clientInfo, responseBodyType, kwargs);
+    }
+
+    /**
+     * Deal with a request response
+     * @param {string} reqresp The HTTP request response
+     * @param {ClientInfo} clientInfo Information about the client/server session
+     * @param {string} responseBodyType If response in body one of 'json', 'jwt' or
+     *      'urlencoded'
+     * @param {State} state Session identifier
+     * @return response type such as an ErrorResponse
+     */
+    parseRequestResponse(reqresp, clientInfo, responseBodyType, state, kwargs) {
+        responseBodyType = responseBodyType || '';
+        state = state || '';
+        let statusCodeArr = [302, 303];
+
+        if (SUCCESSFUL.indexOf(reqresp.statusCode) !== -1) {
+        /*
+        var type;
+        var valueType;
+        try{
+            type = Util.prototype.getResponseBodyType(reqresp);
+        }catch(err){
+            valueType = responseBodyType;
+        }
+        if (type != responseBodyType){
+            console.log('Not the expected body type. Expected : ' + type);
+        }
+        var typeArr = ['json', 'jwt', 'urlencoded'];
+        var valueType;
+        if (typeArr.indexOf(type) !== -1){
+            valueType = type;
+        }else{
+            valueType = responseBodyType;
+        } */
+        
+        let valueType = this.getValueType(reqresp, responseBodyType);
+
+        try {
+            return this.parseResponse(
+                reqresp.text, clientInfo, valueType, state, kwargs);
+        } catch (err) {
+            console.log(err);
+        }
+        } else if (statusCodeArr.indexOf(reqresp.statusCode) !== -1) {
+            return reqresp;
+        } else if (reqresp.statusCode === 500) {
+            console.log('Something went wrong');
+        } else if (400 &lt;= reqresp.statusCode &lt; 500) {
+            let valueType = this.getValueType(reqresp, responseBodyType);
+            let errResp = null;
+            try {
+                errResp = this.parseErrorMessage(reqresp, valueType);
+            } catch (err) {
+                return reqresp.text;
+            }
+            return errResp;
+        } else {
+            console.log('Error response');
+        }
+    }
+    
+  
+    getDefaultServices() {
+      return DEFAULT_SERVICES;
+    }
+  }</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Client.html">Client</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Mar 22 2018 16:56:54 GMT-0700 (PDT)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

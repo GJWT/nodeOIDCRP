@@ -50,6 +50,19 @@ const PROVIDER_DEFAULT = {
  * @extends OAuth2Client
  */
 class RP extends OAuth2Client {
+  /**
+   * @param {DB} stateDb A DB class instance
+   * @param {Object} caCerts Certificates used to verify HTTPS certificates
+   * @param {function} clientAuthnFactory A factory function
+   * @param {KeyJar} keyJar KeyJar class instance
+   * @param {bool} verifySsl True or false
+   * @param {Object<string, string>} config Configuration information passed on to the 
+   * ServiceContext initialization
+   * @param {Object} clientCert Client certificate
+   * @param {HttpLib} httpLib An httpLib class instance
+   * @param {Object<string, Object>} services A dictionary mapping from service names to instances
+   * @param {function} serviceFactory An oidc or oauth2 factory function 
+   */
   constructor({stateDb, caCerts=null, clientAuthnFactory=null, keyJar=null, verifySsl=true, config=null, clientCert=null,
       httpLib=null, services=null, serviceFactory=null}) {
     let srvs = services || DEFAULT_SERVICES;
@@ -57,7 +70,13 @@ class RP extends OAuth2Client {
     super({stateDb:stateDb, caCerts:caCerts, clientAuthnFactory:clientAuthnFactory, keyJar:keyJar, verifySsl:verifySsl, config:config, clientCert:clientCert, httpLib:httpLib, services:srvs, serviceFactory:serviceFactory});
   }
 
-  fetchDistributedClaims(userInfo, cliInfo, service){
+  /**
+   * @param {Message} userInfo A Message sub class instance
+   * @param {UserInfo} service Possibly an instance of the ServiceUserInfo class
+   * @param {function} callback A callback function that can be used to fetch things
+   * @return Updated user info instance
+   */
+  fetchDistributedClaims(userInfo, service, callback){
       try{
         let csrc = userinfo['_claims_sources'];
       }catch(err){

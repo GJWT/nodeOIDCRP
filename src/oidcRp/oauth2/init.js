@@ -23,54 +23,26 @@ const REQUEST_INFO = 'Doing request with: URL:{}, method:{}, data:{}, https_args
  */
 class Client {
     /**
-     * @param {*} caCerts Certificates used to verify HTTPS certificates
-     * @param {*} clientAuthnMethod Methods that this client can use to
-            authenticate itself. It's a dictionary with method names as
-            keys and method classes as values.
-     * @param {*} verifySsl Whether the SSL certificate should be verified.
+     * @param {Object} caCerts Certificates used to verify HTTPS certificates
+     * @param {function} clientAuthnFactory Methods that this client can use to
+     *       authenticate itself. It's a dictionary with method names as
+     *       keys and method classes as values.
+     * @param {KeyJar} keyjar A KeyJar class instance
+     * @param {bool} verifySsl Whether the SSL certificate should be verified.
+     * @param {Object<string, string>} config Configuration information passed on to the 
+     * ServiceContext initialization
+     * @param {Object} clientCert Certificate used by the HTTP client
+     * @param {HttpLib} httpLib A HTTP client to use 
+     * @param {Array<string>} services A list of service definitions
+     * @param {function} serviceFactory A factory to use when building the Service instances
+     * @param {string} jwksUri A jwksUri
+     * @return Client instance
      */
     constructor({stateDb, caCerts, clientAuthnFactory=null, keyJar=null, 
         verifySsl=true, config=null, clientCert = null, httpLib = null, services = null,
         serviceFactory=null, jwksUri=''}){
         this.stateDb = stateDb;
         this.url = '';
-
-        //this.http = httpLib || new HTTPLib(caCerts, verifySsl, clientCert, keyJar);
-            
-        /**http.createServer(function(request, response){
-          response.writeHead(200, {'Content-type':'text/plan'});
-          response.write('Hello Node JS Server Response');
-          response.end();
-        }).listen(7000);**/
-
-        /*var server=httpServer.createServer(function(req,res){
-            res.end('{"access_token": "accessTok", "id_token": "eyJhbGciOiJIUzI1NiJ9.eyJub25jZSI6ICI1VFRLOUpaMFh5Z1p5d0t4UWRqNE5zalAiLCAic3ViIjogIkVuZFVzZXJTdWJqZWN0IiwgImlzcyI6ICJodHRwczovL2dpdGh1Yi5jb20vbG9naW4vb2F1dGgvYXV0aG9yaXplIiwgImF1ZCI6IFsiZWVlZWVlZWVlIl0sICJpYXQiOiAxNTI0NzY0MDA4LCAiZXhwIjogMTUyNDc2NDMwOH0.R0hFumtBNd9WDEl0yJSOe57gC9C6afDHIO9aYffS2lQ", "token_type": "Bearer", "expires_in": 3600}');
-        });
-        
-        server.on('listening',function(){
-            console.log('ok, server is running');
-            this.url = 'http://localhost:3000/'
-        });
-        
-        server.listen(3000);*/
-        
-        /*
-        const requestHandler = (request, response) => {
-          console.log(request.url)
-          this.url = request.url;
-          response.end('Hello Node.js Server!')
-        }
-        
-        const server = httpServer.createServer(requestHandler)
-        
-        server.listen(port, (err) => {
-          if (err) {
-            return console.log('something bad happened', err)
-          }
-        
-          console.log(`server is listening on ${port}`)
-        })
-        */
 
       if (!keyJar) {
         let keyJar = new KeyJar();
@@ -139,7 +111,7 @@ class Client {
     *      'urlencoded'
     * @param {State} state Session identifier
     * @return Returns a request response
-    */ 
+    */
     serviceRequest(service, responseBodyType='', state, params) {
         let body = params.body;
         let headers = params.headers;
@@ -173,13 +145,19 @@ class Client {
     }
 
     /**
-     * Deal with a request response
+     * Deal with a request response. The response are expected to follow a special pattern, having the 
+     * attributes : 
+     *      - headers (list of tuples with headers attributes and their values)
+     *      - status_code (integer)
+     *      - text (The text version of the response)
+     *      - url (The calling URL)
+     * @param {Service} service A Service instance
      * @param {string} reqresp The HTTP request response
-     * @param {ClientInfo} clientInfo Information about the client/server session
      * @param {string} responseBodyType If response in body one of 'json', 'jwt' or
      *      'urlencoded'
-     * @param {State} state Session identifier
-     * @return response type such as an ErrorResponse
+     * @param {State} state Session identifier 
+     * @param {Object<string, string>} params Other attributes that might be needed
+     * @return response type such as an ErrorResponse 
      */
     parseRequestResponse(service, reqresp, responseBodyType='', state='', params) {
         let statusCodeArr = [302, 303];

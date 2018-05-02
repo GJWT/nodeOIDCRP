@@ -10,7 +10,7 @@ const OICServiceUserInfo = require('../nodeOIDCService/src/OIDCClient/src/oic/se
  */
 class AccessTokenResponse extends Message {
     constructor(args) {
-      super();
+      super(args);
       this.cParam = {
         'access_token': SINGLE_REQUIRED_STRING,
         'token_type': SINGLE_REQUIRED_STRING,

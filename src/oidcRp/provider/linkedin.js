@@ -21,6 +21,12 @@ class AccessTokenResponse extends Message {
     }
   }
 
+/**
+ * UserSchema
+ * @class
+ * @constructor
+ * @extends Message
+ */
 class UserSchema extends Message{
     constructor(){
         super();

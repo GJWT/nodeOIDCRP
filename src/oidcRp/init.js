@@ -21,6 +21,18 @@ db.defaults({posts: [], user: {}, count: 0}).write();
 let SERVICE_NAME = "OIC";
 let CLIENT_CONFIG = {};
 
+/**
+ * @fileoverview
+ * RPHandler
+ * Implements a service within the web service that handles user authentication 
+ * and access authorization on behalf of the web service.
+ */
+
+ /**
+  * InMemoryStateDataBase
+  * @class
+  * @constructor
+  */
 class InMemoryStateDataBase{
     constructor(){
         this.db = {};
@@ -39,6 +51,14 @@ class InMemoryStateDataBase{
     }
 }
 
+/**
+ * Get a class instance of a Service subclass specific to a specified service provider.
+ * @param {string} serviceProvider The name of the service provider
+ * @param {string} service The name of the service
+ * @param {Object<string, string>} params Arguments provided when initiating the class
+ * @return An initiated subclass of Service or None if the service or the service provider could 
+ * not be found.
+ */
 function getProviderSpecificService(serviceProvider, service, params){
     let cls = null
     if (all.indexOf(serviceProvider)!== -1){
@@ -52,6 +72,16 @@ function getProviderSpecificService(serviceProvider, service, params){
     return cls;
 }
 
+/**
+ * A factory which given a service name will return a Service instance if a service matching the 
+ * name could be found. 
+ * @param {string} serviceName Could be either of the format group.name or name
+ * @param {ServiceContext} serviceContext A ServiceContext instance 
+ * @param {DB} stateDb DB class instance
+ * @param {string} clientAuthnMethod One of the six client authentication methods : bearer_body, bearer_header, client_secret_basic, 
+   * client_secret_jwt, client_secret_post, private_key_jwt 
+ * @param {Object<string, string>} serviceConfiguration Client configuration that contains information such as client Metadata
+ */
 function factory(serviceName, serviceContext, stateDb, clientAuthnMethod, serviceConfiguration) {
     if (serviceName.indexOf('.') !== -1){
         let pair = serviceName.split('.');
@@ -72,8 +102,20 @@ function factory(serviceName, serviceContext, stateDb, clientAuthnMethod, servic
 /**
  * RPHandler
  * @class
+ * @constructor
  */
 class RPHandler{
+    /**
+     * @param {string} baseUrl There are several places in the code where urls are dynamically built. What normally happens when creating this new url, is that a path is added to baseUrl.
+     * @param {int} hasSeed Used when dynamically creating redirect_uris. Just to make it imposible for outsiders to guess what redirect_uris would be created for which OPs/ASs. Look at create_callbacks()
+     * @param {KeyJar} keyJar A keyjar instance
+     * @param {bool} verifySsl Whether the SSL certificate should be verified
+     * @param {Array<string>} services A list of service definitions
+     * @param {function} serviceFactory A factory to use when building the service instances
+     * @param {Object<string, string>} clientConfigs Configuration information passed on to the Service context initialization
+     * @param {string} clientAuthnMethod Methods that this client can use to authenticate itself. Its a dictionary with method names as keys and method classes as values.
+     * @param {Array<string>} clientCls Certificates used by the HTTP client
+     */
     constructor({baseUrl='', hashSeed="", keyJar=null, verifySsl=true,
     services=null, serviceFactory=null, clientConfigs=null,
     clientAuthnMethod=CLIENT_AUTHN_METHOD, clientCls=null, stateDb=null, params}){
@@ -104,6 +146,12 @@ class RPHandler{
         this.hash2issuer =  {};
     };
 
+    /**
+     * WebFinger is only used when you don't know which OP/AS to talk to until
+     * a user gives you some information you can base a search on.
+     * 
+     * @return True if WebFinger is among the services supported.
+     */
     supportsWebfinger(){
         let _cnf = this.pickConfig('');
         if (Object.keys(_cnf['services']).indexOf('WebFinger') !== -1){
@@ -114,27 +162,41 @@ class RPHandler{
     }
 
     /**
-     * Fetches the issuer based on state stored in rp ClientInfo's stateDb
-     * @param {State} state OICClient State instance
-     * @return issuer 
+     * Given the state value find the Issuer ID of the OP/AS that state value
+        was used against.
+        Will raise a KeyError if the state is unknown.
+     * @param {State} state The state value
+     * @return An issuer id
      */
     state2Issuer(state){
         return this.sessionInterface.getIss(state);
     }
 
     /**
-     * Picks the config from clientConfigs based on the appropriate issuer
-     * @param {string} issuer Issuer 
-     * @return config
+     * From the set of client configurations pick one based on the issuer ID.
+     * Will raise a KeyError if issuer is unknown.
+     * @param {string} issuer Issuer ID
+     * @return A client configuration
      */
     pickConfig(issuer){
         return this.clientConfigs[issuer];
     }
 
+    /**
+     *  This is the second of the methods users of this class should know about.
+     * It will return the complete session information as an State instance
+     * @param {*} key The session key (state)
+     * @return A state instance
+     */
     getSessionInformation(key){
         return this.sessionInterface.getState(key);
     }
 
+    /**
+     * Initiate a Client instance. Specifically which client class is used is decided by configuration.
+     * @param {string} issuer An issuer id
+     * @return A client instance
+     */
     initClient(issuer){
         let _cnf = this.pickConfig(issuer);
         let _services = null;
@@ -176,6 +238,12 @@ class RPHandler{
         }
     }
 
+    /**
+     * To mitigate some security issues the redirect_uris should be OP/AS specific. 
+     * This method creates a set of redirect_uris unique to the OP/AS.
+     * @param {string} issuer Issuer ID
+     * @return A set of redirect_uris
+     */
     createCallbacks(issuer){
         var hmac = crypto.createHmac('sha256', '');
         hmac.update(this.hashSeed);
@@ -218,6 +286,13 @@ class RPHandler{
         }
     }
 
+    /**
+     * Given the response returned to the redirect_uri, parse and verify it.
+     * @param {Client} client A client instance
+     * @param {string} issuer An issuer ID
+     * @param {AuthorizationResponse} response The authorization response as a dictionary
+     * @return An auth2 or OIC authorizationResponse instance
+     */
     finalizeAuth(client, issuer, response){
         let authorizationResponse = null
         let srv = client.service['authorization'];
@@ -279,6 +354,15 @@ class RPHandler{
         return client;
     }
 
+    /**
+     * Constructs the URL that will redirect the user to the authorization
+     * endpoint of the OP/AS.
+     * @param {Client} client A client instance
+     * @param {string} stateKey The key corresponding to a state
+     * @param {Object<string, string>} reqArgs Non default request arguments
+     * @return A dictionary with 2 keys : url - The authorization redirect URL and 
+     * state key - the key to the session information in the state data store.
+     */
     initAuthorization(client=null, stateKey='', reqArgs=null){
         if (!client){
             if (stateKey){
@@ -322,6 +406,10 @@ class RPHandler{
     loadProviderInfo(client, issuer){
     }
 
+    /**
+     * This is about performing dynamic Provider Info discovery
+     * @param {Client} client Client instance
+     */
     dynamicProviderInfoDiscovery(client){
         try{
             client.service['provider_info'];
@@ -415,19 +503,19 @@ class RPHandler{
     }
 
     /**
-     * Fetches the response type from client info
-     * @param {*} client 
-     * @param {*} issuer 
+     * Fetches the response type a specific client wants to use
+     * @param {Client} client A client instance
+     * @return The response type
      */
     getResponseType(client, issuer){
         return client.serviceContext.behavior['response_types'][0];
     }
 
     /**
-     * Fetches the auth method based on the token endpoint auth method in
-     * clientInfo
-     * @param {*} client 
-     * @param {*} endpoint 
+     * Return the client authentication method a client wants to use a specific endpoint
+     * @param {Client} client A client instance
+     * @param {string} endpoint The endpoint at which the client has to authenticate 
+     * @return The client authentication method
      */
     getClientAuthnMethod(client, endpoint){
         if (endpoint == 'token_endpoint'){
@@ -445,12 +533,15 @@ class RPHandler{
     }
 
     /**
-     * First make sure we have a client and that the client has the
-     * necessary information. Then construct and send an Authorization 
-     * request. The response to that request will be sent to the callback
-     * URL. Sets up the client, updates the stateDb and performs request 
-     * for authorization service. 
+     * This is the first of the three high level mthods that most users of this library should
+     * confine themselves to use. If will use client_setup to product a Client instance ready
+     * to be used against the OP/AS the user wants to use. Once it has the client it will 
+     * construct an Authorization Request.
      * @param {string} issuer Issuer ID
+     * @param {string} userId A user identifier
+     * @return A dictionary containing url the URL that will redirect the user to 
+     * the OP/AS and state key, thes session key will allow higher level code to access
+     * session information. 
      */
     begin(issuerId='', userId=''){
         let client = this.clientSetUp(issuerId, userId);
@@ -463,9 +554,10 @@ class RPHandler{
     }
 
     /**
-     * Fetches access token based on client doRequest call 
-     * @param {Client} client 
-     * @param {Object<string, string>} authResp 
+     * Use the 'accesstoken' service to get an access token from the OP/AS.
+     * @param {string} state_key The state key (the state parameter in the authorization request)
+     * @param {Client} client A client instance
+     * @return An AccessTokenResponse or AuthorizationResponse
      */
     getAccessToken(stateKey, client){
         if (!client){
@@ -496,6 +588,14 @@ class RPHandler{
         }*/
     }
 
+    /**
+     * Refresh an access token using a refresh token. When asking for a new access token the RP
+     * can ask for another scope for the new token. 
+     * @param {string} stateKey The state key (the state parameter in the authorization request)
+     * @param {Client} client A client instance
+     * @param {string} scope What the returned token should be valid for.
+     * @return An AccessTokenResponse instance
+     */
     refreshAccessToken(stateKey, client=null, scope=''){
         let reqArgs = {};
         if (scope){
@@ -518,10 +618,12 @@ class RPHandler{
     }
 
     /**
-     * Uses the access token to fetch the user info using client doRequest method
-     * @param {Client} client 
-     * @param {Object<string, string>} authResp 
-     * @param {string} accessToken 
+     * Use the access token previously acquired to get some user info
+     * @param {string} stateKey The state value, this is the key into the session data store
+     * @param {Client} client A client instance
+     * @param {string} accessToken An access token
+     * @param {Object<string, string>} params Other attributes that might be necessary
+     * @return An OpenIdSchema song instance
      */
     getUserInfo(stateKey, client=null, access_token='', params){
         if (!access_token){
@@ -544,8 +646,9 @@ class RPHandler{
     }
 
     /**
-     * Weed out all claims that belong to the JWT. 
-     * @param {BasicIdToken} idToken 
+     * Given an verified id token return all claims that may been user information
+     * @param {BasicIdToken} idToken An IDToken instance
+     * @return A dictionary with user information
      */
     userInfoInIdToken(idToken){
         let dict = {}; 
@@ -560,6 +663,15 @@ class RPHandler{
         return dict;
     }
 
+    /**
+     * There are a number of services where access tokens and ID Tokens can occur in the response. 
+     * This method goes through the possiblee places based on the response type the client uses.
+     * @param {AuthorizationResponse} authorizationResponse The authorization response
+     * @param {string} stateKey The state key (the state parameter in the authorization request)
+     * @param {Client} client Client instance
+     * @return A dictionary with 2 keys: access token with the access token as value and id token 
+     * with a verified id token if one was returned otherwise none.
+     */
     getAccessAndIdToken(authorizationResponse=null, stateKey='', client=null){
         if (authorizationResponse == null){
             if (stateKey){
@@ -618,41 +730,19 @@ class RPHandler{
                 }
             }
         }
-
-        /*let inRespType = false;
-        for (var i = 0; i < respTypes.length; i++){
-            var currType = respTypes[i];
-            if (currType.indexOf(respType) !== -1){
-                accessToken = authorizationResponse.claims['access_token'];
-                inRespType = true;
-            }
-        }
-
-        if (! inRespType){
-            for (var i = 0; i < respTypes2.length; i++){
-                let currType2 = respTypes2[i];
-                if (currType2.indexOf(respType) !== -1){
-                    if (!client){
-                        let client = this.getClientFromSessionKey(stateKey);
-                    }
-        
-                    let tokenResp = this.getAccessToken(stateKey, client);
-                    if (tokenResp.isErrorMessage()){
-                        return false;
-                    }
-                    accessToken = tokenResp.claims['access_token'];
-                    try{
-                        idToken = tokenResp.claims['verified_id_token'];
-                    }catch(err){
-                        return;
-                    }
-                }
-            }
-        }
-        */
         return {'access_token': accessToken, 'id_token': idToken};
     }
 
+    /**
+     * The third of the high level methods that a user of this class should know about.
+     * Once the consumer has redirected the user back to the callback url there might be a number
+     * of services that hte client should use. Which one those are defined by the client configuration.
+     * @param {string} issuer Who sent the response
+     * @param {Object<string, string>} response A dictionary with two claims: 
+     *      stateKey - the key under which the session information is stored in the data store and 
+     *      error - encountered error or 
+     *      userinfo - the collected user information
+     */
     finalize(issuer, response){
         let client = this.issuer2rp[issuer];
 
@@ -679,41 +769,6 @@ class RPHandler{
 
         return {'userinfo': inforesp,
         'state_key': authorizationResponse['state']};
-    }
-
-    /**
-     * Once the consumer has redirected the user back to the callback URL
-     * you can request the access token the user has approved.
-     * @param {string} issuer Issuer
-     * @param {Object} response 
-     */
-    phaseN(issuer, response){
-    }
-
-    /**
-     * This is where we come back after the OP has done the Authorization 
-     * Request
-     * @param {Object<string, string>} query 
-     * @param {string} hash 
-     */
-    callback(query, hash){
-    }
-
-    /**
-     * Get a class instance of a Request subclass specific to a specified service
-     * @param {Request} request 
-     * @return An initiated subclass of oiccli Request or null if the service or 
-     * the request could not be found
-     */
-    getServiceUniqueRequest(request){
-    }
-
-    /**
-     * Fetches the service instance based on group name
-     * @param {string} reqName The name of the service
-     */
-    factory(reqName){
-
     }
 }
 

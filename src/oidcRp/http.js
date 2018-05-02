@@ -1,9 +1,20 @@
 var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 
+/**
+ * HttpRequest
+ * @class 
+ * @constructor 
+ */
 class HttpRequest {
     constructor(){
     }
 
+    /** 
+     * Send a HTTP request to a URL using a specified method and returns a callback
+     * @param {string} theUrl 
+     * @param {function} callback 
+     * @param {Object<string, string>} data 
+     */ 
     httpGetAsync(theUrl, callback, data)
     {
         var xmlHttp = new XMLHttpRequest();
