@@ -64,7 +64,7 @@ const BASEURL = 'https://example.com/rp';
 const CLIENT_CONFIG = {...}
 
 let rph = new RPHandler({baseUrl: BASEURL, clientConfigs: CLIENT_CONFIG});
-let res = rph.begin(issuerId) 
+let res = rph.begin('github')
 let url = res[‘url’]
 ```
 
@@ -72,16 +72,13 @@ An http response is sent to the url which redirects to the OP/AS. The OP then se
 
 Usage example (params are the set of claims in the authorization response):
 ```
-let sessionInfo = rph.sessionInterface.getState(res['state_key']);
+let sessionInfo = rph.sessionInterface.getState(res['state_key'])
 ```
 
 Will parse the authorization response and depending on the configuration run the services 5 and 6.
 Usage example:
 ```
- let client = rph.issuer2rp[session.claims['iss']];
- let authnMethod = rph.getClientAuthnMethod(client, 'token_endpoint');
- let authResponse = new AuthorizationResponse({code:'access_code', state: res['state_key']});
- let result = rph.finalizeAuth(client, session.claims['iss'], authResponse.claims);
+ let result = rph.finalize(sessionInfo[‘iss’], res)
 ```
 
 RP configuration parameters
