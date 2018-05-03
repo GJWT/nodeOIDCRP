@@ -78,7 +78,7 @@ let sessionInfo = rph.sessionInterface.getState(res['state_key'])
 Will parse the authorization response and depending on the configuration run the services 5 and 6.
 Usage example:
 ```
- let result = rph.finalize(sessionInfo[‘iss’], res)
+let result = rph.finalize(sessionInfo[‘iss’], res)
 ```
 
 RP configuration parameters
