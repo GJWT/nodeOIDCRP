@@ -2,17 +2,18 @@
 const assert = require('chai').assert;
 const RP = require('../oic/init').RP;
 const State = require('../nodeOIDCService/src/OIDCClient/src/state').State;
-const AuthorizationRequest = require('../nodeOIDCMsg/src/oicMsg/oauth2/requests').AuthorizationRequest;
-const AuthorizationResponse = require('../nodeOIDCMsg/src/oicMsg/oauth2/responses').AuthorizationResponse;
-const AccessTokenResponse = require('../nodeOIDCMsg/src/oicMsg/oauth2/responses').AccessTokenResponse;
+const AuthorizationRequest = require('../nodeOIDCService/src/OIDCClient/nodeOIDCMsg/src/oicMsg/oauth2/requests').AuthorizationRequest;
+const AuthorizationResponse = require('../nodeOIDCService/src/OIDCClient/nodeOIDCMsg/src/oicMsg/oauth2/responses').AuthorizationResponse;
+const AccessTokenResponse = require('../nodeOIDCService/src/OIDCClient/nodeOIDCMsg/src/oicMsg/oauth2/responses').AccessTokenResponse;
 const RPHandler = require('../init').RPHandler;
 const urlParse = require('url-parse');
-const Message = require('../nodeOIDCMsg/src/oicMsg/message');
+const Message = require('../nodeOIDCService/src/OIDCClient/nodeOIDCMsg/src/oicMsg/message');
 const parseQs = require('../nodeOIDCService/src/OIDCClient/src/util').parseQs;
+const request = require('supertest');
+const express = require('express');
 
 // content of index.js
 const http = require('http')
-const port = 80
 
 const BASEURL = 'https://example.com/rp';
 
@@ -115,21 +116,6 @@ const CLIENT_CONFIG = {
     }
 }
 
-const requestHandler = (request, response) => {
-  console.log(request.url)
-  response.end('Hello Node.js Server!')
-}
-
-const server = http.createServer(requestHandler)
-
-server.listen(port, (err) => {
-  if (err) {
-    return console.log('something bad happened', err)
-  }
-
-  console.log(`server is listening on ${port}`)
-})
-
 class DB{
     constructor(){
         this.db = {};
@@ -192,14 +178,19 @@ describe('RPHandler', function() {
         # The key jar should only contain a symmetric key that is the clients
         # secret. 2 because one is marked for encryption and the other signing
         # usage.
-
-        assert list(_context.keyjar.owners()) == ['']
-        keys = _context.keyjar.get_issuer_keys('')
-        assert len(keys) == 2
-        for key in keys:
-            assert key.kty == 'oct'
-            assert key.key == b'aaaaaaaaaaaaa'
         */
+        assert.deepEqual(context.keyjar.owners(), ['']);
+        
+        let keyBundle = context.keyjar.issuerKeys[''];
+        let keys = keyBundle.keys;
+        
+        assert.deepEqual(keys.length, 2);
+        
+        for (var i =0; i <keys.length; i++){
+            let key = keys[i]
+            assert.deepEqual(key.kty, 'oct');
+            assert.deepEqual(key.k, 'aaaaaaaaaaaaa');
+        }
 
         assert.deepEqual(context.baseUrl, BASEURL);
     });
@@ -208,15 +199,17 @@ describe('RPHandler', function() {
         let client = rph.initClient('github');
         let issuer = rph.doProviderInfo(client);
         assert.deepEqual(issuer, "https://github.com/login/oauth/authorize");
-
-        /*
-        let srvTypes = ['authorization', 'accesstoken', 'userinfo'];
+        
+        let srvTypes = ['authorization', 'accessToken', 'userinfo'];
         for (var i = 0; i < srvTypes.length; i++){
             let srvType = srvTypes[i];
             let srv = client.service[srvType];
             let endpoint = client.serviceContext.provider_info[srv.endpointName];
+            console.log(srv.endpointName);
+            console.log(client.serviceContext.provider_info[srv.endpointName]);
+            console.log("**************************");
             assert.deepEqual(endpoint, srv.endpoint);
-        }*/
+        }
     });
 
     it('Test do client registration', function() {      
@@ -241,24 +234,28 @@ describe('RPHandler', function() {
         /* TODO
         # The key jar should only contain a symmetric key that is the clients
         # secret. 2 because one is marked for encryption and the other signing
-        # usage.
+        # usage.*/
 
-        assert list(_context.keyjar.owners()) == ['']
-        keys = _context.keyjar.get_issuer_keys('')
-        assert len(keys) == 2
-        for key in keys:
-            assert key.kty == 'oct'
-            assert key.key == b'aaaaaaaaaaaaa'
-        */
+        assert.deepEqual(context.keyjar.owners(), ['']);
+        
+        let keyBundle = context.keyjar.issuerKeys[''];
+        let keys = keyBundle.keys;
+        
+        assert.deepEqual(keys.length, 2);
+        
+        for (var i =0; i <keys.length; i++){
+            let key = keys[i]
+            assert.deepEqual(key.kty, 'oct');
+            assert.deepEqual(key.k, 'aaaaaaaaaaaaa');
+        }
 
-        /*
         let srvTypes = ['authorization', 'userinfo', 'accessToken'];
         for (var i = 0; i < srvTypes.length; i++){
             let srvType = srvTypes[i];
             let srv = client.service[srvType];
             let endpoint = client.serviceContext.provider_info[srv.endpointName];
             assert.deepEqual(endpoint, srv.endpoint);
-        }*/
+        }
 
         assert.deepEqual(rph.hash2issuer[context.issuer], context.issuer);
         
@@ -277,24 +274,29 @@ describe('RPHandler', function() {
         /* TODO
         # The key jar should only contain a symmetric key that is the clients
         # secret. 2 because one is marked for encryption and the other signing
-        # usage.
+        # usage.*/
 
-        assert list(_context.keyjar.owners()) == ['']
-        keys = _context.keyjar.get_issuer_keys('')
-        assert len(keys) == 2
-        for key in keys:
-            assert key.kty == 'oct'
-            assert key.key == b'aaaaaaaaaaaaa'
-        */
+        assert.deepEqual(context.keyjar.owners(), ['']);
+        
+        let keyBundle = context.keyjar.issuerKeys[''];
+        let keys = keyBundle.keys;
+        
+        assert.deepEqual(keys.length, 2);
+        
+        for (var i =0; i <keys.length; i++){
+            let key = keys[i]
+            assert.deepEqual(key.kty, 'oct');
+            assert.deepEqual(key.k, 'aaaaaaaaaaaaa');
+        }
 
-        /*
+        
         let srvTypes = ['authorization', 'userinfo', 'accessToken'];
         for (var i = 0; i < srvTypes.length; i++){
             let srvType = srvTypes[i];
             let srv = client.service[srvType];
             let endpoint = client.serviceContext.provider_info[srv.endpointName];
             assert.deepEqual(endpoint, srv.endpoint);
-        }*/
+        }
 
         assert.deepEqual(rph.hash2issuer[context.issuer], context.issuer);
     });
@@ -320,7 +322,7 @@ describe('RPHandler', function() {
         assert.deepEqual(Object.keys(res), ['url', 'state_key']);
         
         let session = rph.sessionInterface.getState(res['state_key']);
-        client = rph.issuer2rp[session.claims['iss']];
+        client = rph.issuer2rp[session['iss']];
         
         assert.deepEqual(client.serviceContext.issuer, "https://github.com/login/oauth/authorize");
         
@@ -330,8 +332,8 @@ describe('RPHandler', function() {
         let netloc = parts.hostname;
         let path = parts.path;
         let query = parts.query;
-        let msg = new Message().fromUrlEncoded(query.substring(1, query.length));
-        let parsedQ = parseQs(msg.claims);
+        let msg = Message.fromUrlEncoded(query.substring(1, query.length));
+        let parsedQ = parseQs(msg);
         
         assert.deepEqual(Object.keys(parsedQ).length, 6);
         
@@ -345,19 +347,19 @@ describe('RPHandler', function() {
     it('Test get session information', function() {
         let res = rph.begin('github');
         let session = rph.getSessionInformation(res['state_key']);
-        assert.deepEqual(rph.clientConfigs['github']['issuer'], session.claims['iss']);
+        assert.deepEqual(rph.clientConfigs['github']['issuer'], session['iss']);
     });
 
     it('Test get client authn method', function() {
         let res = rph.begin('github');
         let session = rph.getSessionInformation(res['state_key']);
-        client = rph.issuer2rp[session.claims['iss']];
+        client = rph.issuer2rp[session['iss']];
         let authnMethod = rph.getClientAuthnMethod(client, 'token_endpoint');
         assert.deepEqual(authnMethod, '');
         
         res = rph.begin('linkedin');
         session = rph.getSessionInformation(res['state_key']);
-        client = rph.issuer2rp[session.claims['iss']];
+        client = rph.issuer2rp[session['iss']];
         authnMethod = rph.getClientAuthnMethod(client, 'token_endpoint');
         assert.deepEqual(authnMethod, 'client_secret_post')
     });
@@ -365,95 +367,112 @@ describe('RPHandler', function() {
     it('Test finalize auth', function() {
         let res = rph.begin('linkedin');
         let session = rph.getSessionInformation(res['state_key']);
-        client = rph.issuer2rp[session.claims['iss']];
+        client = rph.issuer2rp[session['iss']];
         let authnMethod = rph.getClientAuthnMethod(client, 'token_endpoint');
         
         let authResponse = new AuthorizationResponse({code:'access_code', state: res['state_key']});
-        let resp = rph.finalizeAuth(client, session.claims['iss'], authResponse.claims);
+        let resp = rph.finalizeAuth(client, session['iss'], authResponse.claims);
         
         assert.deepEqual(Object.keys(resp.claims), ['code', 'state']);
         
         let aresp = client.service['authorization'].getItem(AuthorizationResponse, 'auth_response', res['state_key']);
         
-        assert.deepEqual(Object.keys(aresp.claims), ['code', 'state']);
+        assert.deepEqual(Object.keys(aresp), ['code', 'state']);
     });
+});
+
+function makeServer(content) {
+    var express = require('express');
+    var app = express();
+    app.get('/', function (req, res) {
+      res.send(content);
+    });
+    var server = app.listen(3000, function () {
+      var port = server.address().port;
+      console.log('Example app listening at port %s', port);
+    });
+    return server;
+  }
+
+describe('Test get access token', function () {
+  var server;
+  let rph = null;
+  beforeEach(function() {
+    rph = new RPHandler({baseUrl: BASEURL, clientConfigs: CLIENT_CONFIG});
+  });
+  afterEach(function () {
+    //server.close();
+  });
+  it('responds to /', function testSlash(done) {
+    let res = rph.begin('github');
+    let session = rph.getSessionInformation(res['state_key']);
+    client = rph.issuer2rp[session['iss']];
     
-    it('Test get access token', function() {
-        let res = rph.begin('github');
-        let session = rph.getSessionInformation(res['state_key']);
-        client = rph.issuer2rp[session.claims['iss']];
-        
-        let nonce = JSON.parse(session.claims['auth_request'])['nonce'];
-        let iss = session.claims['iss'];
-        let aud = client.serviceContext.client_id;
-        let payload = {'nonce': nonce, 'sub': 'EndUserSubject', 'iss': iss,
-        'aud': aud};
-        let token = new Message();
-        token.addOptionalClaims(payload);
-        let jws = token.toJWT('shhh', {algorithm: 'HS256'});
+    let nonce = session['auth_request']['nonce'];
+    let iss = session['iss'];
+    let aud = client.serviceContext.client_id;
+    let payload = {'nonce': nonce, 'sub': 'EndUserSubject', 'iss': iss,
+    'aud': aud};
+    let token = new Message();
+    token.addOptionalClaims(payload);
+    token.toJWT('shhh', {algorithm: 'HS256'}).then(function(jws) {
         let info = {"access_token": "accessTok", "id_token": jws,
         "token_type": "Bearer", "expires_in": 3600}
-        
         let at = new AccessTokenResponse(info);
-
-        var server = http.createServer(function(req,res){
-            res.end(at.toJSON());
-        });
-        
-        server.on('listening',function(){
-            console.log('ok, server is running');
-            this.url = 'http://localhost:3000/'
-        });
-        
-        server.listen(3000);
-                
-        client.service['accessToken'].endpoint = 'http://localhost:3000/';
+        server = makeServer(at.toJSON());
+        port = server.address().port;
+        client.service['accessToken'].endpoint = 'http://localhost:'+ port;
         
         let authResponse = new AuthorizationResponse({code: 'access_code', state: res['state_key']});
         let resp = rph.finalizeAuth(client, session.claims['iss'], authResponse.claims);
-        resp = rph.getAccessToken(res['state_key'], client);
-        //resp.verify();
-        assert.deepEqual(Object.keys(resp.claims), ['access_token', 'id_token',
-        'token_type', 'expires_in']);
-        /*assert.deepEqual(Object.keys(resp), ['access_token', 'expires_in', 'id_token',
-        'token_type', 'verified_id_token']); */
         
-        let atResp = client.service['accessToken'].getItem(AccessTokenResponse, 'token_response', res['state_key']);
+        request(server)
+        .get('/')
+        .expect(200, function(err, response){
+            
+            resp = rph.getAccessToken(res['state_key'], client, response);        
         
-        /*assert.deepEqual(Object.keys(atresp), ['access_token', 'expires_in', 'id_token',
-        'token_type', 'verified_id_token']);*/
-    });
+            assert.deepEqual(Object.keys(resp.claims).length, 5);
+        
+        
+            let atResp = client.service['accessToken'].getItem(AccessTokenResponse, 'token_response', res['state_key']);
+            
+            assert.deepEqual(Object.keys(atResp.claims).length, 5);
 
-    it('Test access and id token', function() {
-        let res = rph.begin('github');
-        let session = rph.getSessionInformation(res['state_key']);
-        client = rph.issuer2rp[session.claims['iss']];
-        
-        let nonce = JSON.parse(session.claims['auth_request'])['nonce'];
-        let iss = session.claims['iss'];
-        let aud = client.serviceContext.client_id;
-        let payload = {'nonce': nonce, 'sub': 'EndUserSubject', 'iss': iss,
-        'aud': aud};
-        
-        let token = new Message();
-        token.addOptionalClaims(payload);
-        let jws = token.toJWT('shhh', {algorithm: 'HS256'});
+            done();
+            
+        });
+    
+    }).catch(function(err) {
+        assert.isNull(err);
+        done();
+    });
+    done();
+  });
+  it('Test access and id token', function testSlash(done) {
+
+    let res = rph.begin('github');
+    let session = rph.getSessionInformation(res['state_key']);
+    client = rph.issuer2rp[session['iss']];
+    
+    let nonce = session['auth_request']['nonce'];
+    let iss = session['iss'];
+    let aud = client.serviceContext.client_id;
+    let payload = {'nonce': nonce, 'sub': 'EndUserSubject', 'iss': iss,
+    'aud': aud};
+    
+    let token = new Message();
+    token.addOptionalClaims(payload);
+   token.toJWT('shhh', {algorithm: 'HS256'}).then(function(jws) {
         
         let info = {"access_token": "accessTok", "id_token": jws,
         "token_type": "Bearer", "expires_in": 3600};
         
         let at = new AccessTokenResponse(info);
-
-        var server = http.createServer(function(req,res){
-            res.end(at.toJSON());
-        });
+    
+    
+        server = makeServer(at.toJSON());
         
-        server.on('listening',function(){
-            console.log('ok, server is running');
-            this.url = 'http://localhost:3000/'
-        });
-        
-        server.listen(3000);
                 
         client.service['accessToken'].endpoint = 'http://localhost:3000/';
         
@@ -462,87 +481,46 @@ describe('RPHandler', function() {
         
         let authResponse = rph.finalizeAuth(client, session.claims['iss'], response.claims);
         
-        let resp = rph.getAccessAndIdToken(authResponse, null, client);
-        
-        assert.deepEqual(resp['access_token'], 'accessTok');
-        //assert.deepEqual(resp.claims['id_token'], IdToken);
+        request(server)
+        .get('/')
+        .expect(200, function(err, response){
+            
+            let resp = rph.getAccessAndIdToken(authResponse, null, client, response);
+            
+            assert.deepEqual(resp['access_token'], 'accessTok');
+            assert.isNotNull(resp['id_token']);
+            done();
+        });
+    }).catch(function(err) {
+        assert.isNull(err);
+        done();
     });
+    done();
+  });
 
-    it('Test access and id token by reference', function() {
-        let res = rph.begin('github');
-        let session = rph.getSessionInformation(res['state_key']);
-        client = rph.issuer2rp[session.claims['iss']];
-        
-        let nonce = JSON.parse(session.claims['auth_request'])['nonce'];
-        let iss = session.claims['iss'];
-        let aud = client.serviceContext.client_id;
-        let payload = {'nonce': nonce, 'sub': 'EndUserSubject', 'iss': iss,
-        'aud': aud};
-        
-        let token = new Message();
-        token.addOptionalClaims(payload);
-        let jws = token.toJWT('shhh', {algorithm: 'HS256'});
-        
+  it('Test getUserInfo', function testSlash(done) {
+    let res = rph.begin('github');
+    let session = rph.getSessionInformation(res['state_key']);
+    client = rph.issuer2rp[session['iss']];
+    
+    let nonce = session['auth_request']['nonce'];
+    let iss = session['iss'];
+    let aud = client.serviceContext.client_id;
+    let payload = {'nonce': nonce, 'sub': 'EndUserSubject', 'iss': iss,
+    'aud': aud};
+    
+    let token = new Message();
+    token.addOptionalClaims(payload);
+    token.toJWT('shhh', {algorithm: 'HS256'}).then(function(jws) {
+    
         let info = {"access_token": "accessTok", "id_token": jws,
         "token_type": "Bearer", "expires_in": 3600};
         
         let at = new AccessTokenResponse(info);
         
-        var server = http.createServer(function(req,res){
-            res.end(at.toJSON());
-        });
         
-        server.on('listening',function(){
-            console.log('ok, server is running');
-            this.url = 'http://localhost:3000/'
-        });
+        server = makeServer(at.toJSON());
         
-        server.listen(3000);
-
-        client.service['accessToken'].endpoint = 'http://localhost:3000/';        
-        
-        let response = new AuthorizationResponse({code:'access_code',
-        state:res['state_key']});
-        
-        let authResponse = rph.finalizeAuth(client, session.claims['iss'], response.claims);
-        
-        let resp = rph.getAccessAndIdToken(authResponse, null, client);
-        
-        assert.deepEqual(resp['access_token'], 'accessTok');
-        //assert.deepEqual(resp.claims['id_token'], IdToken);        
-    });
-
-    it('Test get user info', function() {
-        let res = rph.begin('github');
-        let session = rph.getSessionInformation(res['state_key']);
-        client = rph.issuer2rp[session.claims['iss']];
-        
-        let nonce = JSON.parse(session.claims['auth_request'])['nonce'];
-        let iss = session.claims['iss'];
-        let aud = client.serviceContext.client_id;
-        let payload = {'nonce': nonce, 'sub': 'EndUserSubject', 'iss': iss,
-        'aud': aud};
-        
-        let token = new Message();
-        token.addOptionalClaims(payload);
-        let jws = token.toJWT('shhh', {algorithm: 'HS256'});
-        
-        let info = {"access_token": "accessTok", "id_token": jws,
-        "token_type": "Bearer", "expires_in": 3600};
-        
-        let at = new AccessTokenResponse(info);
-
-        var server = http.createServer(function(req,res){
-            res.end(at.toJSON());
-        });
-        
-        server.on('listening',function(){
-            console.log('ok, server is running');
-            this.url = 'http://localhost:3000/'
-        });
-        
-        server.listen(3000);
-
         client.service['accessToken'].endpoint = 'http://localhost:3000/';
         
         let response = new AuthorizationResponse({code:'access_code',
@@ -550,164 +528,54 @@ describe('RPHandler', function() {
         
         let authResponse = rph.finalizeAuth(client, session.claims['iss'], response.claims);
         
-        let tokenResponse = rph.getAccessAndIdToken(authResponse, null, client);
-
-        var server = http.createServer(function(req,res){
-            res.end({"sub":"EndUserSubject"});
-        });
+        let tokenResponse = null;
         
-        server.on('listening',function(){
-            console.log('ok, server is running');
-            this.url = 'http://localhost:3000/'
-        });
-        
-        server.listen(3000);
-                
-         client.service['userinfo'].endpoint = 'http://localhost:3000/';
-        
-        //let userinfoResp = rph.getUserInfo(res['state_key'], client, tokenResponse['access_token'])
-        
-        //assert.isNotNull(userinfoResp);
-    });
-
-    it('Test get user info', function() {
-        let res = rph.begin('github');
-        let session = rph.getSessionInformation(res['state_key']);
-        client = rph.issuer2rp[session.claims['iss']];
-        
-        let nonce = JSON.parse(session.claims['auth_request'])['nonce'];
-        let iss = session.claims['iss'];
-        let aud = client.serviceContext.client_id;
-        let payload = {'nonce': nonce, 'sub': 'EndUserSubject', 'iss': iss,
-        'aud': aud, 'given_name': 'Diana', 'family_name': 'Krall',
-        'occupation': 'Jazz pianist'}
-        
-        let token = new Message(payload);
-        
-        let userInfo = rph.userInfoInIdToken(token);
-       // assert.deepEqual(Object.keys(userInfo), ['sub', 'family_name', 'given_name', 'occupation']);
-    }); 
-});
-
-
-
-describe('RPHandlerTier2', function() {
-    let rph = null;
-    let res = null;
-    let session = null;
-    let client = null;
-    beforeEach(function() {
-       rph = new RPHandler({baseUrl: BASEURL, clientConfigs: CLIENT_CONFIG});
-       res = rph.begin('github');
-       session = rph.getSessionInformation(res['state_key']);
-       client = rph.issuer2rp[session.claims['iss']];
-       let nonce = JSON.parse(session.claims['auth_request'])['nonce'];
-       let iss = session.claims['iss'];
-       let aud = client.serviceContext.client_id;
-       let payload = {'nonce': nonce, 'sub': 'EndUserSubject', 'iss': iss,
-       'aud': aud};
-       
-       let token = new Message();
-       token.addOptionalClaims(payload);
-       let jws = token.toJWT('shhh', {algorithm: 'HS256'});
-       
-       let info = {"access_token": "accessTok", "id_token": jws,
-       "token_type": "Bearer", "expires_in": 3600, 'refresh_token': 'refreshing'};
-       
-       let at = new AccessTokenResponse(info);
-
-       var server = http.createServer(function(req,res){
-        res.end(at.toJSON());
-        });
-        
-        server.on('listening',function(){
-            console.log('ok, server is running');
-            this.url = 'http://localhost:3000/'
-        });
-        
-        server.listen(3000);
+        request(server)
+        .get('/')
+        .expect(200, function(err, response){
             
-        client.service['accessToken'].endpoint = 'http://localhost:3000/';
-              
-       let response = new AuthorizationResponse({code:'access_code',
-       state:res['state_key']});
-       
-       let authResponse = rph.finalizeAuth(client, session.claims['iss'], response.claims);
-       
-       let tokenResponse = rph.getAccessAndIdToken(authResponse, null, client);
-
-       var server = http.createServer(function(req,res){
-        res.end({"sub":"EndUserSubject"});
-        });
+        tokenResponse = rph.getAccessAndIdToken(authResponse, null, client, response);
         
-        server.on('listening',function(){
-            console.log('ok, server is running');
-            this.url = 'http://localhost:3000/'
-        });
+        server.close();
         
-        server.listen(3000);
+        let server2 = makeServer({"sub":"EndUserSubject"});
         
         client.service['userinfo'].endpoint = 'http://localhost:3000/';
         
-        rph.getUserInfo(res['state_key'], client, tokenResponse['access_token'])
-        
-        let stateKey = res['state_key']
-    });
-
-    it('test init authorization', function() {      
-        session = rph.getSessionInformation(res['state_key'])
-        client = rph.issuer2rp[session.claims['iss']];
-        res = rph.initAuthorization(client, null, {'scope': ['openid', 'email']});
-        let part = urlParse(res['url']);
-        let query = new Message().fromUrlEncoded(part.query);
-        let qp = parseQs(query.claims);
-        assert.deepEqual(qp['scope'], ['openid,email']);
-    });
-
-    
-    it('Test refresh access token', function() {     
-        session = rph.getSessionInformation(res['state_key'])
-        client = rph.issuer2rp[session.claims['iss']];
-        info = {"access_token": "2nd_accessTok",
-        "token_type": "Bearer", "expires_in": 3600};
-        at = new AccessTokenResponse(info);
-
-        var server = http.createServer(function(req,res){
-            res.end(at.toJSON());
-        });
-        
-        server.on('listening',function(){
-            console.log('ok, server is running');
-            this.url = 'http://localhost:3000/'
-        });
-        
-        server.listen(3000);
+        request(server2)
+        .get('/')
+        .expect(200, function(err, response){
             
-        client.service['refresh_token'].endpoint = 'http://localhost:3000/';
-        
-        res = rph.refreshAccessToken({state: res['state_key']}, client, 'openid email');
-        assert.deepEqual(res.claims['access_token'], '2nd_accessTok');
-    });
-    
-    it('Test get user info', function() {     
-        session = rph.getSessionInformation(res['state_key'])
-        client = rph.issuer2rp[session.claims['iss']];
+            let userInfoResp = rph.getUserInfo(res['state_key'], client, tokenResponse['access_token'], {response: response});
+            
+            assert.isNotNull(userInfoResp);
 
-        var server = http.createServer(function(req,res){
-            res.end({"sub":"EndUserSubject", "mail":"foo@example.com"});
+            done();
         });
-        
-        server.on('listening',function(){
-            console.log('ok, server is running');
-            this.url = 'http://localhost:3000/'
         });
-        
-        server.listen(3000);
-        
-        client.service['userinfo'].endpoint = 'http://localhost:3000/';
-        
-        resp = rph.getUserInfo(res['state_key'], client);
-        //assert.deepEqual(Object.keys(resp), ['sub', 'mail']);
-        //assert.deepEqual(resp['mail'], 'foo@example.com');
+    }).catch(function(err) {
+        assert.isNull(err);
+        done();
     });
+    done();
+  });
+  
+  it('Test user info in id token', function() {
+    let res = rph.begin('github');
+    let session = rph.getSessionInformation(res['state_key']);
+    client = rph.issuer2rp[session['iss']];
+    
+    let nonce = session['auth_request']['nonce'];
+    let iss = session['iss'];
+    let aud = client.serviceContext.client_id;
+    let payload = {'nonce': nonce, 'sub': 'EndUserSubject', 'iss': iss,
+    'aud': aud, 'given_name': 'Diana', 'family_name': 'Krall',
+    'occupation': 'Jazz pianist'}
+    
+    let token = new Message(payload);
+    token.addOptionalClaims({'occupation': 'Jazz pianist'});
+    
+    let userInfo = rph.userInfoInIdToken(token);
+    assert.deepEqual(Object.keys(userInfo), ['sub', 'occupation', 'given_name', 'family_name']);
+   });
 });

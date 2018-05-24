@@ -3,6 +3,7 @@ const fs = require('fs');
 const shell = require('shelljs');
 const URL = require('url-parse');
 const RSAKey = require('../jose/jwk/keys/RSAKey.js');
+const jwksClient = require('../../../node_modules/jwks-rsa');
 
 /**
  * @fileoverview handle several sets of keys from several different origins. To
@@ -27,7 +28,6 @@ class KeyJar {
     this.verifySSL = verifySSL || true;
     this.keyBundleCls = keyBundleCls || KeyBundle;
     this.removeAfter = removeAfter || 3600;
-    return this;
   }
 
   /**
@@ -36,21 +36,21 @@ class KeyJar {
    * url as source specification.
    * @param {*} issuer Who issued the keys
    * @param {*} url Where can the key/s be found
-   * @param {*} params extra parameters for instantiating keyBundle
+   * @param {*} kwargs extra parameters for instantiating keyBundle
    * @returns: A :py:class:`oicmsg.oauth2.keyBundle.keyBundle` instance
    *
    * @memberof KeyJar
    */
-  addUrl(issuer, url, params) {
+  addUrl(issuer, url, kwargs) {
     if (!url) {
       console.log('No jwks_uri');
     }
     let kc = null;
     if (url.includes('/localhost:') || url.includes('/localhost/')) {
-      kc = new this.keyBundleCls(source = url, verifySSL = False, params);
+      kc = new this.keyBundleCls(source = url, verifySSL = False, kwargs);
     } else {
       kc = new this.keyBundleCls(
-          source = url, verifySSL = this.verifySSL, params);
+          source = url, verifySSL = this.verifySSL, kwargs);
     }
     if (this.issuerKeys[owner]) {
       this.issuerKeys[owner] += [kc];
@@ -78,7 +78,7 @@ class KeyJar {
 
     //_key = b64e(as_bytes(key));
     if (usage == null) {
-      this.issuerKeys[owner] +=
+      this.issuerKeys[owner] =
           new this.keyBundleCls([{'kty': 'oct', 'k': key}]);
     } else {
       for (const use of usage) {
@@ -141,7 +141,7 @@ class KeyJar {
    * @param kid A Key Identifier
    * @return: A possibly empty list of keys
    * */
-  get(keyUse, keyType = keyType, owner = '', kid = null, params) {
+  get(keyUse, keyType = keyType, owner = '', kid = null, kwargs) {
     let use = '';
     if (['dec', 'enc'].includes(keyUse)) {
       use = 'enc';
@@ -194,8 +194,8 @@ class KeyJar {
     }
 
     // if elliptic curve have to check I have a key of the right curve
-    if (keyType == 'EC' && params.indexOf('alg')) {
-      name = 'P-{}'.format(params['alg'].slice(0, -1));  // the type
+    if (keyType == 'EC' && kwargs.indexOf('alg')) {
+      name = 'P-{}'.format(kwargs['alg'].slice(0, -1));  // the type
       _lst = [];
       for (const i = 0; i < lst.length; i++) {
         const key = lst[i];
@@ -467,7 +467,8 @@ class KeyJar {
     }
   }
 
-  addKey(issuer, key, keyType, kid, noKidIssuer) {
+  addKey(owner, key, keyType, kid, noKidIssuer) {
+    let keys = []
     if (!this.owners.includes(owner)) {
       console.log('Issuer not in keyjar');
       return keys;
@@ -485,20 +486,21 @@ class KeyJar {
     } else {
       const kl = this.get(use, owner, keyType);
 
-      if (kl.length == 0) {
+      if (kl.length === 0) {
         return this.keys;
-      } else if (kl.length == 1) {
+      } else if (kl.length === 1) {
         if (!this.keys.includes(kl[0])) {
           this.keys.push(kl[0]);
         }
       } else if (no_kid_issuer) {
+        let allowedKids;
         try {
-          const allowedKids = no_kid_issuer[owner];
+          allowedKids = no_kid_issuer[owner];
         } catch (err) {
           return keys;
         }
         if (allowedKids) {
-          for (const i = 0; i < kl.length; i++) {
+          for (var i = 0; i < kl.length; i++) {
             const k = kl[i];
             if (allowedKids.indexOf(k.kid)) {
               keys.push(k);
@@ -542,35 +544,35 @@ class KeyJar {
    * @returns {*} 2-tuple result of urlsplit and a dictionary with parameter name as
    * key and url and value
    */
-  keySetUp(vault, params) {
-    const vault_path = proper_path(vault);
-    if (!fs.lstatSync(vault_path).isFile()) {
+  keySetUp(vault, kwargs) {
+    /*const vaultPath = proper_path(vault);
+    if (!fs.lstatSync(vaultPath).isFile()) {
       shell.mkdir('-p', localPath);
-    }
+    }*/
     const kb = new KeyBundle();
     const usageArr = ['sig', 'enc'];
 
     for (const usage of usageArr) {
-      if (params.includes(usage)) {
-        if (params[usage] === null) {
+      if (kwargs.includes(usage)) {
+        if (kwargs[usage] === null) {
           continue;
         }
       }
-      _args = params[usage];
+      let _args = kwargs[usage];
+      let _key;
       if (_args['alg'].toUpperCase() === 'RSA') {
         try {
           //_key = rsa_load()
         } catch (err) {
           const fileName = new fileName();
           fileName.write();
-          _key = createAndStoreRsaKeyPair(vaultPath);
+          //_key = createAndStoreRsaKeyPair(vaultPath);
         }
-        k = RSAKey(key = _key, use = usage);
+        let k = RSAKey({key: _key, use: usage});
         k.add_kid();
         kb.append(k);
       }
     }
-
     return kb;
   }
 
@@ -582,17 +584,14 @@ class KeyJar {
    * @returns {*} 2-tuple Result of urlsplit and a dictionary with parameter name
    * as key and url and value
    */
-  keyExport(baseurl, localPath, vault, keyjar, params) {
+  keyExport(baseurl, localPath, vault, keyjar) {
     let url = new URL(baseurl);
     let path = url.pathname;
     if (path.endsWith('/')) {
       path = path.substring(0, path.length - 1);
-    } else {
-      path = path;
     }
-    localPath =
-        this.properPath(`${path}/${localPath}`);
-        if (!fs.existsSync(localPath)) {
+    localPath = this.properPath(`${path}/${localPath}`);
+    if (!fs.existsSync(localPath)) {
       shell.mkdir('-p', localPath);
     }
     const kb = new KeyBundle();
@@ -604,9 +603,8 @@ class KeyJar {
     const exportFileName = `${localPath}jwks`;
     fs.writeFile(exportFileName, kb, err => {
       if (err) {
-        return console.log(err);
+        throw new Error(err);
       }
-      console.log('The file was saved!');
     });
     url = `http://${
                     url.hostname
@@ -618,26 +616,23 @@ class KeyJar {
    * Get decryption keys from a keyjar.
    * These keys should be usable to decrypt an encrypted JWT.
    * @param jwt A jwkest.jwt.JWT instance
-   * @param params Other key word arguments
    * @return List of usable keys
    */
-  getJwtDecryptKeys(jwt, params) {
-    keys = [];
-    const _keyType = '';
-
+  getJwtDecryptKeys(jwt) {
+    let keys = [];
+    let _keyType = '';
     try {
-      const _keyType = jwe.alg2keytype(jwt.headers['alg']);
+      _keyType = jwe.alg2keytype(jwt.headers['alg']);
     } catch (err) {
-      console.log('Key Error');
+      throw new Error(err);
     }
 
     let _kid = '';
     try {
       _kid = jwt.header['kid'];
     } catch (err) {
-      console.log('Key Error');
+      throw new Error(err);
     }
-
     keys = this.addKey(keys, '', 'enc', _keyType, _kid, {'': null});
     return keys;
   }
@@ -648,11 +643,11 @@ class KeyJar {
    * with :param jso: The payload of the JWT, expected to be a dictionary.
    * @param {*} header The header of the JWT
    * @param {*} jwt A jwkest.jwt.JWT instance
-   * @param {*} params Other key word arguments
+   * @param {*} kwargs Other key word arguments
    * @returns: list of usable keys
    */
-  getJwtVerifyKeys(key, jso, header, jwt, params) {
-    keys = [];
+  getJwtVerifyKeys(key, jso, header, jwt, kwargs) {
+    let keys = [];
     let _keyType = '';
     try {
       _keyType = jws.alg2keytype(jwt.headers['alg']);
@@ -664,50 +659,47 @@ class KeyJar {
     try {
       _kid = jwt.headers['kid'];
     } catch (err) {
-      console.log('KeyError');
+      throw new Error('KeyError');
     }
 
     let nki = {};
     try {
-      nki = params['no_kid_issuer'];
+      nki = kwargs['no_kid_issuer'];
     } catch (err) {
-      console.log('KeyError');
+      throw new Error(err);
     }
 
-    _payload = jwt.payload();
+    let _payload = jwt.payload();
 
     let _iss = '';
     try {
       _iss = _payload['iss'];
     } catch (err) {
-      console.log('KeyError');
+      throw new Error(err);
     }
 
     if (jwt.headers.includes('jku') && _iss.includes('jku')) {
       if (!jwt.headers['jku'].includes(_iss)) {
         try {
-          if (params['trusting']) {
+          if (kwargs['trusting']) {
             this.addUrl(_iss, jwt.headers['jku']);
           }
         } catch (err) {
-          console.log('KeyError');
+          throw new Error(err);
         }
       }
     }
 
-    try {
-      keys =
-          this.addKey(keys, params['opponent_id'], 'sig', _keyType, _kid, nki);
-    } catch (err) {
-      pass;
-    }
+    keys =
+          this.addKey(keys, kwargs['opponent_id'], 'sig', _keyType, _kid, nki);
 
     for (const ent of ['iss', 'aud', 'client_id']) {
-      if (payload.indexOf(ent) === 1) {
+      if (_payload.indexOf(ent) === 1) {
         continue;
       }
-      if (ent == 'aud') {
-        if (_payload['aud'] instanceof six.string_types) {
+      let _aud;
+      if (ent === 'aud') {
+        if (_payload['aud'] instanceof String) {
           _aud = [_payload['aud']];
         } else {
           _aud = _payload['aud'];
@@ -719,9 +711,39 @@ class KeyJar {
         keys = this.addKey(keys, _payload[ent], 'sig', _keyType, _kid, nki);
       }
     }
-
     return keys;
   }
 }
 
-module.exports = KeyJar;
+function getClient(jwksUriVal, strictSslBool) {
+  return jwksClient({
+    strictSsl: strictSslBool,  // Default value
+    jwksUri: jwksUriVal
+  });
+}
+
+function getKey({header, payload} = {}, client) {
+  let kid = 'RkI5MjI5OUY5ODc1N0Q4QzM0OUYzNkVGMTJDOUEzQkFCOTU3NjE2Rg';
+  if (header[kid]) {
+    kid = header[kid];
+  }
+  let iss;
+  if (payload[iss]) {
+    iss = payload[iss];
+  }
+  return new Promise((resolve, reject) => {
+    client.getSigningKey(kid, (err, key) => {
+      if (key) {
+        const signingKey = key.publicKey || key.rsaPublicKey;
+        // Now I can use this to configure my Express or Hapi middleware
+        resolve(signingKey);
+      } else if (err) {
+        reject(err);
+      }
+    });
+  });
+}
+
+module.exports.KeyJar = KeyJar;
+module.exports.getKey = getKey;
+module.exports.getClient = getClient;

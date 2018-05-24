@@ -11,9 +11,9 @@ const Key = require('./Key');
 class RSAKey extends Key {
   constructor(
       use, key, kty, alg, kid, x5c, x5t, x5u, n, e, d, p, q, dp, dq, di, qi,
-      params) {
+      kwargs) {
     super();
-    key = super(kty, alg, use, kid, key, x5c, x5t, x5u, params);
+    key = super(kty, alg, use, kid, key, x5c, x5t, x5u, kwargs);
     this.members.push(['n', 'e', 'd', 'p', 'q']);
     this.longs = ['n', 'e', 'd', 'p', 'q', 'dp', 'dq', 'di', 'qi'];
     this.publicMembers.push(['n', 'e']);
@@ -184,7 +184,7 @@ class RSAKey extends Key {
    * Make sure there is a key instance present that can be used for
    * encrypting/signing.
    */
-  encryptionKey(params) {
+  encryptionKey(kwargs) {
     if (!this.key) {
       this.deserialize();
     }

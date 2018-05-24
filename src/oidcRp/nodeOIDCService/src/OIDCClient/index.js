@@ -121,11 +121,611 @@ function getServiceContext(){
 
 function getServices(){
     let db = new DB();
-    let authRequest = new AuthorizationRequest().toJSON({redirect_uri: 'http://example.com', state: 'ABCDE'});
-    let authResponse = new AuthorizationResponse().toJSON({access_token: 'token', state: 'ABCDE'});
-    db.set('ABCDE', new State().toJSON({iss:'Issuer', auth_request:authRequest, auth_response:authResponse}));
+    let authRequest = AuthorizationRequest.toJSON({redirect_uri: 'http://example.com', state: 'ABCDE'});
+    let authResponse = AuthorizationResponse.toJSON({access_token: 'token', state: 'ABCDE'});
+    db.set('ABCDE', State.toJSON({iss:'Issuer', auth_request:authRequest, auth_response:authResponse}));
     return buildServices(DEFAULT_SERVICES, OicFactory, getServiceContext(), db, CLIENT_AUTHN_METHOD);
 }
+
+
+let services = getServices();
+
+
+let clientConfig = {
+    "client_preferences":
+        {
+            "application_type": "web",
+            "application_name": "rphandler",
+            "contacts": ["ops@example.org"],
+            "response_types": ["code"],
+            "scope": ["openid", "profile", "email", "address", "phone"],
+            "token_endpoint_auth_method": ["client_secret_basic",
+                                           'client_secret_post'],
+        },
+    "redirect_uris": [RP_BASEURL + "/authz_cb"],
+    "jwks_uri": RP_BASEURL + "/static/jwks.json"
+}
+serviceContext = new ServiceContext(null, clientConfig);
+let serviceSpec = DEFAULT_SERVICES;
+serviceSpec['WebFinger'] = {};
+let service = buildServices(serviceSpec, factory, serviceContext, new DB());
+serviceContext.service = service
+
+//TEST BUILD SERVICES
+assert.deepEqual(Object.keys(service).length, 7);
+
+// TEST WEBFINGER 
+let info = service['webfinger'].getRequestParameters({requestArgs:{'resource': 'foobar@example.org'}});
+assert.deepEqual(info['url'], 'https://example.org/.well-known/webfinger?resource=acct%3Afoobar%40example.org&rel=http%3A%2F%2Fopenid.net%2Fspecs%2Fconnect%2F1.0%2Fissuer');
+let webfingerResponse = JSON.stringify({
+    "subject": "acct:foobar@example.org",
+    "links": [{"rel": "http://openid.net/specs/connect/1.0/issuer",
+                "href": "https://example.org/op"}],
+    "expires": "2018-02-04T11:08:41Z"});
+let response = service['webfinger'].parseResponse(webfingerResponse);
+assert.deepEqual(Object.keys(response), ['subject', 'links', 'expires']);
+assert.deepEqual(response['links'], [
+    {'rel': 'http://openid.net/specs/connect/1.0/issuer',
+        'href': 'https://example.org/op'}]);
+service['webfinger'].updateServiceContext(response);
+assert.deepEqual(serviceContext.issuer, OP_BASEURL);
+
+info = service['provider_info'].getRequestParameters();
+assert.deepEqual(info['url'], 'https://example.org/op/.well-known/openid-configuration');
+let providerInfoResponse = JSON.stringify({
+    "version": "3.0",
+    "token_endpoint_auth_methods_supported": [
+        "client_secret_post", "client_secret_basic",
+        "client_secret_jwt", "private_key_jwt"],
+    "claims_parameter_supported": true,
+    "request_parameter_supported": true,
+    "request_uri_parameter_supported": true,
+    "require_request_uri_registration": true,
+    "grant_types_supported": ["authorization_code",
+                            "implicit",
+                            "urn:ietf:params:oauth:grant-type:jwt-bearer",
+                            "refresh_token"],
+    "response_types_supported": ["code", "id_token",
+                                "id_token token",
+                                "code id_token",
+                                "code token",
+                                "code id_token token"],
+    "response_modes_supported": ["query", "fragment",
+                                "form_post"],
+    "subject_types_supported": ["public", "pairwise"],
+    "claim_types_supported": ["normal", "aggregated",
+                            "distributed"],
+    "claims_supported": ["birthdate", "address",
+                        "nickname", "picture", "website",
+                        "email", "gender", "sub",
+                        "phone_number_verified",
+                        "given_name", "profile",
+                        "phone_number", "updated_at",
+                        "middle_name", "name", "locale",
+                        "email_verified",
+                        "preferred_username", "zoneinfo",
+                        "family_name"],
+    "scopes_supported": ["openid", "profile", "email",
+                        "address", "phone",
+                        "offline_access", "openid"],
+    "userinfo_signing_alg_values_supported": [
+        "RS256", "RS384", "RS512",
+        "ES256", "ES384", "ES512",
+        "HS256", "HS384", "HS512",
+        "PS256", "PS384", "PS512", "none"],
+    "id_token_signing_alg_values_supported": [
+        "RS256", "RS384", "RS512",
+        "ES256", "ES384", "ES512",
+        "HS256", "HS384", "HS512",
+        "PS256", "PS384", "PS512", "none"],
+    "request_object_signing_alg_values_supported": [
+        "RS256", "RS384", "RS512", "ES256", "ES384",
+        "ES512", "HS256", "HS384", "HS512", "PS256",
+        "PS384", "PS512", "none"],
+    "token_endpoint_auth_signing_alg_values_supported": [
+        "RS256", "RS384", "RS512", "ES256", "ES384",
+        "ES512", "HS256", "HS384", "HS512", "PS256",
+        "PS384", "PS512"],
+    "userinfo_encryption_alg_values_supported": [
+        "RSA1_5", "RSA-OAEP", "RSA-OAEP-256",
+        "A128KW", "A192KW", "A256KW",
+        "ECDH-ES", "ECDH-ES+A128KW", "ECDH-ES+A192KW", "ECDH-ES+A256KW"],
+    "id_token_encryption_alg_values_supported": [
+        "RSA1_5", "RSA-OAEP", "RSA-OAEP-256",
+        "A128KW", "A192KW", "A256KW",
+        "ECDH-ES", "ECDH-ES+A128KW", "ECDH-ES+A192KW", "ECDH-ES+A256KW"],
+    "request_object_encryption_alg_values_supported": [
+        "RSA1_5", "RSA-OAEP", "RSA-OAEP-256", "A128KW",
+        "A192KW", "A256KW", "ECDH-ES", "ECDH-ES+A128KW",
+        "ECDH-ES+A192KW", "ECDH-ES+A256KW"],
+    "userinfo_encryption_enc_values_supported": [
+        "A128CBC-HS256", "A192CBC-HS384", "A256CBC-HS512",
+        "A128GCM", "A192GCM", "A256GCM"],
+    "id_token_encryption_enc_values_supported": [
+        "A128CBC-HS256", "A192CBC-HS384", "A256CBC-HS512",
+        "A128GCM", "A192GCM", "A256GCM"],
+    "request_object_encryption_enc_values_supported": [
+        "A128CBC-HS256", "A192CBC-HS384", "A256CBC-HS512",
+        "A128GCM", "A192GCM", "A256GCM"],
+    "acr_values_supported": ["PASSWORD"],
+    "issuer": OP_BASEURL,
+    "jwks_uri": OP_BASEURL + "/static/jwks_tE2iLbOAqXhe8bqh.json",
+    "authorization_endpoint": OP_BASEURL + "/authorization",
+    "token_endpoint": OP_BASEURL + "/token",
+    "userinfo_endpoint": OP_BASEURL + "/userinfo",
+    "registration_endpoint": OP_BASEURL + "/registration",
+    "end_session_endpoint": OP_BASEURL + "/end_session"});
+
+response = service['provider_info'].parseResponse(providerInfoResponse);
+service['provider_info'].updateServiceContextProviderInfo(response);
+
+assert.deepEqual(serviceContext.providerInfo['issuer'], OP_BASEURL);
+assert.deepEqual(serviceContext.providerInfo['authorization_endpoint'], 'https://example.org/op/authorization');
+assert.deepEqual(serviceContext.providerInfo['registration_endpoint'], 'https://example.org/op/registration');
+
+info = service['registration'].getRequestParameters();
+assert.deepEqual(info['url'], 'https://example.org/op/registration');
+let body = info['body'];
+
+assert.equal(Object.keys(body).length, 7);
+
+assert.deepEqual(info['headers'], {'Content-Type': 'application/json'});
+
+let now = Date.now();
+
+let opClientRegistrationResponse = JSON.stringify({
+    "client_id": "zls2qhN1jO6A",
+    "client_secret": "c8434f28cf9375d9a7",
+    "registration_access_token": "NdGrGR7LCuzNtixvBFnDphGXv7wRcONn",
+    "registration_client_uri": RP_BASEURL + "/registration?client_id=zls2qhN1jO6A",
+    "client_secret_expires_at": now + 3600,
+    "application_type": "web",
+    "client_id_issued_at": now + 1,    
+    "response_types": ["code"],
+    "contacts": ["ops@example.com"],
+    "token_endpoint_auth_method": "client_secret_basic",
+    "redirect_uris": [RP_BASEURL + "/authz_cb"]});
+
+response = service['registration'].parseResponse(opClientRegistrationResponse);
+service['registration'].updateServiceContext(response);
+
+assert.deepEqual(serviceContext.client_id, 'zls2qhN1jO6A');
+assert.deepEqual(serviceContext.client_secret, 'c8434f28cf9375d9a7');
+assert.deepEqual(Object.keys(serviceContext.registrationResponse).length, 11);
+  
+   // AUTHORIZATION
+   const STATE = 'Oh3w3gKlvoM2ehFqlxI3HIK5'
+   const NONCE = 'UvudLKz287YByZdsY3AJoPAlEXQkJ0dK'
+
+   info = service['authorization'].getRequestParameters({requestArgs:{'state': STATE, 'nonce': NONCE}});
+
+   let p = urlParse(info['url']);
+   let parsedResp = Message.fromUrlEncoded(p.query.substring(1, p.query.length));
+   let query = parseQs(parsedResp);
+   assert.deepEqual(Object.keys(query).length, 6);
+   assert.deepEqual(query['scope'], ['openid']);
+   assert.deepEqual(query['nonce'], [NONCE]);
+   assert.deepEqual(query['state'], [STATE]);
+
+   let opAuthzResp = {
+       'state': STATE,
+       'scope': 'openid',
+       'code': 'Z0FBQUFBQmFkdFFjUVpFWE81SHU5N1N4N01',
+       'iss': OP_BASEURL,
+       'client_id': 'zls2qhN1jO6A'};
+
+   //let authzRep = new AuthorizationResponse(opAuthzResp);
+   let resp = service['authorization'].parseResponse(AuthorizationResponse.toUrlEncoded(opAuthzResp));
+
+   service['authorization'].updateServiceContext(resp, STATE);
+   let item2 = service['authorization'].getItem(AuthorizationResponse, 'auth_response', STATE);
+   assert.deepEqual(item2.claims['code'], 'Z0FBQUFBQmFkdFFjUVpFWE81SHU5N1N4N01');
+
+   // Access Token
+   let requestArgs = {'state': STATE,
+   'redirect_uri': serviceContext.redirectUris[0]};
+
+   info = service['accessToken'].getRequestParameters({requestArgs: requestArgs});
+   assert.deepEqual(info['url'], 'https://example.org/op/token');
+   body = info['body'];
+   query = Message.fromUrlEncoded(body);
+   let qp = parseQs(query);
+   assert.deepEqual(Object.keys(qp).length, 5);
+   /*assert.deepEqual(qp, {'grant_type': ['authorization_code'],
+   'redirect_uri': ['https://example.com/rp/authz_cb'],
+   'client_id': ['zls2qhN1jO6A'],
+   'state': ['Oh3w3gKlvoM2ehFqlxI3HIK5'],
+   'code': ['Z0FBQUFBQmFkdFFjUVpFWE81SHU5N1N4N01']});*/
+   assert.deepEqual(info['headers'], {
+       'Authorization': {"zls2qhN1jO6A": "c8434f28cf9375d9a7"},
+       'Content-Type': 'application/x-www-form-urlencoded'});
+
+   let payload = {'sub': '1b2fc9341a16ae4e30082965d537', 'acr': 'PASSWORD',
+   'auth_time': 1517736988, 'nonce': NONCE};
+
+   let token = new Message();
+   token.addOptionalClaims(payload);
+   token.toJWT('shhh', {algorithm: 'HS256'}).then(function(jws){
+       resp = {
+           "state": "Oh3w3gKlvoM2ehFqlxI3HIK5",
+           "scope": "openid",
+           "access_token": "Z0FBQUFBQmFkdFF",
+           "token_type": "Bearer",
+           "id_token": jws}
+
+    serviceContext.issuer = OP_BASEURL;
+
+    let resp2 = service['accessToken'].parseResponse(JSON.stringify(resp), null, STATE);
+    resp2.verify();
+    assert.deepEqual(Object.keys(resp2.claims['verified_id_token']).length, 5);
+    service['accessToken'].updateServiceContext(resp2, STATE);
+    let item3 = service['authorization'].getItem(AccessTokenResponse, 'token_response', STATE);
+    console.log(item3);
+    assert.deepEqual(Object.keys(item3.claims).length, 6);
+    assert.deepEqual(item3.claims['token_type'], 'Bearer');
+    assert.deepEqual(item3.claims['access_token'], 'Z0FBQUFBQmFkdFF');
+
+    // User Info
+
+    info = service['userinfo'].getRequestParameters({params: {state:STATE}});
+    assert.deepEqual(info['url'], 'https://example.org/op/userInfo');
+    let header = {'Authorization': 'Bearer Z0FBQUFBQmFkdFF'};
+    assert.deepEqual(info['headers'], header);
+
+    let opResp = {"sub": "1b2fc9341a16ae4e30082965d537"}
+    resp = service['userinfo'].parseResponse(JSON.stringify(opResp), null, STATE);
+    service['userinfo'].updateServiceContext(resp, STATE);
+    assert.deepEqual(resp.claims, {'sub': '1b2fc9341a16ae4e30082965d537'});
+
+    let item4 = service['authorization'].getItem(OpenIDSchema, 'userinfo', STATE);
+    assert.deepEqual(item4.claims, {'sub': '1b2fc9341a16ae4e30082965d537'});
+});
+
+  /*
+  let config = {
+    'client_id': 'client_id',
+    'client_secret': 'password',
+    'redirect_uris': ['https://example.com/cli/authz_cb']
+  };
+  serviceContext = new ServiceContext(null, config);
+  let db = new DB();
+  //let authRequest = new AuthorizationRequest({redirect_uri:'https://example.com/cli/authz_cb', state: 'state'});
+  //let authResponse = new AuthorizationResponse({code:'access_code'});
+  //let _state = new State({auth_request: authRequest.toJSON(), auth_response: authResponse.toJSON()});
+  //db.set('state', _state.toJSON());
+  db.set('state', State.toJSON({auth_request: AuthorizationRequest.toJSON({redirect_uri:'https://example.com/cli/authz_cb', state: 'state'}), auth_response: AuthorizationResponse.toJSON({code:'access_code'})}));
+  service = new factory('AccessToken', serviceContext, db);
+
+var reqArgs = {
+    'redirect_uri': 'https://example.com/cli/authz_cb',
+    'code': 'access_code'
+  };
+  service.endpoint = 'https://example.com/authorize';
+  var info = service.getRequestParameters({requestArgs: reqArgs, authnMethod:'client_secret_basic', params: {state: 'state'}});
+  assert.deepEqual(Object.keys(info).length, 4);
+  assert.deepEqual(info.url, 'https://example.com/authorize');
+  /*var msg = new AccessTokenRequest().fromUrlEncoded(
+  service.getUrlInfo(info['body']));*/
+
+  /*
+  var msg = AccessTokenRequest.fromUrlEncoded(
+    service.getUrlInfo(info['body']));
+  assert.deepEqual(msg['claims'], {
+    'client_id': 'client_id',
+    'code': 'access_code',
+    'grant_type': 'authorization_code',
+    'redirect_uri': 'https://example.com/cli/authz_cb',
+    'state': 'state'
+  });
+  assert.deepEqual(Object.keys(msg).indexOf('client_secret'), -1);
+
+  /*
+
+let service;
+let config = {
+'client_id': 'client_id',
+'client_secret': 'password',
+'redirect_uris': ['https://example.com/cli/authz_cb']
+};
+serviceContext = new ServiceContext(null, config);
+service = new factory('Authorization', serviceContext, new DB());
+
+/*
+var reqArgs = {'response_type': 'code'};
+service.endpoint = 'https://example.com/authorize';
+var info = service.getRequestParameters({requestArgs: reqArgs, params: {state: 'state'}});
+assert.deepEqual(Object.keys(info), ['method', 'url']);
+var msg = AuthorizationRequest.fromUrlEncoded(
+service.getUrlInfo(info['url']));
+assert.deepEqual(Object.keys(msg).length, 6);
+
+/*
+let services = getServices();
+
+
+let clientConfig = {
+    "client_preferences":
+        {
+            "application_type": "web",
+            "application_name": "rphandler",
+            "contacts": ["ops@example.org"],
+            "response_types": ["code"],
+            "scope": ["openid", "profile", "email", "address", "phone"],
+            "token_endpoint_auth_method": ["client_secret_basic",
+                                           'client_secret_post'],
+        },
+    "redirect_uris": [RP_BASEURL + "/authz_cb"],
+    "jwks_uri": RP_BASEURL + "/static/jwks.json"
+}
+serviceContext = new ServiceContext(null, clientConfig);
+let serviceSpec = DEFAULT_SERVICES;
+serviceSpec['WebFinger'] = {};
+let service = buildServices(serviceSpec, factory, serviceContext, new DB());
+serviceContext.service = service
+
+//TEST BUILD SERVICES
+assert.deepEqual(Object.keys(service).length, 7);
+
+// TEST WEBFINGER 
+let info = service['webfinger'].getRequestParameters({requestArgs:{'resource': 'foobar@example.org'}});
+assert.deepEqual(info['url'], 'https://example.org/.well-known/webfinger?resource=acct%3Afoobar%40example.org&rel=http%3A%2F%2Fopenid.net%2Fspecs%2Fconnect%2F1.0%2Fissuer');
+let webfingerResponse = JSON.stringify({
+    "subject": "acct:foobar@example.org",
+    "links": [{"rel": "http://openid.net/specs/connect/1.0/issuer",
+                "href": "https://example.org/op"}],
+    "expires": "2018-02-04T11:08:41Z"});
+let response = service['webfinger'].parseResponse(webfingerResponse);
+assert.deepEqual(Object.keys(response), ['subject', 'links', 'expires']);
+assert.deepEqual(response['links'], [
+    {'rel': 'http://openid.net/specs/connect/1.0/issuer',
+        'href': 'https://example.org/op'}]);
+service['webfinger'].updateServiceContext(response);
+assert.deepEqual(serviceContext.issuer, OP_BASEURL);
+
+info = service['provider_info'].getRequestParameters();
+assert.deepEqual(info['url'], 'https://example.org/op/.well-known/openid-configuration');
+let providerInfoResponse = JSON.stringify({
+    "version": "3.0",
+    "token_endpoint_auth_methods_supported": [
+        "client_secret_post", "client_secret_basic",
+        "client_secret_jwt", "private_key_jwt"],
+    "claims_parameter_supported": true,
+    "request_parameter_supported": true,
+    "request_uri_parameter_supported": true,
+    "require_request_uri_registration": true,
+    "grant_types_supported": ["authorization_code",
+                            "implicit",
+                            "urn:ietf:params:oauth:grant-type:jwt-bearer",
+                            "refresh_token"],
+    "response_types_supported": ["code", "id_token",
+                                "id_token token",
+                                "code id_token",
+                                "code token",
+                                "code id_token token"],
+    "response_modes_supported": ["query", "fragment",
+                                "form_post"],
+    "subject_types_supported": ["public", "pairwise"],
+    "claim_types_supported": ["normal", "aggregated",
+                            "distributed"],
+    "claims_supported": ["birthdate", "address",
+                        "nickname", "picture", "website",
+                        "email", "gender", "sub",
+                        "phone_number_verified",
+                        "given_name", "profile",
+                        "phone_number", "updated_at",
+                        "middle_name", "name", "locale",
+                        "email_verified",
+                        "preferred_username", "zoneinfo",
+                        "family_name"],
+    "scopes_supported": ["openid", "profile", "email",
+                        "address", "phone",
+                        "offline_access", "openid"],
+    "userinfo_signing_alg_values_supported": [
+        "RS256", "RS384", "RS512",
+        "ES256", "ES384", "ES512",
+        "HS256", "HS384", "HS512",
+        "PS256", "PS384", "PS512", "none"],
+    "id_token_signing_alg_values_supported": [
+        "RS256", "RS384", "RS512",
+        "ES256", "ES384", "ES512",
+        "HS256", "HS384", "HS512",
+        "PS256", "PS384", "PS512", "none"],
+    "request_object_signing_alg_values_supported": [
+        "RS256", "RS384", "RS512", "ES256", "ES384",
+        "ES512", "HS256", "HS384", "HS512", "PS256",
+        "PS384", "PS512", "none"],
+    "token_endpoint_auth_signing_alg_values_supported": [
+        "RS256", "RS384", "RS512", "ES256", "ES384",
+        "ES512", "HS256", "HS384", "HS512", "PS256",
+        "PS384", "PS512"],
+    "userinfo_encryption_alg_values_supported": [
+        "RSA1_5", "RSA-OAEP", "RSA-OAEP-256",
+        "A128KW", "A192KW", "A256KW",
+        "ECDH-ES", "ECDH-ES+A128KW", "ECDH-ES+A192KW", "ECDH-ES+A256KW"],
+    "id_token_encryption_alg_values_supported": [
+        "RSA1_5", "RSA-OAEP", "RSA-OAEP-256",
+        "A128KW", "A192KW", "A256KW",
+        "ECDH-ES", "ECDH-ES+A128KW", "ECDH-ES+A192KW", "ECDH-ES+A256KW"],
+    "request_object_encryption_alg_values_supported": [
+        "RSA1_5", "RSA-OAEP", "RSA-OAEP-256", "A128KW",
+        "A192KW", "A256KW", "ECDH-ES", "ECDH-ES+A128KW",
+        "ECDH-ES+A192KW", "ECDH-ES+A256KW"],
+    "userinfo_encryption_enc_values_supported": [
+        "A128CBC-HS256", "A192CBC-HS384", "A256CBC-HS512",
+        "A128GCM", "A192GCM", "A256GCM"],
+    "id_token_encryption_enc_values_supported": [
+        "A128CBC-HS256", "A192CBC-HS384", "A256CBC-HS512",
+        "A128GCM", "A192GCM", "A256GCM"],
+    "request_object_encryption_enc_values_supported": [
+        "A128CBC-HS256", "A192CBC-HS384", "A256CBC-HS512",
+        "A128GCM", "A192GCM", "A256GCM"],
+    "acr_values_supported": ["PASSWORD"],
+    "issuer": OP_BASEURL,
+    "jwks_uri": OP_BASEURL + "/static/jwks_tE2iLbOAqXhe8bqh.json",
+    "authorization_endpoint": OP_BASEURL + "/authorization",
+    "token_endpoint": OP_BASEURL + "/token",
+    "userinfo_endpoint": OP_BASEURL + "/userinfo",
+    "registration_endpoint": OP_BASEURL + "/registration",
+    "end_session_endpoint": OP_BASEURL + "/end_session"});
+response = service['provider_info'].parseResponse(providerInfoResponse);
+service['provider_info'].updateServiceContextProviderInfo(response);
+
+assert.deepEqual(serviceContext.providerInfo['issuer'], OP_BASEURL);
+assert.deepEqual(serviceContext.providerInfo['authorization_endpoint'], 'https://example.org/op/authorization');
+assert.deepEqual(serviceContext.providerInfo['registration_endpoint'], 'https://example.org/op/registration');
+
+info = service['registration'].getRequestParameters();
+assert.deepEqual(info['url'], 'https://example.org/op/registration');
+let body = JSON.parse(info['body']);
+
+assert.equal(Object.keys(body).length, 7);
+
+assert.deepEqual(info['headers'], {'Content-Type': 'application/json'});
+
+let now = Date.now();
+
+let opClientRegistrationResponse = JSON.stringify({
+    "client_id": "zls2qhN1jO6A",
+    "client_secret": "c8434f28cf9375d9a7",
+    "registration_access_token": "NdGrGR7LCuzNtixvBFnDphGXv7wRcONn",
+    "registration_client_uri": RP_BASEURL + "/registration?client_id=zls2qhN1jO6A",
+    "client_secret_expires_at": now + 3600,
+    "application_type": "web",
+    "client_id_issued_at": now + 1,    
+    "response_types": ["code"],
+    "contacts": ["ops@example.com"],
+    "token_endpoint_auth_method": "client_secret_basic",
+    "redirect_uris": [RP_BASEURL + "/authz_cb"]});
+
+response = service['registration'].parseResponse(opClientRegistrationResponse);
+service['registration'].updateServiceContext(response);
+
+assert.deepEqual(serviceContext.client_id, 'zls2qhN1jO6A');
+assert.deepEqual(serviceContext.client_secret, 'c8434f28cf9375d9a7');
+assert.deepEqual(Object.keys(serviceContext.registrationResponse).length, 11);
+/*
+
+
+
+let request = services['accessToken'].construct(null,
+    {'redirect_uri': 'http://example.com', 'state': 'ABCDE'});
+  let csp = new ClientSecretPost();
+  let list = csp.construct(request, services['accessToken']);
+  let httpArgs = list[0];
+  request = list[1];
+
+  assert.deepEqual(request['client_id'], 'A');
+  assert.deepEqual(request['client_secret'], 'boarding pass');
+  assert.deepEqual(httpArgs, undefined);
+
+  let request2 = new AccessTokenRequest(
+    {'code': 'foo', 'redirect_uri': 'http://example.com'});
+  let list2 = csp.construct(
+    request2, services['accessToken'], null, {'client_secret': 'another'});
+  let httpArgs2 = list2[0];
+  request2 = list2[1];
+  assert.deepEqual(request2['client_id'], 'A');
+  assert.deepEqual(request2['client_secret'], 'another');
+  assert.deepEqual(httpArgs2, null);
+/*
+services['authorization'].stateDb.set('AAAA', State.toJSON({iss:'Issuer'}));
+services['authorization'].parseResponse(AuthorizationResponse.toUrlEncoded({code:'auth_grant', state: 'AAAA'}), 'urlencoded');
+// based on state find the code and then get an access token
+let response2 = services['accessToken'].parseResponse(
+  AccessTokenResponse.toUrlEncoded({
+    access_token: 'token1',
+    token_type: 'Bearer',
+    expires_in: 0,
+    state: 'AAAA',
+  }), 'urlencoded');
+services['accessToken'].updateServiceContext(response2, 'AAAA');
+const httpArgs = new BearerHeader().construct(
+  new ResourceRequest(), services['accessToken'], null,{state: 'AAAA'});
+assert.deepEqual(httpArgs, {headers: {Authorization: 'Bearer token1'}});
+
+/*
+let authSrv = services['authorization'];
+let accessTokenSrv = services['accessToken'];
+
+ authSrv.stateDb.set('EEEE', State.toJSON({iss:'Issuer'}));
+    let response = authSrv.parseResponse(AuthorizationResponse.toUrlEncoded({code:'auth_grant', state:'EEEE'}), 'urlencoded');
+    authSrv.updateServiceContext(response, 'EEEE');
+    let response2 = accessTokenSrv.parseResponse(
+        AccessTokenResponse.toUrlEncoded({
+        access_token: 'token1',
+        token_type: 'Bearer',
+        expires_in: 0,
+        state: 'EEEE',
+      }), 'urlencoded');
+    authSrv.updateServiceContext(response2, 'EEEE');
+    let request = new ResourceRequest();
+    const list = new BearerBody().construct(
+      request, authSrv, null, {state: 'EEEE'});
+    request = list[1];
+    assert.isTrue(Object.keys(request).indexOf('access_token') !== -1);
+    assert.deepEqual(request.access_token, 'token1');
+
+/*
+  const sdb = authSrv.stateDb;
+  authSrv.stateDb.set('FFFF', State.toJSON({iss:'Issuer'}));
+  
+  const resp = new AuthorizationResponse({code:'code', state:'FFFFF'});
+  authSrv.storeItem(resp, 'auth_response', 'FFFFF');
+  const atr = new AccessTokenResponse({
+    access_token: '2YotnFZFEjr1zCsicMWpAA',
+    token_type: 'example',
+    refresh_token: 'tGzv3JOkF0XG5Qx2TlKWIA',
+    example_parameter: 'example_value',
+    scope: ['inner', 'outer'],
+  });
+  authSrv.storeItem(atr, 'token_response', 'FFFFF');
+  let request = new ResourceRequest();
+  const list = new BearerBody().construct(
+    request, authSrv, null, {state: 'FFFFF'});
+  const httpArgs = list[0];
+  request = list[1];
+  assert.deepEqual(request.access_token, '2YotnFZFEjr1zCsicMWpAA');
+  assert.deepEqual(httpArgs, null);
+/*
+
+let service;
+let config = {
+    'client_id': 'client_id',
+    'client_secret': 'password',
+    'redirect_uris': ['https://example.com/cli/authz_cb']
+  };
+  serviceContext = new ServiceContext(null, config);
+  let db = new DB();
+  let authRequest = new AuthorizationRequest({redirect_uri:'https://example.com/cli/authz_cb', state: 'state'});
+  let authResponse = new AuthorizationResponse({code:'access_code'});
+  let _state = new State({auth_request: authRequest.toJSON(), auth_response: authResponse.toJSON()});
+  db.set('state', _state.toJSON());
+  service = new factory('AccessToken', serviceContext, db);
+
+  var reqArgs = {
+    'redirect_uri': 'https://example.com/cli/authz_cb',
+    'code': 'access_code'
+  };
+  service.endpoint = 'https://example.com/authorize';
+  var info = service.getRequestParameters({requestArgs: reqArgs, authnMethod:'client_secret_basic', params: {state: 'state'}});
+  assert.deepEqual(Object.keys(info).length, 4);
+  assert.deepEqual(info.url, 'https://example.com/authorize');
+
+  var msg = new AccessTokenRequest().fromUrlEncoded(
+  service.getUrlInfo(info['body']));
+  assert.deepEqual(msg['claims'], {
+    'client_id': 'client_id',
+    'code': 'access_code',
+    'grant_type': 'authorization_code',
+    'redirect_uri': 'https://example.com/cli/authz_cb',
+    'state': 'state'
+  });
+  assert.deepEqual(Object.keys(msg).indexOf('client_secret'), -1);
+  assert.isNotNull(Object.keys(info['headers'].Authorization)); 
+
+/*
+
+
 
 let clientConfig = {
     "client_preferences":

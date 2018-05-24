@@ -62,9 +62,9 @@ const ServiceContext = require('../src/serviceContext').ServiceContext;
   
   function getServices(){
     let db = new DB();
-    let authRequest = new AuthorizationRequest().toJSON({redirect_uri: 'http://example.com', state: 'ABCDE'});
-    let authResponse = new AuthorizationResponse().toJSON({access_token: 'token', state: 'ABCDE'});
-    db.set('ABCDE', new State().toJSON({iss:'Issuer', auth_request:authRequest, auth_response:authResponse}));
+    let authRequest = AuthorizationRequest.toJSON({redirect_uri: 'http://example.com', state: 'ABCDE'});
+    let authResponse = AuthorizationResponse.toJSON({access_token: 'token', state: 'ABCDE'});
+    db.set('ABCDE', State.toJSON({iss:'Issuer', auth_request:authRequest, auth_response:authResponse}));
     return buildServices(DEFAULT_SERVICES, OicFactory, getServiceContext(), db, CLIENT_AUTHN_METHOD);
   }
 

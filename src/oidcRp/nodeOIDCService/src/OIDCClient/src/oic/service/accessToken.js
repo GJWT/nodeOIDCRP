@@ -17,22 +17,22 @@ class AccessToken extends OAuth2AccessToken {
     this.errorMsg = OIDCResponses.ResponseMessage;
     this.endpoint = 'https://example.org/op/token';
   }
-
+  
   updateServiceContext(resp, state='', params){
-    let _idt = resp.claims['verified_id_token'];
+    if (resp['verified_id_token']){
+    let _idt = resp['verified_id_token'];
     let nonceState = null;
-    if (_idt){
-      try{
-        nonceState = this.getStateByNonce(_idt['nonce'])
-      }catch(err){
-        //throw new Error('Unknown nonce value');
-        //throw new JSError('Unknown nonce value', 'ValueError');      
-      }
-      if (nonceState != state){
-        //throw new Error('Someone has messed with nonce');
-        //throw new JSError('Someone has messed with nonce', 'ParameterError');
-      }
+    try{
+      nonceState = this.getStateByNonce(_idt['nonce'])
+    }catch(err){
+      //throw new Error('Unknown nonce value');
+      //throw new JSError('Unknown nonce value', 'ValueError');      
     }
+    if (nonceState != state){
+      //throw new Error('Someone has messed with nonce');
+      //throw new JSError('Someone has messed with nonce', 'ParameterError');
+    }
+  }
     this.storeItem(resp, 'token_response', state);    
   }
 }

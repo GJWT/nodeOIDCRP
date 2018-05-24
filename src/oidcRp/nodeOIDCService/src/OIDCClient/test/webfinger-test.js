@@ -163,15 +163,14 @@ describe('JRD tests', function() {
     };
 
     let jrd = new JRD();
-    let jrd0 = jrd.fromJSON(JSON.stringify(ex0));
-    for (let i = 0; i < jrd0.claims['links'].length; i++) {
-      let link = jrd0.claims['links'][i];
+    let jrd0 = JRD.fromJSON(JSON.stringify(ex0));
+    for (let i = 0; i < jrd0['links'].length; i++) {
+      let link = jrd0['links'][i];
       if (link['rel'] == 'blog') {
         assert.deepEqual(link['href'], 'http://blogs.example.com/bob/');
         break;
       }
     }
-
   });
 
   it('Test extra member response', function() {
@@ -187,8 +186,8 @@ describe('JRD tests', function() {
       }]
     };
 
-    let resp = new JRD().fromJSON(JSON.stringify(ex));
-    assert.deepEqual(resp.claims['dummy'], 'foo');
+    let resp = JRD.fromJSON(JSON.stringify(ex));
+    assert.deepEqual(resp['dummy'], 'foo');
   });
 });
 

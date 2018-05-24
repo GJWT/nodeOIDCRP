@@ -10,7 +10,7 @@ const SINGLE_OPTIONAL_STRING = (String, false, null, null, false);
 
 function findToken(request, tokenType, service, params){
   let token;
-  if (request !== null){
+  if (Object.keys(request.claims).length != 0){
     if (request.claims[tokenType]){
       token = request.claims[tokenType];
       delete request.claims[tokenType];
@@ -57,7 +57,7 @@ class BearerBody extends ClientAuthnMethod {
       }
     }
     if (!_accToken){
-      //throw new JSError('No access or refresh token available', 'KeyError');
+      console.log('No access or refresh token available', 'KeyError');
     }else{
       request['access_token'] = _accToken;
     }
@@ -79,7 +79,7 @@ class BearerBody extends ClientAuthnMethod {
       return req.access_token;
     } catch (err) {
       if (!authn.startsWith('Bearer ')){
-        //throw new JSError('Not a bearer token', 'ValueError');
+        console.log('Not a bearer token', 'ValueError');
       }
       return authn.substring(7, authn.length - 1);
     }

@@ -92,18 +92,18 @@ class Registration extends Service {
   }
 
   updateServiceContext(resp, state='', params){
-    this.serviceContext.registrationResponse = resp.claims;
+    this.serviceContext.registrationResponse = resp;
     if (Object.keys(this.serviceContext.registrationResponse).indexOf('token_endpoint_auth_method') == -1){
       this.serviceContext.registrationResponse['token_endpoint_auth_method'] = 'client_secret_basic';
     }
-    this.serviceContext['client_id'] = resp.claims['client_id'];
+    this.serviceContext['client_id'] = resp['client_id'];
 
-    if (resp.claims['client_secret']){
-      this.serviceContext['client_secret'] = resp.claims['client_secret'];
+    if (resp['client_secret']){
+      this.serviceContext['client_secret'] = resp['client_secret'];
     }else if (resp.claims['client_secret_expires_at']){
-      this.serviceContext['client_secret_expires_at'] = resp.claims['client_secret_expires_at'];
+      this.serviceContext['client_secret_expires_at'] = resp['client_secret_expires_at'];
     }
-    this.serviceContext['registration_access_token'] = resp.claims['registration_access_token'];
+    this.serviceContext['registration_access_token'] = resp['registration_access_token'];
   }
 
   /*

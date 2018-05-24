@@ -5,7 +5,7 @@
  * @constructor
  */
 class Key {
-  constructor(kty, alg, use, kid, key, x5c, x5t, x5u, params) {
+  constructor(kty, alg, use, kid, key, x5c, x5t, x5u, kwargs) {
     this.members = ['kty', 'alg', 'use', 'kid', 'x5c', 'x5t', 'x5u'];
     this.longs = [];
     this.publicMembers = ['kty', 'alg', 'use', 'kid', 'x5c', 'x5t', 'x5u'];
@@ -20,7 +20,7 @@ class Key {
     x5u = x5u || '';
 
     this.key = key || null;
-    this.extraArgs = params;
+    this.extraArgs = kwargs;
 
     if (typeof kty === 'string') {
       this.kty = kty;

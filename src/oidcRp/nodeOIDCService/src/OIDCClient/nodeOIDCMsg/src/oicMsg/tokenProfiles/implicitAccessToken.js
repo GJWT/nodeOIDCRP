@@ -1,8 +1,6 @@
 'use strict';
-
 const AccessToken = require('./accessToken');
-const jwtDecoder = require('../../oicMsg/jose/jwt/decode');
-const jwtSigner = require('../../oicMsg/jose/jwt/decode');
+const Token = require('./token');
 
 /**
  * @fileoverview
@@ -21,8 +19,8 @@ const jwtSigner = require('../../oicMsg/jose/jwt/decode');
  * @param {*} iat
  */
 class ImplicitAccessToken extends AccessToken {
-  constructor(iss, sub, iat) {
-    super(iss, sub, iat);
+  constructor({iss, sub, iat}={}) {
+    super({iss, sub, iat});
 
     /** Required claims */
     this.optionsToPayload = {
@@ -53,6 +51,34 @@ class ImplicitAccessToken extends AccessToken {
       sub: 'sub',
       maxAge: 'maxAge',
     };
+  }
+
+  static init(payload, options){
+    const implicitAccessToken = new ImplicitAccessToken(payload);
+    let optionalClaims = {};
+    Object.keys(implicitAccessToken.knownOptionalClaims).forEach(key => {
+      if (payload[key]){
+        optionalClaims[key] = payload[key];
+      }
+    });
+    implicitAccessToken.addOptionalClaims(optionalClaims);
+    if (options && Object.keys(options).indexOf('algorithm')!== -1 && options['algorithm'] === 'none'){
+      implicitAccessToken.setNoneAlgorithmAttr(true);
+    }
+    return implicitAccessToken;
+  }
+
+  static toJWT(payload, key, options){
+    let implicitAccessToken = this.init(payload, options);
+    return implicitAccessToken.toJWT(key, options);
+  }
+
+  static fromJWT(jwt, key, verificationClaims, options){
+    let token = new Token();
+    let decodedPayload = token.decode(jwt, options);
+    let implicitAccessToken = this.init(decodedPayload);
+    decodedPayload = implicitAccessToken.verify(decodedPayload, verificationClaims, options);
+    return decodedPayload;
   }
 }
 

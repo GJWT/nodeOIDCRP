@@ -1,8 +1,6 @@
 'use strict';
-
+const Token = require('./token');
 const Message = require('../message');
-const jwtDecoder = require('../../oicMsg/jose/jwt/decode');
-const jwtSigner = require('../../oicMsg/jose/jwt/sign');
 
 /**
  * @fileoverview
@@ -20,7 +18,7 @@ const jwtSigner = require('../../oicMsg/jose/jwt/sign');
  * @param {*} accessToken
  */
 class RefreshToken extends Message {
-  constructor(refreshToken, accessToken) {
+  constructor({refreshToken, accessToken}={}) {
     super();
     this.refreshToken = refreshToken;
     this.accessToken = accessToken;
@@ -53,6 +51,34 @@ class RefreshToken extends Message {
       refreshToken: 'refreshToken',
       accessToken: 'accessToken',
     };
+  }
+
+  static init(payload, options){
+    const refreshToken = new RefreshToken(payload);
+    let optionalClaims = {};
+    Object.keys(RefreshToken.knownOptionalClaims).forEach(key => {
+      if (payload[key]){
+        optionalClaims[key] = payload[key];
+      }
+    });
+    refreshToken.addOptionalClaims(optionalClaims);
+    if (options && Object.keys(options).indexOf('algorithm')!== -1 && options['algorithm'] === 'none'){
+      refreshToken.setNoneAlgorithmAttr(true);
+    }
+    return refreshToken;
+  }
+
+  static toJWT(payload, key, options){
+    let refreshToken = this.init(payload, options);
+    return refreshToken.toJWT(key, options);
+  }
+
+  static fromJWT(jwt, key, verificationClaims, options){
+    let token = new Token();
+    let decodedPayload = token.decode(jwt, key, options);
+    let refreshToken = this.init(decodedPayload);
+    decodedPayload = refreshToken.verify(decodedPayload, verificationClaims, options);
+    return decodedPayload;
   }
 }
 

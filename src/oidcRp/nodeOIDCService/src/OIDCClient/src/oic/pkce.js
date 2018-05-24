@@ -40,7 +40,7 @@ function addCodeChallenge(requestArgs, service, params) {
 
 function addCodeVerifier(requestArgs, service, params){
   let item = service.getItem(Message, 'pkce', params.state);
-  requestArgs = Object.assign(requestArgs, {'code_verifier': item.claims['codeVerifier']});
+  requestArgs = Object.assign(requestArgs, {'code_verifier': item['codeVerifier']});
   return requestArgs.code_verifier;
 }
 

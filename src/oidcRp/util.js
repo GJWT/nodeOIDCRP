@@ -1,4 +1,4 @@
-const Message = require('../oidcRp/nodeOIDCMsg/src/oicMsg/message').Message;
+const Message = require('../oidcRp/nodeOIDCService/src/OIDCClient/nodeOIDCMsg/src/oicMsg/message').Message;
 const urlParse = require('url-parse');
 
 const JSON_ENCODED = 'application/json';
@@ -259,7 +259,7 @@ class Util {
         return 'txt';
       }
     }
-
+    
     if (bodyType === '') {
       if (this.matchTo('application/json', cType)) {
         bodyType = 'json';

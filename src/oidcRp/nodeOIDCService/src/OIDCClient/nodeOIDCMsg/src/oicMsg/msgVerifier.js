@@ -1,8 +1,6 @@
-const JsonWebTokenError = require('./lib/JsonWebTokenError');
-const NotBeforeError = require('./lib/NotBeforeError');
-const TokenExpiredError = require('./lib/TokenExpiredError');
 const timespan = require('./lib/timespan');
 const xtend = require('xtend');
+const JSError = require('./lib/JSError');
 
 /**
  * @fileoverview Handles the common verification functionality for all message
@@ -25,83 +23,64 @@ class MessageVerifier {
    for HMAC algorithms, or the PEM encoded public key for RSA and ECDSA
    * @param options Other inputs that are not part of the payload, for ex :
    'algorithm'
-   * @param callback If a callback is supplied, function acts asynchronously.
-   The callback is called with the decoded payload if the signature is valid and
-   optional expiration, audience, or issuer are valid. If not, it will be called
-   with the error.
    * @throws JsonWebToken error if options does not match expected claims
    * @memberof MessageVerifier.prototype
    */
-  verifyOptions(jwtString, secretOrPublicKey, options, callback) {
-    if ((typeof options === 'function') && !callback) {
-      callback = options;
+  verifyOptions(jwtString, secretOrPublicKey, options) {
+    if ((typeof options === 'function' || !options)) {
       options = {};
     }
-
-    if (!options) {
-      options = {};
-    }
-
     // clone this object since we are going to mutate it.
     options = xtend(options);
-    let done;
+    return new Promise((resolve, reject) => {
+      if (options.clockTimestamp &&
+          typeof options.clockTimestamp !== 'number') {
+        reject(
+            new JSError('clockTimestamp must be a number'),
+            'JsonWebTokenError');
+      }
 
-    if (callback) {
-      done = callback;
-    } else {
-      done = (err, data) => {
-        if (err) throw err;
-        return data;
-      };
-    }
+      if (!jwtString) {
+        reject(new JSError('jwt must be provided', 'JsonWebTokenError'));
+      }
 
-    if (options.clockTimestamp && typeof options.clockTimestamp !== 'number') {
-      return done(new JsonWebTokenError('clockTimestamp must be a number'));
-    }
+      if (typeof jwtString !== 'string') {
+        reject(new JSError('jwt must be a string', 'JsonWebTokenError'));
+      }
 
-    const clockTimestamp =
-        options.clockTimestamp || Math.floor(Date.now() / 1000);
+      const parts = jwtString.split('.');
 
-    if (!jwtString) {
-      return done(new JsonWebTokenError('jwt must be provided'));
-    }
+      if (parts.length !== 3) {
+        reject(new JSError('jwt malformed', 'JsonWebTokenError'));
+      }
 
-    if (typeof jwtString !== 'string') {
-      return done(new JsonWebTokenError('jwt must be a string'));
-    }
-
-    const parts = jwtString.split('.');
-
-    if (parts.length !== 3) {
-      return done(new JsonWebTokenError('jwt malformed'));
-    }
-
-    const hasSignature = parts[2].trim() !== '';
+      const hasSignature = parts[2].trim() !== '';
 
 
-    if (!hasSignature && secretOrPublicKey) {
-      return done(new JsonWebTokenError('jwt signature is required'));
-    }
+      if (!hasSignature && secretOrPublicKey) {
+        reject(new JSError('jwt signature is required', 'JsonWebTokenError'));
+      }
 
-    if (hasSignature && !secretOrPublicKey) {
-      return done(
-          new JsonWebTokenError('secret or public key must be provided'));
-    }
+      if (hasSignature && !secretOrPublicKey) {
+        reject(new JSError(
+            'secret or public key must be provided', 'JsonWebTokenError'));
+      }
 
-    if (options && !hasSignature && !options.algorithms) {
-      options.algorithms = ['none'];
-    }
+      if (options && !hasSignature && !options.algorithms) {
+        options.algorithms = ['none'];
+      }
 
-    if (options && !options.algorithms) {
-      options.algorithms =
-          ~secretOrPublicKey.toString().indexOf('BEGIN CERTIFICATE') ||
-              ~secretOrPublicKey.toString().indexOf('BEGIN PUBLIC KEY') ?
-          ['RS256', 'RS384', 'RS512', 'ES256', 'ES384', 'ES512'] :
-          ~secretOrPublicKey.toString().indexOf('BEGIN RSA PUBLIC KEY') ?
-          ['RS256', 'RS384', 'RS512'] :
-          ['HS256', 'HS384', 'HS512'];
-    }
-    return done(null);
+      if (options && !options.algorithms) {
+        options.algorithms =
+            ~secretOrPublicKey.toString().indexOf('BEGIN CERTIFICATE') ||
+                ~secretOrPublicKey.toString().indexOf('BEGIN PUBLIC KEY') ?
+            ['RS256', 'RS384', 'RS512', 'ES256', 'ES384', 'ES512'] :
+            ~secretOrPublicKey.toString().indexOf('BEGIN RSA PUBLIC KEY') ?
+            ['RS256', 'RS384', 'RS512'] :
+            ['HS256', 'HS384', 'HS512'];
+      }
+      resolve(null);
+    });
   }
 
   /**
@@ -110,24 +89,16 @@ class MessageVerifier {
    claims. Please note that exp is only set if the payload is an object literal.
    * @param tokenProfile Contains the token properties, required, optional and
    verification claims
-   * @param callback If a callback is supplied, function acts asynchronously.
-   The callback is called with the decoded payload if the signature is valid and
-   optional expiration, audience, or issuer are valid. If not, it will be called
-   with the error.
    * @throws JsonWebToken error if options does not match expected claims
    * @memberof MessageVerifier.prototype
    */
-  verifyPayload(payload, tokenProfile, otherOptions, callback) {
+  verifyPayload(decoded, tokenProfile, otherOptions) {
     const options = tokenProfile.getVerificationClaims();
-    let done;
-
-    if (callback) {
-      done = callback;
+    let payload;
+    if (otherOptions.complete) {
+      payload = decoded.payload;
     } else {
-      done = (err, data) => {
-        if (err) throw err;
-        return data;
-      };
+      payload = decoded;
     }
 
     if (!otherOptions) {
@@ -136,98 +107,106 @@ class MessageVerifier {
     const clockTimestamp =
         otherOptions.clockTimestamp || Math.floor(Date.now() / 1000);
 
-    if (typeof payload.nbf !== 'undefined' && !otherOptions.ignoreNotBefore) {
-      if (typeof payload.nbf !== 'number') {
-        return done(new JsonWebTokenError('invalid nbf value'));
-      }
-      if (payload.nbf > clockTimestamp + (options.clockTolerance || 0)) {
-        return done(
-            new NotBeforeError('jwt not active', new Date(payload.nbf * 1000)));
-      }
-    }
-
-    if (typeof payload.exp !== 'undefined' && !otherOptions.ignoreExpiration) {
-      if (typeof payload.exp !== 'number') {
-        return done(new JsonWebTokenError('invalid exp value'));
-      }
-      if (clockTimestamp >= payload.exp + (options.clockTolerance || 0)) {
-        return done(
-            new TokenExpiredError('jwt expired', new Date(payload.exp * 1000)));
-      }
-    }
-
-    Object.keys(tokenProfile.claimsForVerification).forEach(key => {
-      const claim = tokenProfile.claimsForVerification[key];
-      if (options[key] && key != 'maxAge' && key != 'clockTolerance' &&
-          key != 'aud') {
-        if (payload[claim] != options[key]) {
-          return done(new JsonWebTokenError(
-              `jwt option invalid. expected: ${options[key]}`));
+    return new Promise((resolve, reject) => {
+      if (typeof payload.nbf !== 'undefined' && !otherOptions.ignoreNotBefore) {
+        if (typeof payload.nbf !== 'number') {
+          reject(new JSError('invalid nbf value', 'JsonWebTokenError'));
+        }
+        if (payload.nbf > clockTimestamp + (options.clockTolerance || 0)) {
+          reject(new JSError(
+              'jwt not active', 'NotBeforeError',
+              new Date(payload.nbf * 1000)));
         }
       }
+
+      if (typeof payload.exp !== 'undefined' &&
+          !otherOptions.ignoreExpiration) {
+        if (typeof payload.exp !== 'number') {
+          reject(new JSError('invalid exp value', 'JsonWebTokenError'));
+        }
+        if (clockTimestamp >= payload.exp + (options.clockTolerance || 0)) {
+          reject(new JSError(
+              'jwt expired', 'JsonWebTokenError',
+              new Date(payload.exp * 1000)));
+        }
+      }
+
+      Object.keys(tokenProfile.claimsForVerification).forEach(key => {
+        const claim = tokenProfile.claimsForVerification[key];
+        if (options[key] && key !== 'maxAge' && key !== 'clockTolerance' &&
+            key !== 'aud') {
+          if (payload[claim] !== options[key]) {
+            reject(new JSError(
+                `jwt option invalid. expected: ${options[key]}`,
+                'JsonWebTokenError'));
+          }
+        }
+      });
+
+      if (options.aud) {
+        const audiences =
+            Array.isArray(options.audience) ? options.aud : [options.aud];
+        const target = Array.isArray(payload.aud) ? payload.aud : [payload.aud];
+
+        const match = target.some(
+            targetAudience => audiences.some(
+                audience => audience instanceof RegExp ?
+                    audience.test(targetAudience) :
+                    audience === targetAudience));
+
+        if (!match)
+          reject(new JSError(
+              `jwt audience invalid. expected: ${audiences.join(' or ')}`,
+              'JsonWebTokenError'));
+      }
+
+      /*
+      if (otherOptions.issuer) {
+        const invalid_issuer =
+            (typeof otherOptions.issuer === 'string' && payload.iss !==
+      otherOptions.issuer) || (Array.isArray(otherOptions.issuer) &&
+      otherOptions.issuer.indexOf(payload.iss) === -1);
+
+        if (invalid_issuer) {
+          return done(new JsonWebTokenError('jwt issuer invalid. expected: ' +
+      otherOptions.issuer));
+        }
+      }
+
+      if (otherOptions.subject) {
+        if (payload.sub !== otherOptions.subject) {
+          return done(new JsonWebTokenError('jwt subject invalid. expected: ' +
+      otherOptions.subject));
+        }
+      }*/
+      if (otherOptions.jwtid) {
+        if (payload.jti !== otherOptions.jwtid) {
+          reject(new JSError(
+              `jwt jwtid invalid. expected: ${otherOptions.jwtid}`,
+              'JsonWebTokenError'));
+        }
+      }
+
+      if (options.maxAge) {
+        if (typeof payload.iat !== 'number') {
+          reject(new JSError(
+              'iat required when maxAge is specified', 'JsonWebTokenError'));
+        }
+
+        const maxAgeTimestamp = timespan(options.maxAge, payload.iat);
+        if (typeof maxAgeTimestamp === 'undefined') {
+          reject(new JSError(
+              '"maxAge" should be a number of seconds or string representing a timespan eg: "1d", "20h", 60',
+              'JsonWebTokenError'));
+        }
+        if (clockTimestamp >= maxAgeTimestamp + (options.clockTolerance || 0)) {
+          reject(new JSError(
+              'maxAge exceeded', 'TokenExpiredError',
+              new Date(maxAgeTimestamp * 1000)));
+        }
+      }
+      resolve(decoded);
     });
-
-    if (options && options.aud) {
-      const audiences =
-          Array.isArray(options.audience) ? options.aud : [options.aud];
-      const target = Array.isArray(payload.aud) ? payload.aud : [payload.aud];
-
-      const match = target.some(
-          targetAudience => audiences.some(
-              audience => audience instanceof RegExp ?
-                  audience.test(targetAudience) :
-                  audience === targetAudience));
-
-      if (!match)
-        return done(new JsonWebTokenError(
-            `jwt audience invalid. expected: ${audiences.join(' or ')}`));
-    }
-
-    /*
-    if (otherOptions.issuer) {
-      const invalid_issuer =
-          (typeof otherOptions.issuer === 'string' && payload.iss !==
-    otherOptions.issuer) || (Array.isArray(otherOptions.issuer) &&
-    otherOptions.issuer.indexOf(payload.iss) === -1);
-
-      if (invalid_issuer) {
-        return done(new JsonWebTokenError('jwt issuer invalid. expected: ' +
-    otherOptions.issuer));
-      }
-    }
-
-    if (otherOptions.subject) {
-      if (payload.sub !== otherOptions.subject) {
-        return done(new JsonWebTokenError('jwt subject invalid. expected: ' +
-    otherOptions.subject));
-      }
-    }*/
-
-
-    if (otherOptions && otherOptions.jwtid) {
-      if (payload.jti !== otherOptions.jwtid) {
-        return done(new JsonWebTokenError(
-            `jwt jwtid invalid. expected: ${otherOptions.jwtid}`));
-      }
-    }
-
-    if (options && options.maxAge) {
-      if (typeof payload.iat !== 'number') {
-        return done(
-            new JsonWebTokenError('iat required when maxAge is specified'));
-      }
-
-      const maxAgeTimestamp = timespan(options.maxAge, payload.iat);
-      if (typeof maxAgeTimestamp === 'undefined') {
-        return done(new JsonWebTokenError(
-            '"maxAge" should be a number of seconds or string representing a timespan eg: "1d", "20h", 60'));
-      }
-      if (clockTimestamp >= maxAgeTimestamp + (options.clockTolerance || 0)) {
-        return done(new TokenExpiredError(
-            'maxAge exceeded', new Date(maxAgeTimestamp * 1000)));
-      }
-    }
-    return payload;
   }
 }
 

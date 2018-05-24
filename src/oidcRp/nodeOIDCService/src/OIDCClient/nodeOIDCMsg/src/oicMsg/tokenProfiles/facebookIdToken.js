@@ -1,8 +1,6 @@
 'use strict';
-
 const Message = require('../message');
-const jwtDecoder = require('../../oicMsg/jose/jwt/decode');
-const jwtSigner = require('../../oicMsg/jose/jwt/sign');
+const Token = require('./token');
 
 /**
  * @fileoverview
@@ -21,11 +19,11 @@ const jwtSigner = require('../../oicMsg/jose/jwt/sign');
  * @param {*} issuedAt
  */
 class FacebookIdToken extends Message {
-  constructor(userId, appId, issuedAt) {
+  constructor({userId, appId, iat}={}) {
     super();
     this.userId = userId;
     this.appId = appId;
-    this.iat = issuedAt;
+    this.iat = iat;
     this.validateRequiredFields();
 
     /** Required claims */
@@ -57,6 +55,34 @@ class FacebookIdToken extends Message {
     this.knownOptionalClaims = {
       expiredAt: 'expiredAt',
     };
+  }
+
+  static init(payload, options){
+    const facebookIdToken = new FacebookIdToken(payload);
+    let optionalClaims = {};
+    Object.keys(facebookIdToken.knownOptionalClaims).forEach(key => {
+      if (payload[key]){
+        optionalClaims[key] = payload[key];
+      }
+    });
+    facebookIdToken.addOptionalClaims(optionalClaims);
+    if (options && Object.keys(options).indexOf('algorithm')!== -1 && options['algorithm'] === 'none'){
+      facebookIdToken.setNoneAlgorithmAttr(true);
+    }
+    return facebookIdToken;
+  }
+
+  static toJWT(payload, key, options){
+    let facebookIdToken = this.init(payload, options);
+    return facebookIdToken.toJWT(key, options);
+  }
+
+  static fromJWT(jwt, key, verificationClaims, options){
+    let token = new Token();
+    let decodedPayload = token.decode(jwt, key, options);
+    let facebookIdToken = this.init(decodedPayload);
+    decodedPayload = facebookIdToken.verify(decodedPayload, verificationClaims, options);
+    return decodedPayload;
   }
 }
 

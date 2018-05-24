@@ -1,3 +1,4 @@
+
 const Message = require('../message');
 const AccessToken = require('../tokenProfiles/accessToken');
 const SINGLE_REQUIRED_STRING = require('./init').SINGLE_REQUIRED_STRING
@@ -13,7 +14,6 @@ const SINGLE_OPTIONAL_INT = require('./init').SINGLE_OPTIONAL_INT;
 /**
  * @fileoverview Contains all the OIC request classes
  */
-
 /**
  * ErrorResponse
  * @class
@@ -33,11 +33,15 @@ class ErrorResponse extends Message {
 };
 
 class ResponseMessage extends Message{
-  constructor(){
-    super();
+  constructor(args){
+    super(args);
+    if (args){
+      this.claims = args;
+    }
     this.cParam = {"error": SINGLE_OPTIONAL_STRING,
     "error_description": SINGLE_OPTIONAL_STRING,
     "error_uri": SINGLE_OPTIONAL_STRING}
+    return this;
   }
 
   isErrorMessage(){
@@ -219,3 +223,4 @@ module.exports.AuthorizationResponse = AuthorizationResponse;
 module.exports.AccessTokenResponse = AccessTokenResponse;
 module.exports.NoneResponse = NoneResponse;
 module.exports.ASConfigurationResponse = ASConfigurationResponse;
+module.exports.ResponseMessage = ResponseMessage;

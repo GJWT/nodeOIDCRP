@@ -301,9 +301,11 @@ class Util {
 function getHttpBody(req, contentType){
   let resp = {}
   if (contentType === URL_ENCODED) {
-    return req.toUrlEncoded(req.claims);
+    //return req.toUrlEncoded(req.claims);
+    return req.claims;
   } else if (contentType === JSON_ENCODED) {
-    return req.toJSON();
+    return req.claims;
+    //return req.toJSON(req.claims);
   } else {
     console.log('Unsupported content type');
   }

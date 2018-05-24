@@ -39,7 +39,7 @@ class DB{
 }
 
 function testServiceFactory() {
-  var req = new factory('Service', new ServiceContext(), new DB(), null);
+  var req = new factory('Service', new ServiceContext(), new DB());
   assert.deepEqual(typeof req, Service);
 }
 
@@ -65,26 +65,20 @@ describe('Test Authorization', function() {
     service.endpoint = 'https://example.com/authorize';
     var info = service.getRequestParameters({requestArgs: reqArgs, params: {state: 'state'}});
     assert.deepEqual(Object.keys(info), ['method', 'url']);
-    var msg = new AuthorizationRequest().fromUrlEncoded(
+    var msg = AuthorizationRequest.fromUrlEncoded(
       service.getUrlInfo(info['url']));
-    assert.deepEqual(msg['claims'], {
-      'client_id': 'client_id',
-      'redirect_uri': 'https://example.com/cli/authz_cb',
-      'response_type': 'code',
-      'state': 'state'
-    });
+    assert.deepEqual(Object.keys(msg).length, 4);    
   });
   it('Test request init', function() {
     let resp = {client_id:'client_id', redirect_uri: 'https://example.com/cli/authz_cb', response_type : 'code', state:'state'};
-    
     var reqArgs = {'response_type': 'code', 'state': 'state'};
     service.endpoint = 'https://example.com/authorize';
     var info = service.getRequestParameters({requestArgs :reqArgs});
     assert.deepEqual(Object.keys(info), ['method', 'url']);
     assert.deepEqual(info['httpArgs'], undefined);
-    var msg = new AuthorizationRequest().fromUrlEncoded(
+    var msg = AuthorizationRequest.fromUrlEncoded(
       service.getUrlInfo(info['url']));
-    assert.deepEqual(msg['claims'], resp);
+    assert.deepEqual(msg, resp);
   });
 });
 
@@ -99,11 +93,12 @@ describe('Test Access Token Request', function() {
     };
     serviceContext = new ServiceContext(null, config);
     let db = new DB();
-    let authRequest = new AuthorizationRequest({redirect_uri:'https://example.com/cli/authz_cb', state: 'state'});
-    let authResponse = new AuthorizationResponse({code:'access_code'});
-    let _state = new State({auth_request: authRequest.toJSON(), auth_response: authResponse.toJSON()});
-    db.set('state', _state.toJSON());
-    service = new factory('AccessToken', serviceContext, db, CLIENT_AUTHN_METHOD);
+    //let authRequest = new AuthorizationRequest({redirect_uri:'https://example.com/cli/authz_cb', state: 'state'});
+    //let authResponse = new AuthorizationResponse({code:'access_code'});
+    //let _state = new State({auth_request: authRequest.toJSON(), auth_response: authResponse.toJSON()});
+    //db.set('state', _state.toJSON());
+    db.set('state', State.toJSON({auth_request: AuthorizationRequest.toJSON({redirect_uri:'https://example.com/cli/authz_cb', state: 'state'}), auth_response: AuthorizationResponse.toJSON({code:'access_code'})}));
+    service = new factory('AccessToken', serviceContext, db);
   });
   it('Test construct', function() {
     let reqArgs = {'foo': 'bar', 'state': 'state'};
@@ -124,10 +119,11 @@ describe('Test Access Token Request', function() {
     var info = service.getRequestParameters({requestArgs: reqArgs, authnMethod:'client_secret_basic', params: {state: 'state'}});
     assert.deepEqual(Object.keys(info).length, 4);
     assert.deepEqual(info.url, 'https://example.com/authorize');
-  
-    var msg = new AccessTokenRequest().fromUrlEncoded(
-    service.getUrlInfo(info['body']));
-    assert.deepEqual(msg['claims'], {
+    /*var msg = new AccessTokenRequest().fromUrlEncoded(
+    service.getUrlInfo(info['body']));*/
+    var msg = AccessTokenRequest.fromUrlEncoded(
+      service.getUrlInfo(info['body']));
+    assert.deepEqual(msg, {
       'client_id': 'client_id',
       'code': 'access_code',
       'grant_type': 'authorization_code',
@@ -146,9 +142,9 @@ describe('Test Access Token Request', function() {
     var info = service.getRequestParameters({requestArgs: reqArgs, params: {state: 'state'}});
     assert.deepEqual(Object.keys(info).length, 4);
     assert.deepEqual(info['url'], 'https://example.com/authorize');
-    var msg = new AccessTokenRequest().fromUrlEncoded(
+    var msg = AccessTokenRequest.fromUrlEncoded(
       service.getUrlInfo(info['body']));
-    assert.deepEqual(msg.claims, {
+    assert.deepEqual(msg, {
       'client_id': 'client_id',
       'state': 'state',
       'code': 'access_code',
@@ -204,9 +200,10 @@ describe('Test Refresh Access Token Request', function() {
     let db = new DB();
     let tokenResponse = new AccessTokenResponse({access_token:'bearer_token', refresh_token:'refresh'});
     let authResponse = new AuthorizationResponse({code:'access_code'});
-    let _state = new State({token_response: tokenResponse.toJSON(), auth_response: authResponse.toJSON()});
-    db.set('abcdef', _state.toJSON());
-    service = new factory('RefreshAccessToken', serviceContext, db, CLIENT_AUTHN_METHOD);
+    //let _state = new State({token_response: tokenResponse.toJSON(), auth_response: authResponse.toJSON()});
+    //db.set('abcdef', _state.toJSON());
+    db.set('abcdef', State.toJSON({token_response: AccessTokenResponse.toJSON({access_token:'bearer_token', refresh_token:'refresh'}), auth_response: AuthorizationResponse.toJSON({code:'access_code'})}))
+    service = new factory('RefreshAccessToken', serviceContext, db);
     service.endpoint = 'https://example.com/token';
   });
 
@@ -215,7 +212,7 @@ describe('Test Refresh Access Token Request', function() {
     assert.deepEqual(Object.keys(req.claims).length, 4);
     assert.deepEqual(
       Object.keys(req.claims),
-      ['refresh_token', 'client_id', 'client_secret', 'grant_type']);
+      ['grant_type', 'refresh_token', 'client_id', 'client_secret']);
   });
   it('Test request info', function() {
     let info = service.getRequestParameters({params: {state: 'abcdef'}})
@@ -235,11 +232,11 @@ describe('Test access token srv conf', function() {
     };
     serviceContext = new ServiceContext(null, config);
     let db = new DB();
-    let authRequest = new AuthorizationRequest({redirect_uri: 'https://example.com/cli/authz_cb', state:'state'});
-    let authResponse = new AuthorizationResponse({code:'access_code'});
-    let _state = new State({auth_request: authRequest.toJSON(), auth_response: authResponse.toJSON()});
-    db.set('state', _state.toJSON());
-    service = new factory('AccessToken', serviceContext, db, CLIENT_AUTHN_METHOD, {'default_authn_method': 'client_secret_post'});
+    //let authRequest = new AuthorizationRequest({redirect_uri: 'https://example.com/cli/authz_cb', state:'state'});
+    //let authResponse = new AuthorizationResponse({code:'access_code'});
+    let _state = State;
+    db.set('state', _state.toJSON({auth_request: AuthorizationRequest.toJSON({redirect_uri: 'https://example.com/cli/authz_cb', state:'state'}), auth_response: AuthorizationResponse.toJSON({code:'access_code'})}));
+    service = new factory('AccessToken', serviceContext, db, null, {'default_authn_method': 'client_secret_post'});
     service.endpoint = 'https://example.com/authorize';    
   });
   it('Test request info', function() {
@@ -248,8 +245,7 @@ describe('Test access token srv conf', function() {
       'code': 'access_code'
     };
     let info = service.getRequestParameters({requestArgs: reqArgs, params: {state: 'state'}});
-    let msg = new AccessTokenRequest().fromUrlEncoded(
-      service.getUrlInfo(info['body']));
+    let msg = AccessTokenRequest.fromUrlEncoded(service.getUrlInfo(info['body']));
     assert.isNotNull(msg.client_secret);
   });
 });

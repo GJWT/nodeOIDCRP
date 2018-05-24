@@ -1,5 +1,4 @@
-# Change Log
-
+#Change Log
 
 All notable changes to this project will be documented in this file starting from version **v4.0.0**.
 This project adheres to [Semantic Versioning](http://semver.org/).
@@ -312,7 +311,10 @@ This was an immediate change after publishing 6.0.0.
 
  As the order of steps has changed, the error that was thrown when the JWT was invalid is no longer the `jws` one:
  ```
- { [Error: Invalid token: no header in signature 'a.b.c'] code: 'MISSING_HEADER', signature: 'a.b.c' }
+ {
+  [Error:Invalid token:no header in signature 'a.b.c'] code : 'MISSING_HEADER',
+                                                              signature
+      : 'a.b.c' }
  ```
 
  That old error (removed from jws) has been replaced by a `JsonWebTokenError` with message `invalid token`.

@@ -66,8 +66,10 @@ class Authorization extends OAuth2Authorization {
       _state = Math.random(24);
     }
     requestArgs['state'] = _state;
-    let _item = new State({iss: req.serviceContext.issuer});
-    req.stateDb.set(_state, _item.toJSON());
+    //let _item = new State({iss: req.serviceContext.issuer});
+    let _item = State;
+    req.stateDb.set(_state, _item.toJSON({iss: req.serviceContext.issuer}));
+    //req.stateDb.set(_state, _item.toJSON());
     let list = [requestArgs, {}];
     return list;
   }

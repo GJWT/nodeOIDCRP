@@ -46,7 +46,7 @@ let KEYSPEC = [
 ];
 
 function testRequestFactory() {
-  let req = new factory('Service', new ServiceContext(null), new DB(), null);
+  let req = new factory('Service', new ServiceContext(null), new DB());
   assert.deepEqual(req, Service);
 }
 
@@ -71,7 +71,7 @@ describe('Test Authorization', function() {
     let clientConfig = {'client_id': 'client_id', 'client_secret': 'password',
     'redirect_uris': ['https://example.com/cli/authz_cb']}
     serviceContext = new ServiceContext(null, clientConfig);
-    service = new factory('Authorization', serviceContext, new DB(), CLIENT_AUTHN_METHOD)
+    service = new factory('Authorization', serviceContext, new DB())
   });
 
   it('test construct authorization request', function() {
@@ -102,24 +102,24 @@ describe('Test Authorization', function() {
     service.endpoint = 'https://example.com/authorize'
     info = service.getRequestParameters({requestArgs:requestArgs});
     assert.deepEqual(Object.keys(info), ['method', 'url'])
-    let msg = new AuthorizationRequest().fromUrlEncoded(service.getUrlInfo(info['url']));
-    assert.deepEqual(Object.keys(msg.claims), ['response_type', 'state', 'redirect_uri', 'scope', 'nonce', 'client_id']);
+    let msg = AuthorizationRequest.fromUrlEncoded(service.getUrlInfo(info['url']));
+    assert.deepEqual(Object.keys(msg), ['response_type', 'state', 'redirect_uri', 'scope', 'nonce', 'client_id']);
   });
   it('test get request init', function() {
     let requestArgs = {'response_type': 'code', 'state': 'state'}
     service.endpoint = 'https://example.com/authorize'
     info = service.getRequestParameters({requestArgs:requestArgs});
     assert.deepEqual(Object.keys(info), ['method', 'url'])
-    let msg = new AuthorizationRequest().fromUrlEncoded(service.getUrlInfo(info['url']));
-    assert.deepEqual(Object.keys(msg.claims), ['response_type', 'state', 'redirect_uri', 'scope', 'nonce', 'client_id']);
+    let msg = AuthorizationRequest.fromUrlEncoded(service.getUrlInfo(info['url']));
+    assert.deepEqual(Object.keys(msg), ['response_type', 'state', 'redirect_uri', 'scope', 'nonce', 'client_id']);
   });
   it('test request init request method', function() {
     let requestArgs = {'response_type': 'code', 'state': 'state'}
     service.endpoint = 'https://example.com/authorize'
     info = service.getRequestParameters({requestArgs:requestArgs, params: {requestMethod: 'value'}});
     assert.deepEqual(Object.keys(info), ['method', 'url'])
-    let msg = new AuthorizationRequest().fromUrlEncoded(service.getUrlInfo(info['url']));
-    assert.deepEqual(Object.keys(msg.claims), ['response_type', 'state', 'redirect_uri', 'scope', 'nonce', 'client_id']);
+    let msg = AuthorizationRequest.fromUrlEncoded(service.getUrlInfo(info['url']));
+    assert.deepEqual(Object.keys(msg), ['response_type', 'state', 'redirect_uri', 'scope', 'nonce', 'client_id']);
   });
   it('test request param', function() {
     let requestArgs = {'response_type': 'code', 'state': 'state'}
@@ -184,11 +184,14 @@ describe('Test access token request', function() {
     'redirect_uris': ['https://example.com/cli/authz_cb']};
     serviceContext = new ServiceContext(null, clientConfig);
     let db = new DB();
-    let authRequest = new AuthorizationRequest({redirect_uri: 'https://example.com/cli/authz_cb', state:'state', response_type:'code'});
+    
+    /*let authRequest = new AuthorizationRequest({redirect_uri: 'https://example.com/cli/authz_cb', state:'state', response_type:'code'});
     let authResponse = new AuthorizationResponse({code:'access_code'});
     let _state = new State({auth_request: authRequest.toJSON(), auth_response: authResponse.toJSON()});
-    db.set('state', _state.toJSON());
-    service = new factory('AccessToken', serviceContext, db, CLIENT_AUTHN_METHOD);
+    db.set('state', _state.toJSON());*/
+
+    db.set('state', State.toJSON({auth_request: AuthorizationRequest.toJSON({redirect_uri: 'https://example.com/cli/authz_cb', state:'state', response_type:'code'}), auth_response: AuthorizationResponse.toJSON({code:'access_code'})}))
+    service = new factory('AccessToken', serviceContext, db);
   });
 
   it('test construct', function() {
@@ -203,8 +206,8 @@ describe('Test access token request', function() {
     info = service.getRequestParameters({requestArgs:requestArgs, authnMethod:'client_secret_basic', params: {state: 'state'}});
     assert.deepEqual(Object.keys(info), ['method', 'url', 'body', 'headers']);
     assert.deepEqual(info.url, 'https://example.com/authorize');
-    let msg = new AccessTokenRequest().fromUrlEncoded(service.getUrlInfo(info['body']));
-    assert.deepEqual(msg.claims, {
+    let msg = AccessTokenRequest.fromUrlEncoded(service.getUrlInfo(info['body']));
+    assert.deepEqual(msg, {
       'client_id': 'client_id', 'code': 'access_code',
       'grant_type': 'authorization_code', 'state': 'state',
       'redirect_uri': 'https://example.com/cli/authz_cb'});
@@ -216,8 +219,8 @@ describe('Test access token request', function() {
     info = service.getRequestParameters({requestArgs:requestArgs, params: {state: 'state'}});
     assert.deepEqual(Object.keys(info), ['method', 'url', 'body', 'headers']);
     assert.deepEqual(info.url, 'https://example.com/authorize');
-    let msg = new AccessTokenRequest().fromUrlEncoded(service.getUrlInfo(info['body']));
-    assert.deepEqual(msg.claims, {
+    let msg = AccessTokenRequest.fromUrlEncoded(service.getUrlInfo(info['body']));
+    assert.deepEqual(msg, {
       'client_id': 'client_id', 'code': 'access_code',
       'grant_type': 'authorization_code', 'state': 'state',
       'redirect_uri': 'https://example.com/cli/authz_cb'});
@@ -247,7 +250,7 @@ describe('Test provider info', function() {
         'userinfo_signed_response_alg': 'RS384'
     }}
     serviceContext = new ServiceContext(null, clientConfig);
-    service = new factory('ProviderInfoDiscovery', serviceContext, null, CLIENT_AUTHN_METHOD);
+    service = new factory('ProviderInfoDiscovery', serviceContext, null);
   });
 
   it('test construct', function() {
@@ -271,7 +274,7 @@ describe('Test registration', function() {
     'issuer': iss, 'requests_dir': 'requests',
     'base_url': 'https://example.com/cli/'};
     serviceContext = new ServiceContext(null, clientConfig);
-    service = new factory('Registration', serviceContext, null, CLIENT_AUTHN_METHOD);
+    service = new factory('Registration', serviceContext, null);
   });
   it('test construct', function() {
     let msg = service.construct();
@@ -301,12 +304,8 @@ describe('Test user info', function() {
     'issuer': iss, 'requests_dir': 'requests',
     'base_url': 'https://example.com/cli/'};
     serviceContext = new ServiceContext(null, clientConfig);
-
     let db = new DB();
-    let tokenResponse = new AccessTokenResponse({access_token:'access_token', id_token:'a.signed.jwt', verified_id_token:{sub:'diana'}});
-    let authResponse = new AuthorizationResponse({code:'access_code'});
-    let _state = new State({token_response: tokenResponse.toJSON(), auth_response: authResponse.toJSON()});
-    db.set('abcde', _state.toJSON());
+    db.set('abcde', State.toJSON({token_response: AccessTokenResponse.toJSON({access_token:'access_token', id_token:'a.signed.jwt', verified_id_token:{sub:'diana'}}), auth_response: AuthorizationResponse.toJSON({code:'access_code'})}))
     service = new factory('UserInfo', serviceContext, db, CLIENT_AUTHN_METHOD);
   });
   it('test construct', function() {
@@ -315,13 +314,11 @@ describe('Test user info', function() {
     assert.isTrue(Object.keys(msg.claims).indexOf('access_token') !== -1)
   });
   it('test unpack simple response', function() {
-    let resp = new OpenIDSchema({sub:'diana', given_name:'Diana', family_name:'krall'});
-    resp = service.parseResponse(resp.toJSON(), null, null, {state:'abcde'});
+    let resp = service.parseResponse(OpenIDSchema.toJSON({sub:'diana', given_name:'Diana', family_name:'krall'}), null, null, {state:'abcde'});
     assert.isNotNull(resp);
   });
   it('test unpack aggregated response', function() {
-    let resp = new OpenIDSchema({sub:'diana', given_name:'Diana', family_name:'krall'});
-    resp = service.parseResponse(resp.toJSON(), null, null, {state:'abcde'});
+    let resp = service.parseResponse(OpenIDSchema.toJSON({sub:'diana', given_name:'Diana', family_name:'krall'}), null, null, {state:'abcde'});
     assert.isNotNull(resp);
   });
 });
@@ -336,7 +333,7 @@ describe('Test check session', function() {
     'issuer': iss, 'requests_dir': 'requests',
     'base_url': 'https://example.com/cli/'};
     serviceContext = new ServiceContext(null, clientConfig);
-    service = new factory('CheckSession', serviceContext, new DB(), CLIENT_AUTHN_METHOD);
+    service = new factory('CheckSession', serviceContext, new DB());
   });
   it('test construct', function() {
     service.storeItem(new Message({'id_token': 'a.signed.jwt'}), 'token_response', 'abcde');
@@ -355,7 +352,7 @@ describe('Test check id', function() {
     'issuer': iss, 'requests_dir': 'requests',
     'base_url': 'https://example.com/cli/'}
     serviceContext = new ServiceContext(null, clientConfig);
-    service = new factory('CheckId', serviceContext, new DB(), CLIENT_AUTHN_METHOD);
+    service = new factory('CheckId', serviceContext, new DB());
   });
   it('test construct', function() {
     service.storeItem(new Message({'id_token': 'a.signed.jwt'}), 'token_response', 'abcde');
@@ -374,7 +371,7 @@ describe('Test end session', function() {
     'issuer': iss, 'requests_dir': 'requests',
     'base_url': 'https://example.com/cli/'}
     serviceContext = new ServiceContext(null, clientConfig);
-    service = new factory('EndSession', serviceContext, new DB(), CLIENT_AUTHN_METHOD);
+    service = new factory('EndSession', serviceContext, new DB());
   });
   it('test construct', function() {
     service.storeItem(new Message({'id_token': 'a.signed.jwt'}), 'token_response', 'abcde');
@@ -395,7 +392,7 @@ describe('Test  add jwks uri or jwks0', function() {
         'userinfo_signed_response_alg': 'RS384'
     }}
     let serviceContext= new ServiceContext(null, client_config);
-    let service = new factory('Registration', serviceContext, null, CLIENT_AUTHN_METHOD);
+    let service = new factory('Registration', serviceContext, null);
     let list = addJwksUriOrJwks({}, service);
     let reqArgs = list[0];
     let postArgs = list[1];
@@ -416,7 +413,7 @@ describe('Test  add jwks uri or jwks1', function() {
         'userinfo_signed_response_alg': 'RS384'
     }}
     let serviceContext= new ServiceContext(null, client_config);
-    let service = new factory('Registration', serviceContext, null, CLIENT_AUTHN_METHOD);
+    let service = new factory('Registration', serviceContext, null);
     let list = addJwksUriOrJwks({}, service);
     let reqArgs = list[0];
     let postArgs = list[1];
@@ -434,7 +431,7 @@ describe('Test  add jwks uri or jwks2', function() {
         'userinfo_signed_response_alg': 'RS384'
     }}
     let serviceContext= new ServiceContext(null, client_config, {jwks_uri:'https://example.com/jwks/jwks.json'});
-    let service = new factory('Registration', serviceContext, null, CLIENT_AUTHN_METHOD);
+    let service = new factory('Registration', serviceContext, null);
     let list = addJwksUriOrJwks({}, service);
     let reqArgs = list[0];
     let postArgs = list[1];
@@ -452,7 +449,7 @@ describe('Test  add jwks uri or jwks3', function() {
         'userinfo_signed_response_alg': 'RS384'
     }}
     let serviceContext= new ServiceContext(null, client_config, {jwks:'{"keys":[]}'});
-    let service = new factory('Registration', serviceContext, null, CLIENT_AUTHN_METHOD);
+    let service = new factory('Registration', serviceContext, null);
     let list = addJwksUriOrJwks({}, service);
     let reqArgs = list[0];
     let postArgs = list[1];

@@ -44,6 +44,7 @@ class ProviderInfoDiscovery extends Service {
     let _pcrIssuer = null;
     if (Object.keys(resp).indexOf('issuer') !== -1){
       _pcrIssuer = resp['issuer'];
+      let _issuer = null;
       if (resp['issuer'].endsWith('/')){
         if (issuer.endsWith('/')){
           _issuer = issuer
@@ -77,7 +78,9 @@ class ProviderInfoDiscovery extends Service {
       let key = Object.keys(resp)[i];
       let val = resp[key]
       if (key.endsWith('endpoint')){
-        for (var i = 0; i < this.serviceContext.service.values().length; i++){
+        for (var j = 0; j < Object.keys(this.serviceContext.service).length; j++){
+          let _srvKey = Object.keys(this.serviceContext.service)[j]
+          let _srv = this.serviceContext.service[_srvKey];
           if (_srv.endpointName === key){
             _srv.endpoint = val;
           }

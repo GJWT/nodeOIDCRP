@@ -1,4 +1,4 @@
-const Message = require('../nodeOIDCMsg/src/oicMsg/message');
+const Message = require('../nodeOIDCService/src/OIDCClient/nodeOIDCMsg/src/oicMsg/message');
 const OAuth2ServiceAccessToken = require('../nodeOIDCService/src/OIDCClient/src/oauth2/service/accessToken').AccessToken;
 const OICServiceUserInfo = require('../nodeOIDCService/src/OIDCClient/src/oic/service/userInfo').UserInfo;
 

@@ -1,11 +1,14 @@
 
 var SINGLE_OPTIONAL_STRING = require('../OAuth2/init').SINGLE_OPTIONAL_STRING;
-var SINGLE_REQUIRED_STRING = require('../OAuth2/init').SINGLE_REQUIRED_STRING;
 var SINGLE_OPTIONAL_BOOLEAN = require('../OAuth2/init').SINGLE_OPTIONAL_BOOLEAN;
-var OPTIONAL_ADDRESS = require('../OAuth2/init').OPTIONAL_ADDRESS;
-var SINGLE_OPTIONAL_INT = require('../OAuth2/init').SINGLE_OPTIONAL_INT;
-var OPTIONAL_MESSAGE = require('../OAuth2/init').OPTIONAL_MESSAGE;
 var SINGLE_REQUIRED_IDTOKEN = require('../OAuth2/init').SINGLE_REQUIRED_IDTOKEN;
+var SINGLE_REQUIRED_STRING = require('../OAuth2/init').SINGLE_REQUIRED_STRING;
+var OPTIONAL_LIST_OF_STRINGS = require('../OAuth2/init').OPTIONAL_LIST_OF_STRINGS;
+var SINGLE_OPTIONAL_DICT = require('../OAuth2/init').SINGLE_OPTIONAL_DICT;
+var SINGLE_OPTIONAL_INT = require('../OAuth2/init').SINGLE_OPTIONAL_INT;
+var OPTIONAL_ADDRESS = require('../OAuth2/init').OPTIONAL_ADDRESS;
+var OPTIONAL_MESSAGE = require('../OAuth2/init').OPTIONAL_MESSAGE;
+var ResponseMessage = require('../oauth2/responses').ResponseMessage;
 
 var Message = require('../message');
 
@@ -23,7 +26,7 @@ class AddressClaim extends Message {
   }
 }
 
-class OpenIDSchema extends Message{
+class OpenIDSchema extends ResponseMessage{
   constructor(claims){
     super(claims);
     if (claims){
@@ -91,7 +94,7 @@ function linkDeser(val, sformat) {
     return val;
   } else if (sformats.indexOf(sformat) !== -1) {
     if (!(val instanceof String)) {
-      val = json.dumps(val);
+      val = JSON.dumps(val);
       sformat = 'json';
     }
   }
@@ -100,15 +103,16 @@ function linkDeser(val, sformat) {
 
 function msgSer(inst, sformat, lev = 0) {
   let formats = ['urlencoded', 'json'];
+  let res;
   if (formats.indexOf(sformat) !== -1) {
-    if (inst instanceof dict) {
-      if (sformat == 'json') {
-        res = json.dumps(inst);
+    if (inst instanceof Object) {
+      if (sformat === 'json') {
+        res = JSON.dumps(inst);
       } else {
         for (let i = 0; i < Object.keys(inst).length; i++) {
           let key = Object.keys(inst)[i];
           let val = inst[key];
-          res = urlencode([(key, val)]);
+          //res = urlencode([(key, val)]);
         }
       }
     } else if (inst instanceof LINK) {
@@ -116,18 +120,18 @@ function msgSer(inst, sformat, lev = 0) {
     } else {
       res = inst;
     }
-  } else if (sformat == 'dict') {
-    if (isinstance(inst, LINK)) {
+  } else if (sformat === 'dict') {
+    if (typeof inst === LINK) {
       res = inst.serialize(sformat, lev);
-    } else if (inst instanceof dict) {
+    } else if (typeof inst === Object) {
       res = inst;
-    } else if (inst instanceof String) {
+    } else if (typeof inst === String) {
       res = inst;
     } else {
-      console.log('Wrong type');
+      throw new Error('Wrong type');
     }
   } else {
-    console.log('Unknown sformat');
+    throw new Error('Unknown sformat');
   }
   return res;
 }
@@ -144,7 +148,7 @@ class JRD extends Message {
     };
     return dict;
   }
-};
+}
 
 module.exports.MessageWithIdToken = MessageWithIdToken;
 module.exports.OpenIDSchema = OpenIDSchema;

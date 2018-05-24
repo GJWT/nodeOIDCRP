@@ -1,6 +1,3 @@
-var JsonWebTokenError = require('../../lib/JsonWebTokenError');
-var NotBeforeError = require('../../lib/NotBeforeError');
-var TokenExpiredError = require('../../lib/TokenExpiredError');
 var decode = require('./decode');
 var timespan = require('../../lib/timespan');
 var xtend = require('xtend');

@@ -7,10 +7,10 @@ const Key = require('./Key');
  * @extends Key
  */
 class ECKey extends Key {
-  constructor(kty, alg, use, kid, key, crv, x, y, d, curve, params) {
+  constructor(kty, alg, use, kid, key, crv, x, y, d, curve, kwargs) {
     super();
     key =
-        super(kty, alg, use, kid, key, null, null, null, params);
+        super(kty, alg, use, kid, key, null, null, null, kwargs);
     this.members =
             ['kty', 'alg', 'use', 'kid', 'crv', 'x', 'y', 'd'];
     this.longs = ['x', 'y', 'd'];
@@ -66,7 +66,7 @@ class ECKey extends Key {
     }
   }
 
-  getKey(priv, params) {
+  getKey(priv, kwargs) {
     priv = priv || false;
     if (priv) {
       return this.d;
@@ -75,7 +75,7 @@ class ECKey extends Key {
     }
   }
 
-  serialize(priv, params) {
+  serialize(priv, kwargs) {
     priv = priv || false;
     if (!this.crv && !this.curve) {
       console.log('Serialization Not Possible');
@@ -104,7 +104,7 @@ class ECKey extends Key {
     return this.getKey(true);
   }
 
-  encryptionKey(priv, params) {
+  encryptionKey(priv, kwargs) {
     return this.getKey(priv)
   }
 }

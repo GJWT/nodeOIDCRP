@@ -65,9 +65,9 @@ class KeyBundle {
       this.impJwks = null;
       this.lastUpdated = 0;
       this.formattedKeysList = [];
-      const self = this;
+      let self = this;
     
-      const result = null;
+      let result = null;
       if (keys) {
         if (typeof keys === 'object' && keys !== null && !(keys instanceof Array) &&
             !(keys instanceof Date)) {
@@ -116,11 +116,15 @@ class KeyBundle {
     if (!this.keys) {
       this.keys = [];
     }
+    let usage = ['sig', 'enc'];
     if (typeof keyData === 'string') {
       this.keys.push(keyData);
     } else {
-      for (const i = 0; i < keyData.length; i++) {
-        this.keys.push(keyData[i]);
+      for (var i = 0; i < usage.length; i++){
+        for (var j = 0; j < keyData.length; j++) {
+          let keyDataCpy = Object.assign({use: usage[i]}, keyData[j]);
+          this.keys.push(keyDataCpy);
+        }
       }
     }
   }
@@ -597,8 +601,6 @@ class KeyBundle {
     }
   }
 }
-
-
 
 const MAP = {
   'dec': 'enc',

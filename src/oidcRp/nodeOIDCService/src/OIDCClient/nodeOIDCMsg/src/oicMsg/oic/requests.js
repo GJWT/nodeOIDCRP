@@ -27,6 +27,9 @@ const REQUIRED_LIST_OF_STRINGS = require('../OAuth2/init').REQUIRED_LIST_OF_STRI
 const OPTIONAL_LOGICAL = require('../OAuth2/init').OPTIONAL_LOGICAL;
 const SINGLE_OPTIONAL_DICT = require('../OAuth2/init').SINGLE_OPTIONAL_DICT;
 const SINGLE_OPTIONAL_IDTOKEN = require('../OAuth2/init').SINGLE_OPTIONAL_IDTOKEN;
+const SINGLE_OPTIONAL_JSON = require('../OAuth2/init').SINGLE_OPTIONAL_JSON;
+const requests = require('../OAuth2/requests');
+
 
 /**
  * @fileoverview Contains all the OIC request classes
@@ -92,11 +95,10 @@ class AuthorizationRequest extends OAuth2AuthorizationRequest {
       'session_state': SINGLE_OPTIONAL_STRING,
       'response_mode': SINGLE_OPTIONAL_STRING,
     }, this.cParam);
-    this.cAllowedValues = requests.AuthorizationRequest.cAllowedValues;
-    this.cAllowedValues.update({
+    this.cAllowedValues =  Object.assign({
       'display': ['page', 'popup', 'touch', 'wap'],
       'prompt': ['none', 'login', 'consent', 'select_account']
-    });
+    }, this.cAllowedValues);
     return this;
   }
 

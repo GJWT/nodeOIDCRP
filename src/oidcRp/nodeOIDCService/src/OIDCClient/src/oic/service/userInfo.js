@@ -15,7 +15,7 @@ function getStateParameter(requestArgs, params){
   return _state;
 }
 
-function carryState(requestArgs, params){
+function carryState(requestArgs, req, params){
   let list = [requestArgs, {state: getStateParameter(requestArgs, params)}];
   return list;
 }

@@ -1,8 +1,7 @@
 'use strict';
 
 const GoogleIdToken = require('./googleIdToken');
-const jwtDecoder = require('../../oicMsg/jose/jwt/decode');
-const jwtSigner = require('../../oicMsg/jose/jwt/decode');
+const Token = require('./token');
 
 /**
  * @fileoverview
@@ -25,8 +24,8 @@ const jwtSigner = require('../../oicMsg/jose/jwt/decode');
  * @param {*} iat
  */
 class ExtendedIdToken extends GoogleIdToken {
-  constructor(name, email, picture, iss, sub, iat) {
-    super(name, email, picture, iss, sub, iat);
+  constructor({name, email, picture, iss, sub, iat}={}) {
+    super({name, email, picture, iss, sub, iat});
 
     /** Required claims */
     this.optionsToPayload = {
@@ -65,6 +64,34 @@ class ExtendedIdToken extends GoogleIdToken {
       sub: 'sub',
       maxAge: 'maxAge',
     };
+  }
+
+  static init(payload, options){
+    const extendedIdToken = new ExtendedIdToken(payload);
+    let optionalClaims = {};
+    Object.keys(extendedIdToken.knownOptionalClaims).forEach(key => {
+      if (payload[key]){
+        optionalClaims[key] = payload[key];
+      }
+    });
+    extendedIdToken.addOptionalClaims(optionalClaims);
+    if (options && Object.keys(options).indexOf('algorithm')!== -1 && options['algorithm'] === 'none'){
+      extendedIdToken.setNoneAlgorithmAttr(true);
+    }
+    return extendedIdToken;
+  }
+
+  static toJWT(payload, key, options){
+    let extendedIdToken = this.init(payload, options);
+    return extendedIdToken.toJWT(key, options);
+  }
+
+  static fromJWT(jwt, key, verificationClaims, options){
+    let token = new Token();
+    let decodedPayload = token.decode(jwt, key, options);
+    let extendedIdToken = this.init(decodedPayload);
+    decodedPayload = extendedIdToken.verify(decodedPayload, verificationClaims, options);
+    return decodedPayload;
   }
 }
 

@@ -8,6 +8,8 @@ const Service = require('../../service').Service;
 const oauth2Service = require('./service');
 const AuthorizationRequest =
 require('../../../nodeOIDCMsg/src/oicMsg/oauth2/requests').AuthorizationRequest;
+const AuthorizationResponse =
+require('../../../nodeOIDCMsg/src/oicMsg/oauth2/responses').AuthorizationResponse;
 
 /**
  * AccessToken
@@ -50,7 +52,7 @@ class AccessToken extends Service {
     let parameters = Object.keys(req.cParam);
     //let parameters = Object.keys(request.msgType.cParam);
     let _args = request.extendRequestArgs({}, AuthorizationRequest, 'auth_request', _state, parameters);
-    _args = request.extendRequestArgs(_args, AuthorizationRequest, 'auth_response', _state, parameters);
+    _args = request.extendRequestArgs(_args, AuthorizationResponse, 'auth_response', _state, parameters);
     if (Object.keys(_args).indexOf('grant_type') === -1){
       _args['grant_type'] = 'authorization_code';
     }

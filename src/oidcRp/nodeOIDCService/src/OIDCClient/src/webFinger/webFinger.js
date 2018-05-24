@@ -180,8 +180,8 @@ class WebFinger extends Service{
   }
 
   updateServiceContext(resp, state, params){
-    if (resp.claims['links']){
-      let links  = resp.claims['links'];
+    if (resp['links']){
+      let links  = resp['links'];
       for (var i = 0; i < links.length; i++){
         let link = links[i];
         if (link['rel'] == this.defaultRel){

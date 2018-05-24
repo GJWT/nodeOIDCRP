@@ -28,7 +28,7 @@ class RefreshAccessToken extends Service {
   updateServiceContext(resp, key='', params){
     this.storeItem(resp, 'token_response', key);
   }
-
+  
   oauthPreConstruct(requestArgs, request, params) {
     let req = new request.msgType();
     let _state = oauth2Service.getState(requestArgs, params);

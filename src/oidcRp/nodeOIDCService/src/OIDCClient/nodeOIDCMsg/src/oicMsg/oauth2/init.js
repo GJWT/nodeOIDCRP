@@ -1,6 +1,4 @@
 var Message = require('../message');
-var AccessToken = require('../tokenProfiles/accessToken');
-
 var dict = {};
 var SINGLE_REQUIRED_STRING = [String, true, null, null, false];
 var SINGLE_OPTIONAL_STRING = [String, false, null, null, false];
@@ -41,12 +39,13 @@ var VSER = 2;
 var VDESER = 3;
 var VNULLALLOWED = 4;
 
-function factory(msgtype, params) {
+function factory(msgtype, kwargs) {
   for (var i = 0; i < inspect.getMembers(sys.modules[_name_]).length; i++) {
+    let obj = inspect.getMembers(sys.modules[_name_])[i];
     if (inspect.isclass(obj) && obj instanceof Message) {
       try {
-        if (obj.name == msgType) {
-          return obj(params);
+        if (obj.name === msgType) {
+          return obj(kwargs);
         }
       } catch (err) {
         return;

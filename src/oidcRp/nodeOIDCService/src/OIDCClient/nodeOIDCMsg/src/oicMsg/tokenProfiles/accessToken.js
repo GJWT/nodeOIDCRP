@@ -1,8 +1,7 @@
 'use strict';
 
 const Message = require('../message');
-const jwtDecoder = require('../../oicMsg/jose/jwt/decode');
-const jwtSigner = require('../../oicMsg/jose/jwt/decode');
+const Token = require('./token');
 
 /**
  * @fileoverview
@@ -22,7 +21,7 @@ const jwtSigner = require('../../oicMsg/jose/jwt/decode');
  * @param {*} iat
  */
 class AccessToken extends Message {
-  constructor(iss, sub, iat) {
+  constructor({iss, sub, iat}={}) {
     super();
     this.iss = iss;
     this.sub = sub;
@@ -56,9 +55,7 @@ class AccessToken extends Message {
 
   /** Validate required claims */
   validateRequiredFields() {
-    if (this.iss && this.sub && this.iat) {
-      console.log('Validated all standard fields')
-    } else {
+    if (!(this.iss && this.sub && this.iat)) {
       throw new Error('You are missing a required parameter');
     }
   }
@@ -67,6 +64,34 @@ class AccessToken extends Message {
     AccessToken.prototype
         .requiredClaims = {'iss': this.iss, 'sub': this.sub, 'iat': this.iat};
     return AccessToken.prototype.requiredClaims;
+  }
+  
+  static init(payload, options){
+    const accessToken = new AccessToken(payload);
+    let optionalClaims = {};
+    Object.keys(accessToken.knownOptionalClaims).forEach(key => {
+      if (payload[key]){
+        optionalClaims[key] = payload[key];
+      }
+    });
+    accessToken.addOptionalClaims(optionalClaims);
+    if (options && Object.keys(options).indexOf('algorithm')!== -1 && options['algorithm'] === 'none'){
+      accessToken.setNoneAlgorithmAttr(true);
+    }
+    return accessToken;
+  }
+
+  static toJWT(payload, key, options){
+    let accessToken = this.init(payload, options);
+    return accessToken.toJWT(key, options);
+  }
+
+  static fromJWT(jwt, key, verificationClaims, options){
+    let token = new Token();
+    let decodedPayload = token.decode(jwt, key, options);
+    let accessToken = this.init(decodedPayload);
+    decodedPayload = accessToken.verify(decodedPayload, verificationClaims, options);
+    return decodedPayload;
   }
 }
 

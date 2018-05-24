@@ -72,7 +72,8 @@ function msgListDeser(val, sformat, lev) {
     return [Token(val)];
   }
 
-  const _res = [] for (const i = 0; i < val.length; i++) {
+  const _res = [];
+  for (const i = 0; i < val.length; i++) {
     _res.push(msgDeser(v, sformat));
   }
 

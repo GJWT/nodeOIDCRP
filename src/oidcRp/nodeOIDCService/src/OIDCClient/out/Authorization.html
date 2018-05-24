@@ -28,7 +28,7 @@
 
 <header>
     
-        <h2><span class="attribs"><span class="type-signature"></span></span>Authorization<span class="signature">()</span><span class="type-signature"></span></h2>
+        <h2><span class="attribs"><span class="type-signature"></span></span>Authorization<span class="signature">(request, requestArgs, httpArgs)</span><span class="type-signature"></span></h2>
         
     
 </header>
@@ -41,2503 +41,7 @@
     
 
     
-    <h4 class="name" id="Authorization"><span class="type-signature"></span>new Authorization<span class="signature">()</span><span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="oauth2_service_authorization.js.html">oauth2/service/authorization.js</a>, <a href="oauth2_service_authorization.js.html#line13">line 13</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-    </div>
-
-    
-        <h3 class="subsection-title">Extends</h3>
-
-        
-
-
-    <ul>
-        <li><a href="Service.html">Service</a></li>
-    </ul>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-        <h3 class="subsection-title">Members</h3>
-
-        
-            
-<h4 class="name" id="bodyType"><span class="type-signature"></span>bodyType<span class="type-signature"> :string</span></h4>
-
-
-
-
-<div class="description">
-    The serialization method to be used for the request Default is urlencoded
-</div>
-
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type">string</span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
-        <a href="Service.html#bodyType">Service#bodyType</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="service.js.html">service.js</a>, <a href="service.js.html#line96">line 96</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
-            
-<h4 class="name" id="defaultAuthMethod"><span class="type-signature"></span>defaultAuthMethod<span class="type-signature"> :string</span></h4>
-
-
-
-
-<div class="description">
-    The client authentication method to use if nothing else is specified. Default is ‘’ which means none.
-</div>
-
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type">string</span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
-        <a href="Service.html#defaultAuthMethod">Service#defaultAuthMethod</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="service.js.html">service.js</a>, <a href="service.js.html#line86">line 86</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
-            
-<h4 class="name" id="endpointName"><span class="type-signature"></span>endpointName<span class="type-signature"> :string</span></h4>
-
-
-
-
-<div class="description">
-    The name of the endpoint on the server that the request should be sent to. No default
-</div>
-
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type">string</span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-overrides">Overrides:</dt>
-    <dd class="tag-overrides"><ul class="dummy"><li>
-        <a href="Service.html#endpointName">Service#endpointName</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="service.js.html">service.js</a>, <a href="service.js.html#line66">line 66</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
-            
-<h4 class="name" id="errorMsg"><span class="type-signature"></span>errorMsg<span class="type-signature"> :ErrorResponse</span></h4>
-
-
-
-
-<div class="description">
-    The message subclass that describes an error response. Default is oauth2 ErrorResponse
-</div>
-
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type">ErrorResponse</span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-overrides">Overrides:</dt>
-    <dd class="tag-overrides"><ul class="dummy"><li>
-        <a href="Service.html#errorMsg">Service#errorMsg</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="service.js.html">service.js</a>, <a href="service.js.html#line61">line 61</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
-            
-<h4 class="name" id="httpMethod"><span class="type-signature"></span>httpMethod<span class="type-signature"> :string</span></h4>
-
-
-
-
-<div class="description">
-    Which HTTP method to use when sending the request. Default is GET
-</div>
-
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type">string</span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
-        <a href="Service.html#httpMethod">Service#httpMethod</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="service.js.html">service.js</a>, <a href="service.js.html#line91">line 91</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
-            
-<h4 class="name" id="msgType"><span class="type-signature"></span>msgType<span class="type-signature"> :Message</span></h4>
-
-
-
-
-<div class="description">
-    The message subclass that describes the request. Default is Message
-</div>
-
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type">Message</span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-overrides">Overrides:</dt>
-    <dd class="tag-overrides"><ul class="dummy"><li>
-        <a href="Service.html#msgType">Service#msgType</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="service.js.html">service.js</a>, <a href="service.js.html#line50">line 50</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
-            
-<h4 class="name" id="request"><span class="type-signature"></span>request<span class="type-signature"> :string</span></h4>
-
-
-
-
-<div class="description">
-    A name of the service. Later when a RP/client is implemented instances of different services are found by using this name. No default
-</div>
-
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type">string</span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-overrides">Overrides:</dt>
-    <dd class="tag-overrides"><ul class="dummy"><li>
-        <a href="Service.html#request">Service#request</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="service.js.html">service.js</a>, <a href="service.js.html#line80">line 80</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
-            
-<h4 class="name" id="responseBodyType"><span class="type-signature"></span>responseBodyType<span class="type-signature"> :string</span></h4>
-
-
-
-
-<div class="description">
-    The deserialization method to use on the response Default is json
-</div>
-
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type">string</span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
-        <a href="Service.html#responseBodyType">Service#responseBodyType</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="service.js.html">service.js</a>, <a href="service.js.html#line101">line 101</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
-            
-<h4 class="name" id="responseCls"><span class="type-signature"></span>responseCls<span class="type-signature"> :Message</span></h4>
-
-
-
-
-<div class="description">
-    The message subclass that describes the response. Default is Message
-</div>
-
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type">Message</span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-overrides">Overrides:</dt>
-    <dd class="tag-overrides"><ul class="dummy"><li>
-        <a href="Service.html#responseCls">Service#responseCls</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="service.js.html">service.js</a>, <a href="service.js.html#line56">line 56</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
-            
-<h4 class="name" id="synchronous"><span class="type-signature"></span>synchronous<span class="type-signature"> :bool</span></h4>
-
-
-
-
-<div class="description">
-    True if the response will be returned as a direct response to the request. The only exception 
-right now to this is the Authorization request where the response is delivered to the client 
-at some later date. Default is True
-</div>
-
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type">bool</span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-overrides">Overrides:</dt>
-    <dd class="tag-overrides"><ul class="dummy"><li>
-        <a href="Service.html#synchronous">Service#synchronous</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="service.js.html">service.js</a>, <a href="service.js.html#line74">line 74</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
-    
-
-    
-        <h3 class="subsection-title">Methods</h3>
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="construct"><span class="type-signature"></span>construct<span class="signature">(cliInfo, requestArgs)</span><span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    Instantiate the request as a message class instance with
-attribute values gathered in a preConstruct method or in the
-gatherRequestArgs method and possibly modified by a postConstruct method.
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>cliInfo</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="ClientInfo.html">ClientInfo</a></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Information about the client</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>requestArgs</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Object.&lt;string, string></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Request arguments</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
-        <a href="Service.html#construct">Service#construct</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="service.js.html">service.js</a>, <a href="service.js.html#line265">line 265</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    Message class instance
-</div>
-
-
-
-    
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="doPostConstruct"><span class="type-signature"></span>doPostConstruct<span class="signature">(cliInfo, requestArgs, postArgs)</span><span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    Has a number of sources where it can get request arguments from. In 
-priority order:
--  Arguments to the method call
--  Information kept in the client information instance
--  Information in the client configuration targeted for this method.
--  Standard protocol defaults.
-
-It will go through the list of possible (required/optional) attributes 
-as specified in the oicmsg.message.Message class that is defined to be 
-used for this request and add values to the attributes if any can be 
-found.
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>cliInfo</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="ClientInfo.html">ClientInfo</a></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Client Information as a oiccli Client instance</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>requestArgs</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Object.&lt;string, string></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Request arguments</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>postArgs</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Object.&lt;string, string></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Arguments used by the 
-postConstruct method</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
-        <a href="Service.html#doPostConstruct">Service#doPostConstruct</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="service.js.html">service.js</a>, <a href="service.js.html#line226">line 226</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    Possible modified set of request arguments.
-</div>
-
-
-
-    
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="doPostParseResponse"><span class="type-signature"></span>doPostParseResponse<span class="signature">(resp, cliInfo, state)</span><span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    A method run after the response has been parsed and verified.
-Runs the list of post_parse_response methods in the order they appear 
-in the list.
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>resp</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Message</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">The response as a Message instance</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>cliInfo</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="ClientInfo.html">ClientInfo</a></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Client Information as a Client instance.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>state</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="State.html">State</a></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">State value</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
-        <a href="Service.html#doPostParseResponse">Service#doPostParseResponse</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="service.js.html">service.js</a>, <a href="service.js.html#line244">line 244</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="doPreConstruct"><span class="type-signature"></span>doPreConstruct<span class="signature">(cliInfo, requestArgs)</span><span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    Will run the pre_construct methods one at the time in order. Updates 
-the arguments in the method call with preconfigure argument from the 
-client configuration. Then it will run the list of pre_construct methods
-one by one in the order they appear in the list.
-
-The call API that all the pre_construct methods must adhere to is:
-   meth(cli_info, request_args, **_args)
-
-CliInfo is an instance of ClientInfo class. The methods MUST return a 
-tuple with request arguments and arguments to be used by the 
-postConstruct methods.
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>cliInfo</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="ClientInfo.html">ClientInfo</a></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Client Information as a Client instance.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>requestArgs</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Object.&lt;string, string></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Request arguments</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
-        <a href="Service.html#doPreConstruct">Service#doPreConstruct</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="service.js.html">service.js</a>, <a href="service.js.html#line164">line 164</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    Array consisting of request arguments and post arguments
-</div>
-
-
-
-    
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="doRequestInit"><span class="type-signature"></span>doRequestInit<span class="signature">(cliInfo, bodyType, method, authMethod, requestArgs, httpArgs)</span><span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    Builds the request message and constructs the HTTP headers.
- This is the starting pont for a pipeline that will:
-   - construct the request message
-   - add/remove information to/from the request message in the way a
-     specific client authentication method requires.
-   - gather a set of HTTP headers like Content-type and Authorization.
-   - serialize the request message into the necessary format (JSON, 
-     urlencoded, signed JWT)
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>cliInfo</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="ClientInfo.html">ClientInfo</a></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Client information</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>bodyType</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Which serialization to use for the HTTP body</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>method</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">HTTP method used</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>authMethod</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">One of the six client authentication methods</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>requestArgs</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Object.&lt;string, string></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Message arguments</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>httpArgs</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Object.&lt;string, object></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Initial HTTP header arguments</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-overrides">Overrides:</dt>
-    <dd class="tag-overrides"><ul class="dummy"><li>
-        <a href="Service.html#doRequestInit">Service#doRequestInit</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="service.js.html">service.js</a>, <a href="service.js.html#line499">line 499</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    Object<string, Object> contains difference information such as 
-the uri, body, and httpArgs based on the service
-</div>
-
-
-
-    
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="gatherRequestArguments"><span class="type-signature"></span>gatherRequestArguments<span class="signature">(cliInfo)</span><span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    Has a number of sources where it can get request arguments from. 
-In priority order:
--  Arguments to the method call
--  Information kept in the client information instance
--  Information in the client configuration targeted for this method.
--  Standard protocol defaults.
-
-It will go through the list of possible (required/optional) attributes 
-as specified in the oicmsg.message.Message class that is defined to be 
-used for this request and add values to the attributes if any can be 
-found.
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>cliInfo</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="ClientInfo.html">ClientInfo</a></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">contains client information</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
-        <a href="Service.html#gatherRequestArguments">Service#gatherRequestArguments</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="service.js.html">service.js</a>, <a href="service.js.html#line194">line 194</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    Object<string, Object> that contains request arguments such as
-redirectUri
-</div>
-
-
-
-    
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="getEndpoint"><span class="type-signature"></span>getEndpoint<span class="signature">()</span><span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    Find out which endpoint the request should be sent to
- Picks the endpoint (URL) to which the request will be sent.
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
-        <a href="Service.html#getEndpoint">Service#getEndpoint</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="service.js.html">service.js</a>, <a href="service.js.html#line296">line 296</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    The endpoint URI to which the request will be sent
-</div>
-
-
-
-    
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="getUrlInfo"><span class="type-signature"></span>getUrlInfo<span class="signature">(info)</span><span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    Pick out the fragment or query part from a URL.
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>info</code></td>
-            
-
-            <td class="type">
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">A URL possibly containing a query or a fragment part</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
-        <a href="Service.html#getUrlInfo">Service#getUrlInfo</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="service.js.html">service.js</a>, <a href="service.js.html#line522">line 522</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    the query/fragment part
-</div>
-
-
-
-    
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="getValueType"><span class="type-signature"></span>getValueType<span class="signature">(reqresp, bodyType)</span><span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    Get the encoding of the response
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>reqresp</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">The response</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>bodyType</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Assumed body type</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
-        <a href="Service.html#getValueType">Service#getValueType</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="service.js.html">service.js</a>, <a href="service.js.html#line673">line 673</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    String with the encoding type
-</div>
-
-
-
-    
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="init"><span class="type-signature"></span>init<span class="signature">(cis, requestArgs, httpArgs)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="Authorization"><span class="type-signature"></span>new Authorization<span class="signature">(request, requestArgs, httpArgs)</span><span class="type-signature"></span></h4>
     
 
     
@@ -2577,7 +81,7 @@ redirectUri
 
         <tr>
             
-                <td class="name"><code>cis</code></td>
+                <td class="name"><code>request</code></td>
             
 
             <td class="type">
@@ -2680,1970 +184,7 @@ redirectUri
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="oic_service_authorization.js.html">oic/service/authorization.js</a>, <a href="oic_service_authorization.js.html#line16">line 16</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="initAuthenticationMethod"><span class="type-signature"></span>initAuthenticationMethod<span class="signature">(cis, cliInfo, authMethod, requestArgs, httpArgs)</span><span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    Will run the proper client authentication method.
- Each such method will place the necessary information in the necessary
- place. A method may modify the request.
- Supports 6 different client authentication/authorization methods
--  bearerBody
--  bearerHeader
--  clientSecretBasic
--  clientSecretJwt
--  clientSecretPost
--  privateKeyJwt
-depending on which of these, if any, is supposed to be used different 
-things has to happen. Thos things will happen when this method is called.
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>cis</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">ResourceRequest</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">The request as a Message class instance</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>cliInfo</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="ClientInfo.html">ClientInfo</a></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">ClientInfo instance</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>authMethod</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Type of authentication method</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>requestArgs</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Object.&lt;string, string></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Request args</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>httpArgs</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Object.&lt;string, string></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">HTTP header arguments</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
-        <a href="Service.html#initAuthenticationMethod">Service#initAuthenticationMethod</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="service.js.html">service.js</a>, <a href="service.js.html#line357">line 357</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    Object<string, Object> containing Http arguments
-</div>
-
-
-
-    
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="parseArgs"><span class="type-signature"></span>parseArgs<span class="signature">(cliInfo)</span><span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    Go through the attributes that the message class can contain and
-add values if they are missing and exists in the client info or
-when there are default values.
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>cliInfo</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="ClientInfo.html">ClientInfo</a></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Client info</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
-        <a href="Service.html#parseArgs">Service#parseArgs</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="service.js.html">service.js</a>, <a href="service.js.html#line128">line 128</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    Object<string, Object>
-</div>
-
-
-
-    
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="parseErrorMessage"><span class="type-signature"></span>parseErrorMessage<span class="signature">(reqresp, bodyType)</span><span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    Deal with a request response
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>reqresp</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">The HTTP request response</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>bodyType</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">How the body is encoded</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
-        <a href="Service.html#parseErrorMessage">Service#parseErrorMessage</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="service.js.html">service.js</a>, <a href="service.js.html#line652">line 652</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    ErrorMessage class instance
-</div>
-
-
-
-    
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="parseRequestResponse"><span class="type-signature"></span>parseRequestResponse<span class="signature">(reqresp, clientInfo, responseBodyType, state)</span><span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    Deal with a request response
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>reqresp</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">The HTTP request response</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>clientInfo</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="ClientInfo.html">ClientInfo</a></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Information about the client/server session</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>responseBodyType</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">If response in body one of 'json', 'jwt' or
-     'urlencoded'</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>state</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="State.html">State</a></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Session identifier</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
-        <a href="Service.html#parseRequestResponse">Service#parseRequestResponse</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="service.js.html">service.js</a>, <a href="service.js.html#line690">line 690</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    response type such as an ErrorResponse
-</div>
-
-
-
-    
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="parseResponse"><span class="type-signature"></span>parseResponse<span class="signature">(info, clientInfo, sformat, state)</span><span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    This the start of a pipeline that will:
- - Deserializes a response into it's response message class.
-   Or oauth2 ErrorResponse if it's an error message
- - verifies the correctness of the response by running the verify 
-   method belonging to the message class used.
- - runs the doPostParseResponse method iff the response was not
-   an error response.
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>info</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Object.&lt;string, string></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">The response, can be either in a JSON or an urlencoded format</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>clientInfo</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="ClientInfo.html">ClientInfo</a></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Information about client and server</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>sformat</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Which serialization that was used</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>state</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="State.html">State</a></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">The state</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
-        <a href="Service.html#parseResponse">Service#parseResponse</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="service.js.html">service.js</a>, <a href="service.js.html#line554">line 554</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    Response instance such as an ErrorResponse
-</div>
-
-
-
-    
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="requestInfo"><span class="type-signature"></span>requestInfo<span class="signature">(cliInfo, method, requestArgs, bodyType, authnMethod, lax)</span><span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    The method where everything is setup for sending the request.
-The request information is gathered and the where and how of sending the
-request is decided.
-
-- Remove request arguments that is know at this point should not appear in
-  the request
-- Construct the request
-- Do the client authentication setup if necessary
-- Set the necessary HTTP headers
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>cliInfo</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="ClientInfo.html">ClientInfo</a></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Client information as a oicCli Client instance</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>method</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">The HTTP method to be used</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>requestArgs</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Object.&lt;string, string></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Request Arguments</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>bodyType</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">If the request is sent in the HTTP body this 
-decides the encoding of the request</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>authnMethod</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">The client authentication method</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>lax</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">bool</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">If it should be allowed to send a request that doesn't 
-completely conform to the standard</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
-        <a href="Service.html#requestInfo">Service#requestInfo</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="service.js.html">service.js</a>, <a href="service.js.html#line395">line 395</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    A dictionary with the keys 'uri' and possibly 'body', 'kwargs',
-'request' and 'ht_args'
-</div>
-
-
-
-    
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="serviceRequest"><span class="type-signature"></span>serviceRequest<span class="signature">(reqresp, clientInfo, responseBodyType, state)</span><span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    The method that sends the request and handles the response returned.
-This assumes a synchronous request-response exchange.
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>reqresp</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">The HTTP request response</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>clientInfo</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="ClientInfo.html">ClientInfo</a></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Information about the client/server session</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>responseBodyType</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">If response in body one of 'json', 'jwt' or
-     'urlencoded'</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>state</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="State.html">State</a></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Session identifier</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
-        <a href="Service.html#serviceRequest">Service#serviceRequest</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="service.js.html">service.js</a>, <a href="service.js.html#line751">line 751</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    Returns a request response
-</div>
-
-
-
-    
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="updateHttpArgs"><span class="type-signature"></span>updateHttpArgs<span class="signature">(httpArgs, info)</span><span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    Extending the header with information gathered during the request setup.
-Will add the HTTP header arguments that has been added while the request
-has been travelling through the pipe line to a possible starting set.
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>httpArgs</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Object.&lt;string, string></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Original HTTP header arguments</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>info</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Request info</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
-        <a href="Service.html#updateHttpArgs">Service#updateHttpArgs</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="service.js.html">service.js</a>, <a href="service.js.html#line457">line 457</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="uriAndBody"><span class="type-signature"></span>uriAndBody<span class="signature">(cis, method)</span><span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    Based on the HTTP method place the protocol message in the right place.
-Depending on where the request are to be placed in the request (part of 
-the URL or as a POST body) and the serialization used the request in 
-it’s proper form will be constructed and tagged with destination.
-
-uriAndBody will return a dictionary that a HTTP client library can use 
-to send the request.
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>cis</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">ResourceRequest</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">The request as a Message class instance</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>method</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">HTTP method</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
-        <a href="Service.html#uriAndBody">Service#uriAndBody</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="service.js.html">service.js</a>, <a href="service.js.html#line324">line 324</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-    
-
-    
-
-    
-</article>
-
-</section>
-
-
-
-
-
-
-
-<section>
-
-<header>
-    
-        <h2><span class="attribs"><span class="type-signature"></span></span>Authorization<span class="signature">()</span><span class="type-signature"></span></h2>
-        
-    
-</header>
-
-<article>
-    <div class="container-overview">
-    
-        
-
-    
-
-    
-    <h4 class="name" id="Authorization"><span class="type-signature"></span>new Authorization<span class="signature">()</span><span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="oic_service_authorization.js.html">oic/service/authorization.js</a>, <a href="oic_service_authorization.js.html#line10">line 10</a>
+        <a href="oic_service_authorization.js.html">oic/service/authorization.js</a>, <a href="oic_service_authorization.js.html#line44">line 44</a>
     </li></ul></dd>
     
 
@@ -4761,7 +302,7 @@ to send the request.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="service.js.html">service.js</a>, <a href="service.js.html#line96">line 96</a>
+        <a href="service.js.html">service.js</a>, <a href="service.js.html#line122">line 122</a>
     </li></ul></dd>
     
 
@@ -4838,7 +379,7 @@ to send the request.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="service.js.html">service.js</a>, <a href="service.js.html#line86">line 86</a>
+        <a href="service.js.html">service.js</a>, <a href="service.js.html#line112">line 112</a>
     </li></ul></dd>
     
 
@@ -4915,7 +456,7 @@ to send the request.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="service.js.html">service.js</a>, <a href="service.js.html#line66">line 66</a>
+        <a href="service.js.html">service.js</a>, <a href="service.js.html#line92">line 92</a>
     </li></ul></dd>
     
 
@@ -4992,7 +533,7 @@ to send the request.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="service.js.html">service.js</a>, <a href="service.js.html#line61">line 61</a>
+        <a href="service.js.html">service.js</a>, <a href="service.js.html#line87">line 87</a>
     </li></ul></dd>
     
 
@@ -5069,7 +610,7 @@ to send the request.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="service.js.html">service.js</a>, <a href="service.js.html#line91">line 91</a>
+        <a href="service.js.html">service.js</a>, <a href="service.js.html#line117">line 117</a>
     </li></ul></dd>
     
 
@@ -5146,7 +687,7 @@ to send the request.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="service.js.html">service.js</a>, <a href="service.js.html#line50">line 50</a>
+        <a href="service.js.html">service.js</a>, <a href="service.js.html#line76">line 76</a>
     </li></ul></dd>
     
 
@@ -5223,7 +764,7 @@ to send the request.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="service.js.html">service.js</a>, <a href="service.js.html#line80">line 80</a>
+        <a href="service.js.html">service.js</a>, <a href="service.js.html#line106">line 106</a>
     </li></ul></dd>
     
 
@@ -5273,8 +814,10 @@ to send the request.
     
 
     
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
+
+    
+    <dt class="tag-overrides">Overrides:</dt>
+    <dd class="tag-overrides"><ul class="dummy"><li>
         <a href="Service.html#responseBodyType">Service#responseBodyType</a>
     </li></ul></dd>
     
@@ -5296,11 +839,9 @@ to send the request.
     
 
     
-
-    
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="service.js.html">service.js</a>, <a href="service.js.html#line101">line 101</a>
+        <a href="service.js.html">service.js</a>, <a href="service.js.html#line127">line 127</a>
     </li></ul></dd>
     
 
@@ -5377,7 +918,7 @@ to send the request.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="service.js.html">service.js</a>, <a href="service.js.html#line56">line 56</a>
+        <a href="service.js.html">service.js</a>, <a href="service.js.html#line82">line 82</a>
     </li></ul></dd>
     
 
@@ -5456,7 +997,7 @@ at some later date. Default is True
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="service.js.html">service.js</a>, <a href="service.js.html#line74">line 74</a>
+        <a href="service.js.html">service.js</a>, <a href="service.js.html#line100">line 100</a>
     </li></ul></dd>
     
 
@@ -5484,7 +1025,7 @@ at some later date. Default is True
     
 
     
-    <h4 class="name" id="construct"><span class="type-signature"></span>construct<span class="signature">(cliInfo, requestArgs)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="construct"><span class="type-signature"></span>construct<span class="signature">(serviceContext, requestArgs)</span><span class="type-signature"></span></h4>
     
 
     
@@ -5530,13 +1071,13 @@ gatherRequestArgs method and possibly modified by a postConstruct method.
 
         <tr>
             
-                <td class="name"><code>cliInfo</code></td>
+                <td class="name"><code>serviceContext</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type"><a href="ClientInfo.html">ClientInfo</a></span>
+<span class="param-type">serviceContext</span>
 
 
             
@@ -5615,7 +1156,7 @@ gatherRequestArgs method and possibly modified by a postConstruct method.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="service.js.html">service.js</a>, <a href="service.js.html#line265">line 265</a>
+        <a href="service.js.html">service.js</a>, <a href="service.js.html#line328">line 328</a>
     </li></ul></dd>
     
 
@@ -5659,7 +1200,172 @@ gatherRequestArgs method and possibly modified by a postConstruct method.
     
 
     
-    <h4 class="name" id="doPostConstruct"><span class="type-signature"></span>doPostConstruct<span class="signature">(cliInfo, requestArgs, postArgs)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="constructRequest"><span class="type-signature"></span>constructRequest<span class="signature">(requestArgs, params)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    The method where everything is setup for sending the request.
+ The request information is gathered and the where and how of sending the
+ request is decided.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>requestArgs</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>params</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="Service.html#constructRequest">Service#constructRequest</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="service.js.html">service.js</a>, <a href="service.js.html#line1048">line 1048</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="doPostConstruct"><span class="type-signature"></span>doPostConstruct<span class="signature">(serviceContext, requestArgs, postArgs)</span><span class="type-signature"></span></h4>
     
 
     
@@ -5713,13 +1419,13 @@ found.
 
         <tr>
             
-                <td class="name"><code>cliInfo</code></td>
+                <td class="name"><code>serviceContext</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type"><a href="ClientInfo.html">ClientInfo</a></span>
+<span class="param-type">serviceContext</span>
 
 
             
@@ -5822,7 +1528,7 @@ postConstruct method</td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="service.js.html">service.js</a>, <a href="service.js.html#line226">line 226</a>
+        <a href="service.js.html">service.js</a>, <a href="service.js.html#line284">line 284</a>
     </li></ul></dd>
     
 
@@ -5866,7 +1572,7 @@ postConstruct method</td>
     
 
     
-    <h4 class="name" id="doPostParseResponse"><span class="type-signature"></span>doPostParseResponse<span class="signature">(resp, cliInfo, state)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="doPostParseResponse"><span class="type-signature"></span>doPostParseResponse<span class="signature">(resp, serviceContext, state)</span><span class="type-signature"></span></h4>
     
 
     
@@ -5935,13 +1641,13 @@ in the list.
 
         <tr>
             
-                <td class="name"><code>cliInfo</code></td>
+                <td class="name"><code>serviceContext</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type"><a href="ClientInfo.html">ClientInfo</a></span>
+<span class="param-type">serviceContext</span>
 
 
             
@@ -6020,7 +1726,7 @@ in the list.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="service.js.html">service.js</a>, <a href="service.js.html#line244">line 244</a>
+        <a href="service.js.html">service.js</a>, <a href="service.js.html#line303">line 303</a>
     </li></ul></dd>
     
 
@@ -6054,7 +1760,7 @@ in the list.
     
 
     
-    <h4 class="name" id="doPreConstruct"><span class="type-signature"></span>doPreConstruct<span class="signature">(cliInfo, requestArgs)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="doPreConstruct"><span class="type-signature"></span>doPreConstruct<span class="signature">(serviceContext, requestArgs)</span><span class="type-signature"></span></h4>
     
 
     
@@ -6069,10 +1775,6 @@ one by one in the order they appear in the list.
 
 The call API that all the pre_construct methods must adhere to is:
    meth(cli_info, request_args, **_args)
-
-CliInfo is an instance of ClientInfo class. The methods MUST return a 
-tuple with request arguments and arguments to be used by the 
-postConstruct methods.
 </div>
 
 
@@ -6108,13 +1810,13 @@ postConstruct methods.
 
         <tr>
             
-                <td class="name"><code>cliInfo</code></td>
+                <td class="name"><code>serviceContext</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type"><a href="ClientInfo.html">ClientInfo</a></span>
+<span class="param-type">serviceContext</span>
 
 
             
@@ -6193,7 +1895,7 @@ postConstruct methods.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="service.js.html">service.js</a>, <a href="service.js.html#line164">line 164</a>
+        <a href="service.js.html">service.js</a>, <a href="service.js.html#line196">line 196</a>
     </li></ul></dd>
     
 
@@ -6237,7 +1939,7 @@ postConstruct methods.
     
 
     
-    <h4 class="name" id="doRequestInit"><span class="type-signature"></span>doRequestInit<span class="signature">(cliInfo, bodyType, method, authMethod, requestArgs, httpArgs)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="doRequestInit"><span class="type-signature"></span>doRequestInit<span class="signature">(serviceContext, bodyType, method, authMethod, requestArgs, httpArgs)</span><span class="type-signature"></span></h4>
     
 
     
@@ -6288,13 +1990,13 @@ postConstruct methods.
 
         <tr>
             
-                <td class="name"><code>cliInfo</code></td>
+                <td class="name"><code>serviceContext</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type"><a href="ClientInfo.html">ClientInfo</a></span>
+<span class="param-type">serviceContext</span>
 
 
             
@@ -6438,10 +2140,8 @@ postConstruct methods.
     
 
     
-
-    
-    <dt class="tag-overrides">Overrides:</dt>
-    <dd class="tag-overrides"><ul class="dummy"><li>
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
         <a href="Service.html#doRequestInit">Service#doRequestInit</a>
     </li></ul></dd>
     
@@ -6463,9 +2163,11 @@ postConstruct methods.
     
 
     
+
+    
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="service.js.html">service.js</a>, <a href="service.js.html#line499">line 499</a>
+        <a href="service.js.html">service.js</a>, <a href="service.js.html#line591">line 591</a>
     </li></ul></dd>
     
 
@@ -6510,7 +2212,7 @@ the uri, body, and httpArgs based on the service
     
 
     
-    <h4 class="name" id="gatherRequestArguments"><span class="type-signature"></span>gatherRequestArguments<span class="signature">(cliInfo)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="gatherRequestArgs"><span class="type-signature"></span>gatherRequestArgs<span class="signature">(serviceContext)</span><span class="type-signature"></span></h4>
     
 
     
@@ -6564,13 +2266,13 @@ found.
 
         <tr>
             
-                <td class="name"><code>cliInfo</code></td>
+                <td class="name"><code>serviceContext</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type"><a href="ClientInfo.html">ClientInfo</a></span>
+<span class="param-type">serviceContext</span>
 
 
             
@@ -6599,12 +2301,12 @@ found.
     
 
     
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
-        <a href="Service.html#gatherRequestArguments">Service#gatherRequestArguments</a>
-    </li></ul></dd>
-    
 
+    
+    <dt class="tag-overrides">Overrides:</dt>
+    <dd class="tag-overrides"><ul class="dummy"><li>
+        <a href="Service.html#gatherRequestArgs">Service#gatherRequestArgs</a>
+    </li></ul></dd>
     
 
     
@@ -6626,7 +2328,7 @@ found.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="service.js.html">service.js</a>, <a href="service.js.html#line194">line 194</a>
+        <a href="service.js.html">service.js</a>, <a href="service.js.html#line227">line 227</a>
     </li></ul></dd>
     
 
@@ -6660,6 +2362,211 @@ redirectUri
 
 
     
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="getAuthHeader"><span class="type-signature"></span>getAuthHeader<span class="signature">(request, authMethod, httpArgs, params)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>request</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>authMethod</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>httpArgs</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>params</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="Service.html#getAuthHeader">Service#getAuthHeader</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="service.js.html">service.js</a>, <a href="service.js.html#line453">line 453</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -6729,7 +2636,7 @@ redirectUri
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="service.js.html">service.js</a>, <a href="service.js.html#line296">line 296</a>
+        <a href="service.js.html">service.js</a>, <a href="service.js.html#line366">line 366</a>
     </li></ul></dd>
     
 
@@ -6757,6 +2664,275 @@ redirectUri
         
 <div class="param-desc">
     The endpoint URI to which the request will be sent
+</div>
+
+
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="getRequestParameters"><span class="type-signature"></span>getRequestParameters<span class="signature">(bodyType, method, authnMethod, requestArgs, httpArgs, params)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Builds the request message and constructs the HTTP headers. This is the starting point for a pipeline that will: 
+construct the request message 
+add/remove information to/from the request message in the way a specific client authentication method requires. 
+gather a set of HTTP headers like Content-type and Authorization. 
+serialize the request message into the necessary format (JSON, urlencoded, signed JWT)
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>bodyType</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Which serialization to use for the HTTP body</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>method</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">HTTP method used</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>authnMethod</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">One of the six client authentication methods : bearer_body, bearer_header, client_secret_basic, client_secret_jwt, client_secret_post, private_key_jwt</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>requestArgs</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object.&lt;string, string></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Message arguments</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>httpArgs</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object.&lt;string, string></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Initial HTTP header arguments</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>params</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object.&lt;string, string></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Other attributes that might be needed</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="Service.html#getRequestParameters">Service#getRequestParameters</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="service.js.html">service.js</a>, <a href="service.js.html#line707">line 707</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    Object<string, Object> contains difference information such as the uri, body, and httpArgs based on the service
 </div>
 
 
@@ -6874,7 +3050,7 @@ redirectUri
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="service.js.html">service.js</a>, <a href="service.js.html#line522">line 522</a>
+        <a href="service.js.html">service.js</a>, <a href="service.js.html#line635">line 635</a>
     </li></ul></dd>
     
 
@@ -7047,7 +3223,7 @@ redirectUri
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="service.js.html">service.js</a>, <a href="service.js.html#line673">line 673</a>
+        <a href="service.js.html">service.js</a>, <a href="service.js.html#line933">line 933</a>
     </li></ul></dd>
     
 
@@ -7091,184 +3267,7 @@ redirectUri
     
 
     
-    <h4 class="name" id="init"><span class="type-signature"></span>init<span class="signature">(cis, requestArgs, httpArgs)</span><span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>cis</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">ResourceRequest</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Request class instance</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>requestArgs</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Object.&lt;string, string></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Request arguments</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>httpArgs</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Object.&lt;string, object></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">HTTP arguments</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="oic_service_authorization.js.html">oic/service/authorization.js</a>, <a href="oic_service_authorization.js.html#line16">line 16</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="initAuthenticationMethod"><span class="type-signature"></span>initAuthenticationMethod<span class="signature">(cis, cliInfo, authMethod, requestArgs, httpArgs)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="initAuthenticationMethod"><span class="type-signature"></span>initAuthenticationMethod<span class="signature">(request, serviceContext, authMethod, requestArgs, httpArgs)</span><span class="type-signature"></span></h4>
     
 
     
@@ -7323,7 +3322,7 @@ things has to happen. Thos things will happen when this method is called.
 
         <tr>
             
-                <td class="name"><code>cis</code></td>
+                <td class="name"><code>request</code></td>
             
 
             <td class="type">
@@ -7346,13 +3345,13 @@ things has to happen. Thos things will happen when this method is called.
 
         <tr>
             
-                <td class="name"><code>cliInfo</code></td>
+                <td class="name"><code>serviceContext</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type"><a href="ClientInfo.html">ClientInfo</a></span>
+<span class="param-type">serviceContext</span>
 
 
             
@@ -7362,7 +3361,7 @@ things has to happen. Thos things will happen when this method is called.
 
             
 
-            <td class="description last">ClientInfo instance</td>
+            <td class="description last">serviceContext instance</td>
         </tr>
 
     
@@ -7477,7 +3476,7 @@ things has to happen. Thos things will happen when this method is called.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="service.js.html">service.js</a>, <a href="service.js.html#line357">line 357</a>
+        <a href="service.js.html">service.js</a>, <a href="service.js.html#line432">line 432</a>
     </li></ul></dd>
     
 
@@ -7521,7 +3520,7 @@ things has to happen. Thos things will happen when this method is called.
     
 
     
-    <h4 class="name" id="parseArgs"><span class="type-signature"></span>parseArgs<span class="signature">(cliInfo)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="parseArgs"><span class="type-signature"></span>parseArgs<span class="signature">(serviceContext)</span><span class="type-signature"></span></h4>
     
 
     
@@ -7567,13 +3566,13 @@ when there are default values.
 
         <tr>
             
-                <td class="name"><code>cliInfo</code></td>
+                <td class="name"><code>serviceContext</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type"><a href="ClientInfo.html">ClientInfo</a></span>
+<span class="param-type">serviceContext</span>
 
 
             
@@ -7629,7 +3628,7 @@ when there are default values.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="service.js.html">service.js</a>, <a href="service.js.html#line128">line 128</a>
+        <a href="service.js.html">service.js</a>, <a href="service.js.html#line163">line 163</a>
     </li></ul></dd>
     
 
@@ -7802,7 +3801,7 @@ when there are default values.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="service.js.html">service.js</a>, <a href="service.js.html#line652">line 652</a>
+        <a href="service.js.html">service.js</a>, <a href="service.js.html#line912">line 912</a>
     </li></ul></dd>
     
 
@@ -7846,7 +3845,7 @@ when there are default values.
     
 
     
-    <h4 class="name" id="parseRequestResponse"><span class="type-signature"></span>parseRequestResponse<span class="signature">(reqresp, clientInfo, responseBodyType, state)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="parseRequestResponse"><span class="type-signature"></span>parseRequestResponse<span class="signature">(reqresp, serviceContext, responseBodyType, state)</span><span class="type-signature"></span></h4>
     
 
     
@@ -7913,13 +3912,13 @@ when there are default values.
 
         <tr>
             
-                <td class="name"><code>clientInfo</code></td>
+                <td class="name"><code>serviceContext</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type"><a href="ClientInfo.html">ClientInfo</a></span>
+<span class="param-type">serviceContext</span>
 
 
             
@@ -8022,7 +4021,7 @@ when there are default values.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="service.js.html">service.js</a>, <a href="service.js.html#line690">line 690</a>
+        <a href="service.js.html">service.js</a>, <a href="service.js.html#line950">line 950</a>
     </li></ul></dd>
     
 
@@ -8066,7 +4065,7 @@ when there are default values.
     
 
     
-    <h4 class="name" id="parseResponse"><span class="type-signature"></span>parseResponse<span class="signature">(info, clientInfo, sformat, state)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="parseResponse"><span class="type-signature"></span>parseResponse<span class="signature">(info, sformat, state, params)</span><span class="type-signature"></span></h4>
     
 
     
@@ -8139,29 +4138,6 @@ when there are default values.
 
         <tr>
             
-                <td class="name"><code>clientInfo</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="ClientInfo.html">ClientInfo</a></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Information about client and server</td>
-        </tr>
-
-    
-
-        <tr>
-            
                 <td class="name"><code>sformat</code></td>
             
 
@@ -8202,6 +4178,29 @@ when there are default values.
             
 
             <td class="description last">The state</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>params</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object.&lt;string, string></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Other attributes that might be needed</td>
         </tr>
 
     
@@ -8247,7 +4246,7 @@ when there are default values.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="service.js.html">service.js</a>, <a href="service.js.html#line554">line 554</a>
+        <a href="service.js.html">service.js</a>, <a href="service.js.html#line807">line 807</a>
     </li></ul></dd>
     
 
@@ -8291,7 +4290,7 @@ when there are default values.
     
 
     
-    <h4 class="name" id="requestInfo"><span class="type-signature"></span>requestInfo<span class="signature">(cliInfo, method, requestArgs, bodyType, authnMethod, lax)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="requestInfo"><span class="type-signature"></span>requestInfo<span class="signature">(serviceContext, method, requestArgs, bodyType, authnMethod, lax)</span><span class="type-signature"></span></h4>
     
 
     
@@ -8343,13 +4342,13 @@ request is decided.
 
         <tr>
             
-                <td class="name"><code>cliInfo</code></td>
+                <td class="name"><code>serviceContext</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type"><a href="ClientInfo.html">ClientInfo</a></span>
+<span class="param-type">serviceContext</span>
 
 
             
@@ -8522,7 +4521,7 @@ completely conform to the standard</td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="service.js.html">service.js</a>, <a href="service.js.html#line395">line 395</a>
+        <a href="service.js.html">service.js</a>, <a href="service.js.html#line487">line 487</a>
     </li></ul></dd>
     
 
@@ -8549,7 +4548,7 @@ completely conform to the standard</td>
 
         
 <div class="param-desc">
-    A dictionary with the keys 'uri' and possibly 'body', 'kwargs',
+    A dictionary with the keys 'uri' and possibly 'body', 'params',
 'request' and 'ht_args'
 </div>
 
@@ -8567,7 +4566,7 @@ completely conform to the standard</td>
     
 
     
-    <h4 class="name" id="serviceRequest"><span class="type-signature"></span>serviceRequest<span class="signature">(reqresp, clientInfo, responseBodyType, state)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="serviceRequest"><span class="type-signature"></span>serviceRequest<span class="signature">(reqresp, serviceContext, responseBodyType, state)</span><span class="type-signature"></span></h4>
     
 
     
@@ -8635,13 +4634,13 @@ This assumes a synchronous request-response exchange.
 
         <tr>
             
-                <td class="name"><code>clientInfo</code></td>
+                <td class="name"><code>serviceContext</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type"><a href="ClientInfo.html">ClientInfo</a></span>
+<span class="param-type">serviceContext</span>
 
 
             
@@ -8744,7 +4743,7 @@ This assumes a synchronous request-response exchange.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="service.js.html">service.js</a>, <a href="service.js.html#line751">line 751</a>
+        <a href="service.js.html">service.js</a>, <a href="service.js.html#line1011">line 1011</a>
     </li></ul></dd>
     
 
@@ -8919,7 +4918,7 @@ has been travelling through the pipe line to a possible starting set.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="service.js.html">service.js</a>, <a href="service.js.html#line457">line 457</a>
+        <a href="service.js.html">service.js</a>, <a href="service.js.html#line549">line 549</a>
     </li></ul></dd>
     
 
@@ -8953,7 +4952,193 @@ has been travelling through the pipe line to a possible starting set.
     
 
     
-    <h4 class="name" id="uriAndBody"><span class="type-signature"></span>uriAndBody<span class="signature">(cis, method)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="updateServiceContext"><span class="type-signature"></span>updateServiceContext<span class="signature">(resp, state, params)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    A method run after the response has been parsed and verified.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>resp</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object.&lt;string, string></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The response, can be either in a JSON or an urlencoded format</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>state</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="State.html">State</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The state</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>params</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object.&lt;string, string></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Other attributes that might be needed</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-overrides">Overrides:</dt>
+    <dd class="tag-overrides"><ul class="dummy"><li>
+        <a href="Service.html#updateServiceContext">Service#updateServiceContext</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="service.js.html">service.js</a>, <a href="service.js.html#line1037">line 1037</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="uriAndBody"><span class="type-signature"></span>uriAndBody<span class="signature">(request, method)</span><span class="type-signature"></span></h4>
     
 
     
@@ -9003,7 +5188,7 @@ to send the request.
 
         <tr>
             
-                <td class="name"><code>cis</code></td>
+                <td class="name"><code>request</code></td>
             
 
             <td class="type">
@@ -9088,7 +5273,5205 @@ to send the request.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="service.js.html">service.js</a>, <a href="service.js.html#line324">line 324</a>
+        <a href="service.js.html">service.js</a>, <a href="service.js.html#line399">line 399</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2><span class="attribs"><span class="type-signature"></span></span>Authorization<span class="signature">()</span><span class="type-signature"></span></h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+
+    
+
+    
+    <h4 class="name" id="Authorization"><span class="type-signature"></span>new Authorization<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="oauth2_service_authorization.js.html">oauth2/service/authorization.js</a>, <a href="oauth2_service_authorization.js.html#line62">line 62</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    </div>
+
+    
+        <h3 class="subsection-title">Extends</h3>
+
+        
+
+
+    <ul>
+        <li><a href="Service.html">Service</a></li>
+    </ul>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Members</h3>
+
+        
+            
+<h4 class="name" id="bodyType"><span class="type-signature"></span>bodyType<span class="type-signature"> :string</span></h4>
+
+
+
+
+<div class="description">
+    The serialization method to be used for the request Default is urlencoded
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">string</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="Service.html#bodyType">Service#bodyType</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="service.js.html">service.js</a>, <a href="service.js.html#line122">line 122</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="defaultAuthMethod"><span class="type-signature"></span>defaultAuthMethod<span class="type-signature"> :string</span></h4>
+
+
+
+
+<div class="description">
+    The client authentication method to use if nothing else is specified. Default is ‘’ which means none.
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">string</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="Service.html#defaultAuthMethod">Service#defaultAuthMethod</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="service.js.html">service.js</a>, <a href="service.js.html#line112">line 112</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="endpointName"><span class="type-signature"></span>endpointName<span class="type-signature"> :string</span></h4>
+
+
+
+
+<div class="description">
+    The name of the endpoint on the server that the request should be sent to. No default
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">string</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-overrides">Overrides:</dt>
+    <dd class="tag-overrides"><ul class="dummy"><li>
+        <a href="Service.html#endpointName">Service#endpointName</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="service.js.html">service.js</a>, <a href="service.js.html#line92">line 92</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="errorMsg"><span class="type-signature"></span>errorMsg<span class="type-signature"> :ErrorResponse</span></h4>
+
+
+
+
+<div class="description">
+    The message subclass that describes an error response. Default is oauth2 ErrorResponse
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">ErrorResponse</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-overrides">Overrides:</dt>
+    <dd class="tag-overrides"><ul class="dummy"><li>
+        <a href="Service.html#errorMsg">Service#errorMsg</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="service.js.html">service.js</a>, <a href="service.js.html#line87">line 87</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="httpMethod"><span class="type-signature"></span>httpMethod<span class="type-signature"> :string</span></h4>
+
+
+
+
+<div class="description">
+    Which HTTP method to use when sending the request. Default is GET
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">string</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="Service.html#httpMethod">Service#httpMethod</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="service.js.html">service.js</a>, <a href="service.js.html#line117">line 117</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="msgType"><span class="type-signature"></span>msgType<span class="type-signature"> :Message</span></h4>
+
+
+
+
+<div class="description">
+    The message subclass that describes the request. Default is Message
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">Message</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-overrides">Overrides:</dt>
+    <dd class="tag-overrides"><ul class="dummy"><li>
+        <a href="Service.html#msgType">Service#msgType</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="service.js.html">service.js</a>, <a href="service.js.html#line76">line 76</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="request"><span class="type-signature"></span>request<span class="type-signature"> :string</span></h4>
+
+
+
+
+<div class="description">
+    A name of the service. Later when a RP/client is implemented instances of different services are found by using this name. No default
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">string</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-overrides">Overrides:</dt>
+    <dd class="tag-overrides"><ul class="dummy"><li>
+        <a href="Service.html#request">Service#request</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="service.js.html">service.js</a>, <a href="service.js.html#line106">line 106</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="responseBodyType"><span class="type-signature"></span>responseBodyType<span class="type-signature"> :string</span></h4>
+
+
+
+
+<div class="description">
+    The deserialization method to use on the response Default is json
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">string</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-overrides">Overrides:</dt>
+    <dd class="tag-overrides"><ul class="dummy"><li>
+        <a href="Service.html#responseBodyType">Service#responseBodyType</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="service.js.html">service.js</a>, <a href="service.js.html#line127">line 127</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="responseCls"><span class="type-signature"></span>responseCls<span class="type-signature"> :Message</span></h4>
+
+
+
+
+<div class="description">
+    The message subclass that describes the response. Default is Message
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">Message</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-overrides">Overrides:</dt>
+    <dd class="tag-overrides"><ul class="dummy"><li>
+        <a href="Service.html#responseCls">Service#responseCls</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="service.js.html">service.js</a>, <a href="service.js.html#line82">line 82</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="synchronous"><span class="type-signature"></span>synchronous<span class="type-signature"> :bool</span></h4>
+
+
+
+
+<div class="description">
+    True if the response will be returned as a direct response to the request. The only exception 
+right now to this is the Authorization request where the response is delivered to the client 
+at some later date. Default is True
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">bool</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-overrides">Overrides:</dt>
+    <dd class="tag-overrides"><ul class="dummy"><li>
+        <a href="Service.html#synchronous">Service#synchronous</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="service.js.html">service.js</a>, <a href="service.js.html#line100">line 100</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="construct"><span class="type-signature"></span>construct<span class="signature">(serviceContext, requestArgs)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Instantiate the request as a message class instance with
+attribute values gathered in a preConstruct method or in the
+gatherRequestArgs method and possibly modified by a postConstruct method.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>serviceContext</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">serviceContext</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Information about the client</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>requestArgs</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object.&lt;string, string></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Request arguments</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="Service.html#construct">Service#construct</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="service.js.html">service.js</a>, <a href="service.js.html#line328">line 328</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    Message class instance
+</div>
+
+
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="constructRequest"><span class="type-signature"></span>constructRequest<span class="signature">(requestArgs, params)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    The method where everything is setup for sending the request.
+ The request information is gathered and the where and how of sending the
+ request is decided.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>requestArgs</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>params</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="Service.html#constructRequest">Service#constructRequest</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="service.js.html">service.js</a>, <a href="service.js.html#line1048">line 1048</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="doPostConstruct"><span class="type-signature"></span>doPostConstruct<span class="signature">(serviceContext, requestArgs, postArgs)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Has a number of sources where it can get request arguments from. In 
+priority order:
+-  Arguments to the method call
+-  Information kept in the client information instance
+-  Information in the client configuration targeted for this method.
+-  Standard protocol defaults.
+
+It will go through the list of possible (required/optional) attributes 
+as specified in the oicmsg.message.Message class that is defined to be 
+used for this request and add values to the attributes if any can be 
+found.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>serviceContext</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">serviceContext</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Client Information as a oiccli Client instance</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>requestArgs</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object.&lt;string, string></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Request arguments</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>postArgs</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object.&lt;string, string></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Arguments used by the 
+postConstruct method</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="Service.html#doPostConstruct">Service#doPostConstruct</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="service.js.html">service.js</a>, <a href="service.js.html#line284">line 284</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    Possible modified set of request arguments.
+</div>
+
+
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="doPostParseResponse"><span class="type-signature"></span>doPostParseResponse<span class="signature">(resp, serviceContext, state)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    A method run after the response has been parsed and verified.
+Runs the list of post_parse_response methods in the order they appear 
+in the list.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>resp</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Message</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The response as a Message instance</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>serviceContext</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">serviceContext</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Client Information as a Client instance.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>state</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="State.html">State</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">State value</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="Service.html#doPostParseResponse">Service#doPostParseResponse</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="service.js.html">service.js</a>, <a href="service.js.html#line303">line 303</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="doPreConstruct"><span class="type-signature"></span>doPreConstruct<span class="signature">(serviceContext, requestArgs)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Will run the pre_construct methods one at the time in order. Updates 
+the arguments in the method call with preconfigure argument from the 
+client configuration. Then it will run the list of pre_construct methods
+one by one in the order they appear in the list.
+
+The call API that all the pre_construct methods must adhere to is:
+   meth(cli_info, request_args, **_args)
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>serviceContext</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">serviceContext</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Client Information as a Client instance.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>requestArgs</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object.&lt;string, string></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Request arguments</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="Service.html#doPreConstruct">Service#doPreConstruct</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="service.js.html">service.js</a>, <a href="service.js.html#line196">line 196</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    Array consisting of request arguments and post arguments
+</div>
+
+
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="doRequestInit"><span class="type-signature"></span>doRequestInit<span class="signature">(serviceContext, bodyType, method, authMethod, requestArgs, httpArgs)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Builds the request message and constructs the HTTP headers.
+ This is the starting pont for a pipeline that will:
+   - construct the request message
+   - add/remove information to/from the request message in the way a
+     specific client authentication method requires.
+   - gather a set of HTTP headers like Content-type and Authorization.
+   - serialize the request message into the necessary format (JSON, 
+     urlencoded, signed JWT)
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>serviceContext</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">serviceContext</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Client information</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>bodyType</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Which serialization to use for the HTTP body</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>method</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">HTTP method used</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>authMethod</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">One of the six client authentication methods</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>requestArgs</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object.&lt;string, string></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Message arguments</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>httpArgs</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object.&lt;string, object></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Initial HTTP header arguments</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="Service.html#doRequestInit">Service#doRequestInit</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="service.js.html">service.js</a>, <a href="service.js.html#line591">line 591</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    Object<string, Object> contains difference information such as 
+the uri, body, and httpArgs based on the service
+</div>
+
+
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="gatherRequestArgs"><span class="type-signature"></span>gatherRequestArgs<span class="signature">(serviceContext)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Has a number of sources where it can get request arguments from. 
+In priority order:
+-  Arguments to the method call
+-  Information kept in the client information instance
+-  Information in the client configuration targeted for this method.
+-  Standard protocol defaults.
+
+It will go through the list of possible (required/optional) attributes 
+as specified in the oicmsg.message.Message class that is defined to be 
+used for this request and add values to the attributes if any can be 
+found.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>serviceContext</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">serviceContext</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">contains client information</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-overrides">Overrides:</dt>
+    <dd class="tag-overrides"><ul class="dummy"><li>
+        <a href="Service.html#gatherRequestArgs">Service#gatherRequestArgs</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="service.js.html">service.js</a>, <a href="service.js.html#line227">line 227</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    Object<string, Object> that contains request arguments such as
+redirectUri
+</div>
+
+
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="getAuthHeader"><span class="type-signature"></span>getAuthHeader<span class="signature">(request, authMethod, httpArgs, params)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>request</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>authMethod</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>httpArgs</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>params</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="Service.html#getAuthHeader">Service#getAuthHeader</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="service.js.html">service.js</a>, <a href="service.js.html#line453">line 453</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="getEndpoint"><span class="type-signature"></span>getEndpoint<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Find out which endpoint the request should be sent to
+ Picks the endpoint (URL) to which the request will be sent.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="Service.html#getEndpoint">Service#getEndpoint</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="service.js.html">service.js</a>, <a href="service.js.html#line366">line 366</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    The endpoint URI to which the request will be sent
+</div>
+
+
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="getRequestParameters"><span class="type-signature"></span>getRequestParameters<span class="signature">(bodyType, method, authnMethod, requestArgs, httpArgs, params)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Builds the request message and constructs the HTTP headers. This is the starting point for a pipeline that will: 
+construct the request message 
+add/remove information to/from the request message in the way a specific client authentication method requires. 
+gather a set of HTTP headers like Content-type and Authorization. 
+serialize the request message into the necessary format (JSON, urlencoded, signed JWT)
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>bodyType</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Which serialization to use for the HTTP body</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>method</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">HTTP method used</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>authnMethod</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">One of the six client authentication methods : bearer_body, bearer_header, client_secret_basic, client_secret_jwt, client_secret_post, private_key_jwt</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>requestArgs</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object.&lt;string, string></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Message arguments</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>httpArgs</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object.&lt;string, string></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Initial HTTP header arguments</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>params</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object.&lt;string, string></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Other attributes that might be needed</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="Service.html#getRequestParameters">Service#getRequestParameters</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="service.js.html">service.js</a>, <a href="service.js.html#line707">line 707</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    Object<string, Object> contains difference information such as the uri, body, and httpArgs based on the service
+</div>
+
+
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="getUrlInfo"><span class="type-signature"></span>getUrlInfo<span class="signature">(info)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Pick out the fragment or query part from a URL.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>info</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">A URL possibly containing a query or a fragment part</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="Service.html#getUrlInfo">Service#getUrlInfo</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="service.js.html">service.js</a>, <a href="service.js.html#line635">line 635</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    the query/fragment part
+</div>
+
+
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="getValueType"><span class="type-signature"></span>getValueType<span class="signature">(reqresp, bodyType)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Get the encoding of the response
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>reqresp</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The response</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>bodyType</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Assumed body type</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="Service.html#getValueType">Service#getValueType</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="service.js.html">service.js</a>, <a href="service.js.html#line933">line 933</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    String with the encoding type
+</div>
+
+
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="initAuthenticationMethod"><span class="type-signature"></span>initAuthenticationMethod<span class="signature">(request, serviceContext, authMethod, requestArgs, httpArgs)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Will run the proper client authentication method.
+ Each such method will place the necessary information in the necessary
+ place. A method may modify the request.
+ Supports 6 different client authentication/authorization methods
+-  bearerBody
+-  bearerHeader
+-  clientSecretBasic
+-  clientSecretJwt
+-  clientSecretPost
+-  privateKeyJwt
+depending on which of these, if any, is supposed to be used different 
+things has to happen. Thos things will happen when this method is called.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>request</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">ResourceRequest</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The request as a Message class instance</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>serviceContext</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">serviceContext</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">serviceContext instance</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>authMethod</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Type of authentication method</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>requestArgs</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object.&lt;string, string></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Request args</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>httpArgs</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object.&lt;string, string></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">HTTP header arguments</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="Service.html#initAuthenticationMethod">Service#initAuthenticationMethod</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="service.js.html">service.js</a>, <a href="service.js.html#line432">line 432</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    Object<string, Object> containing Http arguments
+</div>
+
+
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="parseArgs"><span class="type-signature"></span>parseArgs<span class="signature">(serviceContext)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Go through the attributes that the message class can contain and
+add values if they are missing and exists in the client info or
+when there are default values.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>serviceContext</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">serviceContext</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Client info</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="Service.html#parseArgs">Service#parseArgs</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="service.js.html">service.js</a>, <a href="service.js.html#line163">line 163</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    Object<string, Object>
+</div>
+
+
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="parseErrorMessage"><span class="type-signature"></span>parseErrorMessage<span class="signature">(reqresp, bodyType)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Deal with a request response
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>reqresp</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The HTTP request response</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>bodyType</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">How the body is encoded</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="Service.html#parseErrorMessage">Service#parseErrorMessage</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="service.js.html">service.js</a>, <a href="service.js.html#line912">line 912</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    ErrorMessage class instance
+</div>
+
+
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="parseRequestResponse"><span class="type-signature"></span>parseRequestResponse<span class="signature">(reqresp, serviceContext, responseBodyType, state)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Deal with a request response
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>reqresp</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The HTTP request response</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>serviceContext</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">serviceContext</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Information about the client/server session</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>responseBodyType</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">If response in body one of 'json', 'jwt' or
+     'urlencoded'</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>state</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="State.html">State</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Session identifier</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="Service.html#parseRequestResponse">Service#parseRequestResponse</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="service.js.html">service.js</a>, <a href="service.js.html#line950">line 950</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    response type such as an ErrorResponse
+</div>
+
+
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="parseResponse"><span class="type-signature"></span>parseResponse<span class="signature">(info, sformat, state, params)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    This the start of a pipeline that will:
+ - Deserializes a response into it's response message class.
+   Or oauth2 ErrorResponse if it's an error message
+ - verifies the correctness of the response by running the verify 
+   method belonging to the message class used.
+ - runs the doPostParseResponse method iff the response was not
+   an error response.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>info</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object.&lt;string, string></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The response, can be either in a JSON or an urlencoded format</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>sformat</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Which serialization that was used</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>state</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="State.html">State</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The state</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>params</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object.&lt;string, string></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Other attributes that might be needed</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="Service.html#parseResponse">Service#parseResponse</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="service.js.html">service.js</a>, <a href="service.js.html#line807">line 807</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    Response instance such as an ErrorResponse
+</div>
+
+
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="requestInfo"><span class="type-signature"></span>requestInfo<span class="signature">(serviceContext, method, requestArgs, bodyType, authnMethod, lax)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    The method where everything is setup for sending the request.
+The request information is gathered and the where and how of sending the
+request is decided.
+
+- Remove request arguments that is know at this point should not appear in
+  the request
+- Construct the request
+- Do the client authentication setup if necessary
+- Set the necessary HTTP headers
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>serviceContext</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">serviceContext</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Client information as a oicCli Client instance</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>method</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The HTTP method to be used</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>requestArgs</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object.&lt;string, string></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Request Arguments</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>bodyType</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">If the request is sent in the HTTP body this 
+decides the encoding of the request</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>authnMethod</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The client authentication method</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>lax</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">bool</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">If it should be allowed to send a request that doesn't 
+completely conform to the standard</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="Service.html#requestInfo">Service#requestInfo</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="service.js.html">service.js</a>, <a href="service.js.html#line487">line 487</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    A dictionary with the keys 'uri' and possibly 'body', 'params',
+'request' and 'ht_args'
+</div>
+
+
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="serviceRequest"><span class="type-signature"></span>serviceRequest<span class="signature">(reqresp, serviceContext, responseBodyType, state)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    The method that sends the request and handles the response returned.
+This assumes a synchronous request-response exchange.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>reqresp</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The HTTP request response</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>serviceContext</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">serviceContext</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Information about the client/server session</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>responseBodyType</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">If response in body one of 'json', 'jwt' or
+     'urlencoded'</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>state</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="State.html">State</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Session identifier</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="Service.html#serviceRequest">Service#serviceRequest</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="service.js.html">service.js</a>, <a href="service.js.html#line1011">line 1011</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    Returns a request response
+</div>
+
+
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="updateHttpArgs"><span class="type-signature"></span>updateHttpArgs<span class="signature">(httpArgs, info)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Extending the header with information gathered during the request setup.
+Will add the HTTP header arguments that has been added while the request
+has been travelling through the pipe line to a possible starting set.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>httpArgs</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object.&lt;string, string></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Original HTTP header arguments</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>info</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Request info</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="Service.html#updateHttpArgs">Service#updateHttpArgs</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="service.js.html">service.js</a>, <a href="service.js.html#line549">line 549</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="updateServiceContext"><span class="type-signature"></span>updateServiceContext<span class="signature">(resp, state, params)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    A method run after the response has been parsed and verified.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>resp</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object.&lt;string, string></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The response, can be either in a JSON or an urlencoded format</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>state</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="State.html">State</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The state</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>params</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object.&lt;string, string></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Other attributes that might be needed</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-overrides">Overrides:</dt>
+    <dd class="tag-overrides"><ul class="dummy"><li>
+        <a href="Service.html#updateServiceContext">Service#updateServiceContext</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="service.js.html">service.js</a>, <a href="service.js.html#line1037">line 1037</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="uriAndBody"><span class="type-signature"></span>uriAndBody<span class="signature">(request, method)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Based on the HTTP method place the protocol message in the right place.
+Depending on where the request are to be placed in the request (part of 
+the URL or as a POST body) and the serialization used the request in 
+it’s proper form will be constructed and tagged with destination.
+
+uriAndBody will return a dictionary that a HTTP client library can use 
+to send the request.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>request</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">ResourceRequest</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The request as a Message class instance</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>method</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">HTTP method</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="Service.html#uriAndBody">Service#uriAndBody</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="service.js.html">service.js</a>, <a href="service.js.html#line399">line 399</a>
     </li></ul></dd>
     
 
@@ -9132,13 +10515,13 @@ to send the request.
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AccessToken.html">AccessToken</a></li><li><a href="Authorization.html">Authorization</a></li><li><a href="BearerBody.html">BearerBody</a></li><li><a href="BearerHeader.html">BearerHeader</a></li><li><a href="CheckID.html">CheckID</a></li><li><a href="CheckSession.html">CheckSession</a></li><li><a href="Client.html">Client</a></li><li><a href="ClientAuthnMethod.html">ClientAuthnMethod</a></li><li><a href="ClientInfo.html">ClientInfo</a></li><li><a href="ClientSecretBasic.html">ClientSecretBasic</a></li><li><a href="ClientSecretJWT.html">ClientSecretJWT</a></li><li><a href="ClientSecretPost.html">ClientSecretPost</a></li><li><a href="EndSession.html">EndSession</a></li><li><a href="JRD.html">JRD</a></li><li><a href="JWSAuthnMethod.html">JWSAuthnMethod</a></li><li><a href="LINK.html">LINK</a></li><li><a href="OICCli.html">OICCli</a></li><li><a href="ProviderInfoDiscovery.html">ProviderInfoDiscovery</a></li><li><a href="RefreshAccessToken.html">RefreshAccessToken</a></li><li><a href="Registration.html">Registration</a></li><li><a href="Service.html">Service</a></li><li><a href="State.html">State</a></li><li><a href="StateJWT.html">StateJWT</a></li><li><a href="URINormalizer.html">URINormalizer</a></li><li><a href="UserInfo.html">UserInfo</a></li><li><a href="Util.html">Util</a></li><li><a href="WebFinger.html">WebFinger</a></li></ul><h3>Global</h3><ul><li><a href="global.html#buildServices">buildServices</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AccessToken.html">AccessToken</a></li><li><a href="Authorization.html">Authorization</a></li><li><a href="BearerBody.html">BearerBody</a></li><li><a href="BearerHeader.html">BearerHeader</a></li><li><a href="CheckID.html">CheckID</a></li><li><a href="CheckSession.html">CheckSession</a></li><li><a href="ClientAuthnMethod.html">ClientAuthnMethod</a></li><li><a href="ClientSecretBasic.html">ClientSecretBasic</a></li><li><a href="ClientSecretJWT.html">ClientSecretJWT</a></li><li><a href="ClientSecretPost.html">ClientSecretPost</a></li><li><a href="EndSession.html">EndSession</a></li><li><a href="JRD.html">JRD</a></li><li><a href="JWSAuthnMethod.html">JWSAuthnMethod</a></li><li><a href="LINK.html">LINK</a></li><li><a href="OICCli.html">OICCli</a></li><li><a href="ProviderInfoDiscovery.html">ProviderInfoDiscovery</a></li><li><a href="RefreshAccessToken.html">RefreshAccessToken</a></li><li><a href="Registration.html">Registration</a></li><li><a href="Service.html">Service</a></li><li><a href="ServiceContext.html">ServiceContext</a></li><li><a href="State.html">State</a></li><li><a href="StateInterface.html">StateInterface</a></li><li><a href="URINormalizer.html">URINormalizer</a></li><li><a href="UserInfo.html">UserInfo</a></li><li><a href="Util.html">Util</a></li><li><a href="WebFinger.html">WebFinger</a></li></ul><h3>Global</h3><ul><li><a href="global.html#buildServices">buildServices</a></li><li><a href="global.html#Factory">Factory</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Fri Mar 09 2018 11:36:25 GMT-0800 (PST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Wed May 23 2018 21:52:39 GMT-0700 (PDT)
 </footer>
 
 <script> prettyPrint(); </script>

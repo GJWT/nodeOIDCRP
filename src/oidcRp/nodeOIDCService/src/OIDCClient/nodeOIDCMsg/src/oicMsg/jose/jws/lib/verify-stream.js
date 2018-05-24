@@ -36,8 +36,8 @@ function headerFromJWSBase16(jwsSig) {
 
 function headerFromJWSBase32(jwsSig) {
   var encodedHeader = jwsSig.split('.', 1)[0];
-  var decodedHeader = new Buffer(base32.decode(encodedHeader), 'binary')
-      var urlDecodedHeader = decodeURIComponent(decodedHeader);
+  var decodedHeader = new Buffer(base32.decode(encodedHeader), 'binary');
+  var urlDecodedHeader = decodeURIComponent(decodedHeader);
 
   return JSON.parse(urlDecodedHeader);
 }
@@ -50,10 +50,11 @@ function signatureFromJWS(jwsSig) {
   return jwsSig.split('.')[2];
 }
 
+/*
 function signatureFromJWSBase16(jwsSig) {
   var encodedSignature = jwsSig.split('.')[2];
   return safeJsonParse(conv(encodedSignature, {in : 'hex', out: encoding}));
-}
+}*/
 
 function payloadFromJWS(jwsSig, encoding) {
   encoding = encoding || 'utf8';
@@ -81,10 +82,8 @@ function isValidJws(string, baseEncoding) {
   switch (baseEncoding) {
     case 'base16':
       return !!headerFromJWSBase16(string);
-      break;
     case 'base32':
       return !!headerFromJWSBase32(string);
-      break;
     default:
       return JWS_REGEX.test(string) && !!headerFromJWS(string);
   }
@@ -103,15 +102,10 @@ function jwsVerify(jwsSig, algorithm, secretOrKey, baseEncoding) {
   return algo.verify(securedInput, signature, secretOrKey, baseEncoding);
 }
 
-function jwsDecodeBase16(
-    jwtString, secretOrPublicKey, tokenProfile, options, callback) {
+function jwsDecode(jwtString, options) {
   options = options || {};
-  jwsSig = toString(jwtString);
-
   var baseEncoding = options.baseEncoding || 'base64';
-
   if (!isValidJws(jwtString, baseEncoding)) return null;
-
   var header = '';
   var payload = '';
   switch (baseEncoding) {
@@ -180,7 +174,7 @@ VerifyStream.prototype.verify = function verify() {
   }
 };
 
-VerifyStream.decode = jwsDecodeBase16;
+VerifyStream.decode = jwsDecode;
 VerifyStream.isValid = isValidJws;
 VerifyStream.verify = jwsVerify;
 

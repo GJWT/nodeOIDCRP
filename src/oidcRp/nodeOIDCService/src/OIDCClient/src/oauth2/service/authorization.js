@@ -65,7 +65,7 @@ class Authorization extends Service {
     this.msgType = requests.AuthorizationRequest;
     this.responseCls = responses.AuthorizationResponse;
     this.errorMsg = responses.AuthorizationErrorResponse;
-    this.endpointName = 'authorizationEndpoint';
+    this.endpointName = 'authorization_endpoint';
     this.synchronous = false;
     this.request = 'authorization';
     //this.preConstruct = [this.oauthPreConstruct];

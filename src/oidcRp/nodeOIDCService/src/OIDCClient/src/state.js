@@ -54,7 +54,7 @@ class StateInterface {
     if (!_data){
       //throw new JSError(key, 'KeyError');
     }else{
-      return new State().fromJSON(_data);
+      return State.fromJSON(_data);
     }
   }
 
@@ -67,20 +67,24 @@ class StateInterface {
             the state database
    */
   storeItem(item, itemType, key){
-    let _state;
+    let _state = State;
     if (this.getState(key)){
-      _state = this.getState(key)
-    }else{
-      _state = new State();
+      _state.claims = this.getState(key)
+    }else if (!(this.getState(key))){
+      _state.claims = {};
     }
 
     try{
-      _state.claims[itemType] = item.toJSON();
+      _state.claims[itemType] = item.toJSON(item.claims);
       item.fromJSON(item.claims);
     }catch(err){
-      _state.claims[itemType] = item.claims;
+      if (item.claims){
+        _state.claims[itemType] = item.claims;
+      }else{
+        _state.claims[itemType] = item;
+      }
     }
-    this.stateDb.set(key, _state.toJSON());
+    this.stateDb.set(key, _state.toJSON(_state.claims));
   }
 
   /** 
@@ -93,6 +97,10 @@ class StateInterface {
     if (!_state){
       //throw new JSError(key, 'KeyError');
     }
+    
+    if (typeof _state == 'string'){
+      _state = JSON.parse(_state)
+    }
     return _state.iss;
   }
 
@@ -104,11 +112,12 @@ class StateInterface {
    * @return A Message instance
    */
   getItem(itemCls, itemType, key){
-    let state = this.getState(key);
-    if (state && typeof state.claims[itemType] == 'string'){
-      return new itemCls().fromJSON(state.claims[itemType]);
-    }else{
-      return new itemCls(state.claims[itemType]);
+    let claims = this.getState(key);
+    if (claims && typeof claims[itemType] == 'string'){
+      return itemCls.fromJSON(claims[itemType]);
+    }else if (claims[itemType]){
+      itemCls.claims = claims[itemType];
+      return itemCls.claims;
     }
   }
 
@@ -127,11 +136,11 @@ class StateInterface {
             in the returned dictionary.
    */
   extendRequestArgs(args, itemCls, itemType, key, parameters){
-    let item = this.getItem(itemCls, itemType, key);
+    let claims = this.getItem(itemCls, itemType, key);
     for (var i = 0; i < parameters.length; i++){
       var parameter = parameters[i];
-      if (item.claims[parameter]){
-        args[parameter] = item.claims[parameter];
+      if (claims && claims[parameter]){
+        args[parameter] = claims[parameter];
       }
     }
     return args;
@@ -151,14 +160,24 @@ class StateInterface {
    * @return A possibly augmented set of arguments
    */
   multipleExtendRequestArgs(args, key, parameters, itemTypes){
-    let _state = this.getState(key);
+    let claims = this.getState(key);
     for (var i = 0; i < itemTypes.length; i++){
       let typ = itemTypes[i];
-      let _item = new Message(_state.claims[typ]);
+      let _item = new Message(claims[typ]);
       for (var j = 0; j < parameters.length; j++){
         let parameter = parameters[j];
-        if (_item.claims.length && JSON.parse(_item.claims)[parameter]){
-          args[parameter] = JSON.parse(_item.claims)[parameter];
+        if (Object.keys(_item.claims).length !== 0){
+          if (_item.claims[parameter]){
+            args[parameter] = _item.claims[parameter];
+          }else{
+            console.log(_item.claims);
+            console.log("************************")
+            try{
+            args[parameter] = JSON.parse(_item.claims)[parameter];
+            }catch(err){
+              console.log('parameter does not exist');
+            }
+          }
         }
       }
     }

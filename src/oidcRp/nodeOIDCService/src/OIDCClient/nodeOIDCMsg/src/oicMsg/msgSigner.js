@@ -1,13 +1,11 @@
 const timespan = require('./lib/timespan');
 const xtend = require('xtend');
-const jws = require('./jose/jws');
 const includes = require('lodash.includes');
 const isBoolean = require('lodash.isboolean');
 const isInteger = require('lodash.isinteger');
 const isNumber = require('lodash.isnumber');
 const isPlainObject = require('lodash.isplainobject');
 const isString = require('lodash.isstring');
-const once = require('lodash.once');
 
 /**
  * @fileoverview Handles the common signing functionality for all message
@@ -124,19 +122,17 @@ class MessageSigner {
    * @param {Token} tokenProfile - Contains the token properties, required, optional and verification claims.
    * @param {string} secretOrPublicKey - String or buffer containing either the secret for HMAC algorithms, or the PEM encoded public key for RSA and ECDSA.
    * @param {dictionary} options - Consists of other inputs that are not part of the payload, for ex : 'algorithm'.
-   * @param {function} callback - Called with the decoded payload if the signature is valid and optional expiration, audience, or issuer are valid. If not, it
       will be called with the error. When supplied, the function acts
    asynchronously.
    * @returns {dictionary} - Contains the header, payload and options info.
    * @throws JsonWebToken error if options does not match expected claims.
    * @memberof MessageSigner.prototype
    */
-  sign(tokenProfile, secretOrPrivateKey, options, callback) {
+  sign(tokenProfile, secretOrPrivateKey, options) {
     let payload = Object.assign(
         {}, tokenProfile.getRequiredClaims(), tokenProfile.getOptionalClaims());
 
-    // Init options
-    options = this.initOptions(options);
+    options = options || {};
 
     if (options) {
       var isObjectPayload =
@@ -152,21 +148,14 @@ class MessageSigner {
         },
         options.header);
 
-    function failure(err) {
-      if (callback) {
-        return callback(err);
-      }
-      throw err;
-    }
-
     /** Check for undefined payload or invalid options */
     if (typeof payload === 'undefined') {
-      return failure(new Error('payload is required'));
+      throw new Error('payload is required');
     } else if (isObjectPayload) {
       try {
         this.validatePayload(payload);
       } catch (error) {
-        return failure(error);
+        throw error;
       }
       payload = xtend(payload);
     } else {
@@ -174,25 +163,24 @@ class MessageSigner {
           optionsForObjects.filter(opt => typeof options[opt] !== 'undefined');
 
       if (invalidOptions.length > 0) {
-        return failure(
-            new Error(`invalid ${
-                                 invalidOptions.join(',')
-                               } option for ${typeof payload} payload`));
+        throw new Error(`invalid ${
+                                   invalidOptions.join(',')
+                                 } option for ${typeof payload} payload`);
       }
     }
 
     try {
       this.validateOptions(options);
     } catch (error) {
-      return failure(error);
+      throw error;
     }
 
     payload = this.checkOtherOptions(
-        secretOrPrivateKey, options, tokenProfile, payload, failure);
-    payload = this.checkOptions(
-        tokenProfile.optionsToPayload, options, payload, failure);
-    payload = this.checkOptions(
-        tokenProfile.knownOptionalClaims, options, payload, failure);
+        secretOrPrivateKey, options, tokenProfile, payload);
+    payload =
+        this.checkOptions(tokenProfile.optionsToPayload, options, payload);
+    payload =
+        this.checkOptions(tokenProfile.knownOptionalClaims, options, payload);
 
     const messageInfo = {
       'header': header,
@@ -200,19 +188,6 @@ class MessageSigner {
       'options': options
     };
     return messageInfo;
-  }
-
-  /** Initialize options
-   * @param {dictionary} options
-   */
-  initOptions(options) {
-    if (typeof options === 'function') {
-      callback = options;
-      options = {};
-    } else {
-      options = options || {};
-    }
-    return options;
   }
 
   /**
@@ -228,7 +203,7 @@ class MessageSigner {
    * @memberof MessageSigner.prototype
    */
   checkOtherOptions(
-      secretOrPrivateKey, options, tokenProfile, payload, failure) {
+      secretOrPrivateKey, options, tokenProfile, payload) {
     const timestamp = payload.iat || Math.floor(Date.now() / 1000);
 
     if (!options.noTimestamp) {
@@ -238,33 +213,32 @@ class MessageSigner {
     }
 
     if (!secretOrPrivateKey && options.algorithm !== 'none') {
-      return failure(new Error('secretOrPrivateKey must have a value'));
+      throw new Error('secretOrPrivateKey must have a value');
     }
 
     // Check none algorithm status
-    if (options.algorithm == 'none' &&
-        tokenProfile.getNoneAlgorithm() == false) {
-      return failure(new Error('Cannot use none algorithm unless specified'));
+    if (options.algorithm === 'none' &&
+        tokenProfile.getNoneAlgorithm() === false) {
+      throw new Error('Cannot use none algorithm unless specified');
     }
 
     if (typeof payload.exp !== 'undefined' &&
         typeof options.expiresIn !== 'undefined') {
-      return failure(new Error(
-          'Bad "options.expiresIn" option the payload already has an "exp" property.'));
+      throw new Error(
+          'Bad "options.expiresIn" option the payload already has an "exp" property.');
     }
 
     if (typeof payload.nbf !== 'undefined' &&
         typeof options.notBefore !== 'undefined') {
-      return failure(new Error(
-          'Bad "options.notBefore" option the payload already has an "nbf" property.'));
+      throw new Error(
+          'Bad "options.notBefore" option the payload already has an "nbf" property.');
     }
-
 
     if (typeof options.notBefore !== 'undefined') {
       payload.nbf = timespan(options.notBefore);
       if (typeof payload.nbf === 'undefined') {
-        return failure(new Error(
-            '"notBefore" should be a number of seconds or string representing a timespan eg: "1d", "20h", 60'));
+        throw new Error(
+            '"notBefore" should be a number of seconds or string representing a timespan eg: "1d", "20h", 60');
       }
     }
 
@@ -272,8 +246,8 @@ class MessageSigner {
         typeof payload === 'object') {
       payload.exp = timespan(options.expiresIn, timestamp);
       if (typeof payload.exp === 'undefined') {
-        return failure(new Error(
-            '"expiresIn" should be a number of seconds or string representing a timespan eg: "1d", "20h", 60'));
+        throw new Error(
+            '"expiresIn" should be a number of seconds or string representing a timespan eg: "1d", "20h", 60');
       }
     }
 
@@ -287,17 +261,17 @@ class MessageSigner {
    * @param {dictionary} payload
    * @param {function} failure
    * */
-  checkOptions(tokenProfileKnownClaims, options, payload, failure) {
+  checkOptions(tokenProfileKnownClaims, options, payload) {
     Object.keys(tokenProfileKnownClaims).forEach(key => {
       const claim = tokenProfileKnownClaims[key];
       if (typeof options[key] !== 'undefined') {
         if (typeof payload[claim] !== 'undefined') {
-          return failure(new Error(
+          throw new Error(
               `Bad "options.${
                               key
                             }" option. The payload already has an "${
                                                                      claim
-                                                                   }" property.`));
+                                                                   }" property.`);
         }
         payload[claim] = options[key];
       }

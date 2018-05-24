@@ -57,8 +57,9 @@ describe('Test PKCE', function() {
 
     ci = new ServiceContext(null, config, {client_id:'client_id', issuer: 'https://www.example.org/as'});
     service = new DummyService(ci, new DB());
-    state = new State({iss:'Issuer'});
-    service.stateDb.set('state', state.toJSON())
+    //state = new State({iss:'Issuer'});
+    //service.stateDb.set('state', state.toJSON())
+    service.stateDb.set('state', State.toJSON({iss:'Issuer'}))
     spec = addCodeChallenge({state: 'state'}, service);
   });
 
@@ -90,7 +91,8 @@ describe('Test PKCE', function() {
     ci = new ServiceContext(null, config, {client_id:'client_id', issuer: 'https://www.example.org/as'});
     service = new DummyService(ci, new DB());
     state = new State({iss:'Issuer'});
-    service.stateDb.set('state', state.toJSON())
+    //service.stateDb.set('state', state.toJSON())
+    service.stateDb.set('state', State.toJSON({iss:'Issuer'}))
     spec = addCodeChallenge({state: 'state'}, service);
   });
 

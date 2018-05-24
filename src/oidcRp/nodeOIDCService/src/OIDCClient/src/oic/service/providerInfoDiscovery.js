@@ -108,7 +108,7 @@ class ProviderInfoDiscovery extends OAuth2ProviderInfoDiscovery {
       }
       let pVals = null;
       try {
-        pVals = pcr.claims[prov];
+        pVals = pcr[prov];
       } catch (err) {
         try {
           pVals = PROVIDER_DEFAULT[pref];

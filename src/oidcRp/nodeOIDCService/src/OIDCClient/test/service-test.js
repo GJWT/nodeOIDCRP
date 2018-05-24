@@ -65,7 +65,8 @@ describe('Test Dummy Service', function() {
     serviceContext = new ServiceContext(null, null,
       {'clientId': 'client_id', 'issuer': 'https://www.example.org/as'});
     let db = new DB();
-    db.set('state', new State({iss:'Issuer'}).toJSON());
+    //db.set('state', new State({iss:'Issuer'}).toJSON());
+    db.set('state', State.toJSON({iss:'Issuer'}));
     service = new DummyService(serviceContext, db);
   });
   it('Test construct', function() {
@@ -84,8 +85,8 @@ describe('Test Dummy Service', function() {
     info = service.getRequestParameters({requestArgs: reqArgs});
     assert.deepEqual(Object.keys(info), ['method', 'url']);
     let msg =
-        new DummyMessage().fromUrlEncoded(service.getUrlInfo(info['url']));
-    assert.deepEqual(msg.claims,{'foo': 'bar', 'req_str': 'some string'});
+        DummyMessage.fromUrlEncoded(service.getUrlInfo(info['url']));
+    assert.deepEqual(msg,{'foo': 'bar', 'req_str': 'some string'});
   });
   it('Test request init', function() {
     let reqArgs = {'foo': 'bar', 'req_str': 'some string'};
@@ -93,8 +94,8 @@ describe('Test Dummy Service', function() {
     info = service.getRequestParameters({requestArgs: reqArgs});
     assert.deepEqual(Object.keys(info), ['method', 'url']);
     let msg =
-        new DummyMessage().fromUrlEncoded(service.getUrlInfo(info['url']));
-    assert.deepEqual(msg.claims, {'foo': 'bar', 'req_str': 'some string'});
+        DummyMessage.fromUrlEncoded(service.getUrlInfo(info['url']));
+    assert.deepEqual(msg, {'foo': 'bar', 'req_str': 'some string'});
   });
 });
 

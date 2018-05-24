@@ -1,4 +1,4 @@
-let KeyJar = require('../nodeoiDCMsg/src/oicMsg/keystore/keyJar')
+let KeyJar = require('../nodeOIDCService/src/OIDCClient/nodeOIDCMsg/src/oicMsg/keystore/keyJar').KeyJar;
 const ServiceContext = require('../../oidcRp/nodeOIDCService/src/OIDCClient/src/serviceContext.js').ServiceContext;
 const caFactory = require('../nodeOIDCService/src/OIDCClient/src/clientAuth/privateKeyJWT').clientAuthFactory;
 let service = require('../nodeOIDCService/src/OIDCClient/src/oauth2/service/service');
@@ -47,7 +47,7 @@ class Client {
       if (!keyJar) {
         let keyJar = new KeyJar();
       }
-
+      
       verifySsl = verifySsl || true;
       
       this.events = null;
@@ -80,24 +80,24 @@ class Client {
 
     doRequest(
         requestType, responseBodyType='', requestArgs=null, params) {
-  
+            
       let srv = this.service[requestType];
-    
+      
       let info = srv.getRequestParameters({requestArgs: requestArgs, params: params});
-             
+      
       if (!responseBodyType) {
         responseBodyType = srv.responseBodyType;
       }
-
+      
       let state = null;
       try{
           state = params['state'];
       }catch(err){
           state = '';
       }
-      return this.serviceRequest(srv, responseBodyType, state, info);
+      return this.serviceRequest(srv, responseBodyType, state, info, params.response);
     }
-  
+    
     setClientId(clientId) {
       this.clientId = clientId;
       this.clientInfo.clientId = clientId;
@@ -112,7 +112,7 @@ class Client {
     * @param {State} state Session identifier
     * @return Returns a request response
     */
-    serviceRequest(service, responseBodyType='', state, params) {
+    serviceRequest(service, responseBodyType='', state, params, resp) {
         let body = params.body;
         let headers = params.headers;
         let url = service.endpoint;
@@ -120,7 +120,8 @@ class Client {
         if (headers == null) {
             headers = {};
         }
-        let resp = null;
+        
+        /*
         try {
             function callback(response){
                 resp = response;
@@ -128,18 +129,19 @@ class Client {
             http.prototype.httpGetAsync(url, callback, {body: body, headers: headers});
         } catch (err) {
             console.log('Exception on request');
-        }
+        }*/
         if (params && Object.keys(params).indexOf('keyjar') === -1 && this.service.serviceContext) {
             params['keyjar'] = this.service.serviceContext.keyJar;
         }
         if (!responseBodyType) {
             responseBodyType = service.responseBodyType;
         }
-
+        
         let response = this.parseRequestResponse(service, resp, responseBodyType, state, params);
-
+        
         if (response && !response.isErrorMessage()){
-            service.updateServiceContext(response, params);
+           response.verify();
+           service.updateServiceContext(response, state, params); 
         }
         return response;
     }
@@ -174,7 +176,7 @@ class Client {
                 valueType = responseBodyType;
             }
             try{
-                return service.parseResponse(reqresp.responseText, valueType, state, params);
+                return service.parseResponse(reqresp.text, valueType, state, params);
             }catch(err){
                 console.log(err)
             }
@@ -183,7 +185,7 @@ class Client {
         } else if (reqresp && reqresp.status === 500) {
             console.log('Something went wrong');
         } else if (reqresp && 400 <= reqresp.status < 500) {
-            let deserMethod = util.prototype.getDeserializationMethod(reqResp);
+            let deserMethod = util.prototype.getDeserializationMethod(reqresp);
             if (!deserMethod){
                 deserMethod = 'json';
             }

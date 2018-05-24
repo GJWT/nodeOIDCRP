@@ -10,7 +10,7 @@ const JSON_ENCODED = 'application/json';
 var AccessTokenRequest = require('../nodeOIDCMsg/src/oicMsg/oauth2/requests').AccessTokenRequest;
 
 function queryStringCompare(queryStr1, queryStr2){
-  return new Message().fromUrlEncoded(queryStr1) == new Message().fromUrlEncoded(queryStr2);
+  return Message.fromUrlEncoded(queryStr1) == Message.fromUrlEncoded(queryStr2);
 }
 
 function urlCompare(firstUrl, secondUrl){

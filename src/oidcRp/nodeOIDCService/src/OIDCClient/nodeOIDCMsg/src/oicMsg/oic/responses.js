@@ -67,15 +67,19 @@ class AccessTokenResponse extends OAuth2AccessTokenResponse {
           args[arg] = params[arg];
         }
       }
-      const idt = new Message().fromJWT(this.claims['id_token'], 'shhh', {}, {algorithm: 'HS256'});
-      /*if (!idt.verify(params)){
+
+      if (this.claims['id_token']){
+        const idt = new Message().fromJWT(this.claims['id_token'], 'shhh', {}, {algorithm: 'HS256'});
+        /*if (!idt.verify(params)){
           return false;
-      }*/
-      this.claims['verified_id_token'] = idt;
+        }*/
+        this.claims['verified_id_token'] = idt;
+      }
     }
     return true;
   }
 }
+
 
 /**
  * AuthorizationResponse

@@ -52,9 +52,9 @@ function getServiceContext(){
 
 function getServices(){
   let db = new DB();
-  let authRequest = new AuthorizationRequest().toJSON({redirect_uri: 'http://example.com', state: 'ABCDE'});
-  let authResponse = new AuthorizationResponse().toJSON({access_token: 'token', state: 'ABCDE'});
-  db.set('ABCDE', new State().toJSON({iss:'Issuer', auth_request:authRequest, auth_response:authResponse}));
+  let authRequest = AuthorizationRequest.toJSON({redirect_uri: 'http://example.com', state: 'ABCDE'});
+  let authResponse = AuthorizationResponse.toJSON({access_token: 'token', state: 'ABCDE'});
+  db.set('ABCDE', State.toJSON({iss:'Issuer', auth_request:authRequest, auth_response:authResponse}));
   return buildServices(DEFAULT_SERVICES, OicFactory, getServiceContext(), db, CLIENT_AUTHN_METHOD);
 }
 
@@ -75,7 +75,7 @@ describe('Test bearer body', () => {
 
   it('test construct with state', () => {
     const sdb = authSrv.stateDb;
-    authSrv.stateDb.set('FFFF', new State({iss:'Issuer'}).toJSON());
+    authSrv.stateDb.set('FFFF', State.toJSON({iss:'Issuer'}));
     
     const resp = new AuthorizationResponse({code:'code', state:'FFFFF'});
     authSrv.storeItem(resp, 'auth_response', 'FFFFF');
@@ -97,18 +97,11 @@ describe('Test bearer body', () => {
   });
 
   it('test construct with request', () => {
-    authSrv.stateDb.set('EEEE', new State({iss:'Issuer'}).toJSON());
-    let resp1 = new AuthorizationResponse();
-    let response = authSrv.parseResponse(resp1.toUrlEncoded({code:'auth_grant', state:'EEEE'}), 'urlencoded');
+    authSrv.stateDb.set('EEEE', State.toJSON({iss:'Issuer'}));
+    let response = authSrv.parseResponse(AuthorizationResponse.toUrlEncoded({code:'auth_grant', state:'EEEE'}), 'urlencoded');
     authSrv.updateServiceContext(response, 'EEEE');
-    const resp2 = new AccessTokenResponse({
-      access_token: 'token1',
-      token_type: 'Bearer',
-      expires_in: 0,
-      state: 'EEEE',
-    });
     let response2 = accessTokenSrv.parseResponse(
-      resp2.toUrlEncoded({
+        AccessTokenResponse.toUrlEncoded({
         access_token: 'token1',
         token_type: 'Bearer',
         expires_in: 0,

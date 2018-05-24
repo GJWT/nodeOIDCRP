@@ -12,9 +12,9 @@ const db = low(adapter);
 const all = require('./provider/init').all;
 const linkedInProviders = require('./provider/linkedin');
 const githubProviders = require('./provider/github');
-const AuthorizationResponse = require('./nodeOIDCMsg/src/oicMsg/oic/responses').AuthorizationResponse;
-const AuthorizationRequest = require('./nodeOIDCMsg/src/oicMsg/oic/requests').AuthorizationRequest;
-const OpenIDSchema = require('./nodeOIDCMsg/src/oicMsg/oic/init').OpenIDSchema
+const AuthorizationResponse = require('./nodeOIDCService/src/OIDCClient/nodeOIDCMsg/src/oicMsg/oic/responses').AuthorizationResponse;
+const AuthorizationRequest = require('./nodeOIDCService/src/OIDCClient/nodeOIDCMsg/src/oicMsg/oic/requests').AuthorizationRequest;
+const OpenIDSchema = require('./nodeOIDCService/src/OIDCClient/nodeOIDCMsg//src/oicMsg/oic/init').OpenIDSchema
 
 db.defaults({posts: [], user: {}, count: 0}).write();
 
@@ -105,17 +105,6 @@ function factory(serviceName, serviceContext, stateDb, clientAuthnMethod, servic
  * @constructor
  */
 class RPHandler{
-    /**
-     * @param {string} baseUrl There are several places in the code where urls are dynamically built. What normally happens when creating this new url, is that a path is added to baseUrl.
-     * @param {int} hasSeed Used when dynamically creating redirect_uris. Just to make it imposible for outsiders to guess what redirect_uris would be created for which OPs/ASs. Look at create_callbacks()
-     * @param {KeyJar} keyJar A keyjar instance
-     * @param {bool} verifySsl Whether the SSL certificate should be verified
-     * @param {Array<string>} services A list of service definitions
-     * @param {function} serviceFactory A factory to use when building the service instances
-     * @param {Object<string, string>} clientConfigs Configuration information passed on to the Service context initialization
-     * @param {string} clientAuthnMethod Methods that this client can use to authenticate itself. Its a dictionary with method names as keys and method classes as values.
-     * @param {Array<string>} clientCls Certificates used by the HTTP client
-     */
     constructor({baseUrl='', hashSeed="", keyJar=null, verifySsl=true,
     services=null, serviceFactory=null, clientConfigs=null,
     clientAuthnMethod=CLIENT_AUTHN_METHOD, clientCls=null, stateDb=null, params}){
@@ -459,14 +448,14 @@ class RPHandler{
             return client.serviceContext.providerInfo['issuer'];
         }else{
             _pi = client.serviceContext.provider_info;
-            let endpoints = ['authorizationEndpoint', 'token_endpoint',
+            let endpoints = ['authorization_endpoint', 'token_endpoint',
             'userinfo_endpoint'];
             for (var i = 0; i < endpoints.length; i++){
                 let endp = endpoints[i];
                 if (Object.keys(_pi).indexOf(endp) !== -1){
                     let length = Object.keys(client.service).length;
-                    for (var i = 0; i < length; i++){
-                        let key = Object.keys(client.service)[i];
+                    for (var j = 0; j < length; j++){
+                        let key = Object.keys(client.service)[j];
                         let srv = client.service[key];
                         if (srv.endpointName == endp){
                             srv.endpoint = _pi[endp];
@@ -559,7 +548,7 @@ class RPHandler{
      * @param {Client} client A client instance
      * @return An AccessTokenResponse or AuthorizationResponse
      */
-    getAccessToken(stateKey, client){
+    getAccessToken(stateKey, client, res){
         if (!client){
             client = this.getClientFromSessionKey(stateKey);
         }
@@ -578,7 +567,7 @@ class RPHandler{
 
         //try{
                                               
-            let tokenResp = client.doRequest('accessToken', null, reqArgs, {authnMethod:this.getClientAuthnMethod(client, 'token_endpoint'), state:stateKey});
+            let tokenResp = client.doRequest('accessToken', null, reqArgs,{authnMethod:this.getClientAuthnMethod(client, 'token_endpoint'), state:stateKey, response: res});
             if (tokenResp && tokenResp.isErrorMessage()){
                 throw new JSError('OIDCServiceError', tokenResp['error']);
             }
@@ -596,7 +585,7 @@ class RPHandler{
      * @param {string} scope What the returned token should be valid for.
      * @return An AccessTokenResponse instance
      */
-    refreshAccessToken(stateKey, client=null, scope=''){
+    refreshAccessToken(stateKey, client=null, scope='', res){
         let reqArgs = {};
         if (scope){
             reqArgs = {'scope': scope};
@@ -605,9 +594,9 @@ class RPHandler{
         if (!client){
             client = this.getClientFromSessionKey(stateKey);
         }
-
+        
         try{
-            let tokenResp = client.doRequest('refresh_token', this.getClientAuthnMethod(client, 'token_endpoint'), reqArgs, stateKey);
+            let tokenResp = client.doRequest('refresh_token', null, reqArgs, {authnMethod:this.getClientAuthnMethod(client, 'token_endpoint'), state:stateKey, response: res});
             if (tokenResp.isErrorMessage()){
                 console.log(err);
             }
@@ -616,7 +605,7 @@ class RPHandler{
             console.log(err);
         }
     }
-
+    
     /**
      * Use the access token previously acquired to get some user info
      * @param {string} stateKey The state value, this is the key into the session data store
@@ -657,7 +646,7 @@ class RPHandler{
             let k = Object.keys(openIdSchema.cParam)[i];
             if (Object.keys(idToken.claims).indexOf(k) !== -1){
                 dict[k] = idToken.claims[k]
-                //dict = Object.assign(dict, idToken.claims);
+                dict = Object.assign(dict, idToken.optionalClaims);
             }
         }
         return dict;
@@ -672,7 +661,7 @@ class RPHandler{
      * @return A dictionary with 2 keys: access token with the access token as value and id token 
      * with a verified id token if one was returned otherwise none.
      */
-    getAccessAndIdToken(authorizationResponse=null, stateKey='', client=null){
+    getAccessAndIdToken(authorizationResponse=null, stateKey='', client=null, res){
         if (authorizationResponse == null){
             if (stateKey){
                 authorizationResponse = this.sessionInterface.getItem(AuthorizationResponse, 'auth_response', stateKey);
@@ -716,8 +705,7 @@ class RPHandler{
                     if (!client){
                         let client = this.getClientFromSessionKey(stateKey);
                     }
-        
-                    let tokenResp = this.getAccessToken(stateKey, client);
+                    let tokenResp = this.getAccessToken(stateKey, client, res);
                     if (tokenResp && tokenResp.isErrorMessage()){
                         return false;
                     }
@@ -769,6 +757,67 @@ class RPHandler{
 
         return {'userinfo': inforesp,
         'state_key': authorizationResponse['state']};
+    }
+
+    /**
+     * Find out if the user has an active authentication
+     * @param {State} state Current state
+     * @return true or false
+     */
+    hasActiveAuthentication(state){
+        let arg = this.sessionInterface.multipleExtendRequestArgs({}, state, ['_verified_id_token'], ['auth_response', 'token_response', 'refresh_token_response']);
+        if (arg){
+            let now = Date.now()
+            let exp = arg['_verified_id_token']['exp'];
+            return now < exp;
+        }else{
+            return false;
+        }
+    }
+
+    /**
+     * Find me a valid access token
+     * @param {State} state Current state
+     * @return An access token if a valid one exists otherwise raise exception. 
+     */
+    getValidAccessToken(state){
+        exp = 0;
+        token = null;
+        indefinite = [];
+        now = Date.now()
+        let responses = [[AccessTokenResponse, 'refresh_token_response'],
+        [AccessTokenResponse, 'token_response'],
+        [AuthorizationResponse, 'auth_response']];
+        for (var i = 0; i < responses.length; i++){
+            let cls = responses[i][0];
+            let typ = responses[i][1]
+            let response = self.sessionInterface.getItem(cls, typ, state);
+            if (response['access_token']){
+                accessToken = response['access_token'];
+            }else{
+                continue;
+            }
+            if (response['__expires_at']){
+                let _exp = response['_expires_at'];
+                if (_exp > now){
+                    if (_exp > exp){
+                        exp = _exp;
+                        token = access_token;
+                    }
+                }
+            }else{
+                indefinite.push(access_token);
+            }
+        }
+        if (indefinite){
+            return indefinite[0];
+        }else{
+            if (token){
+                return token;
+            }else{
+                throw new Error('No valid access token');
+            }
+        }
     }
 }
 

@@ -2,9 +2,9 @@
 const assert = require('chai').assert;
 const RP = require('../oic/init').RP;
 const State = require('../nodeOIDCService/src/OIDCClient/src/state').State;
-const AuthorizationRequest = require('../nodeOIDCMsg/src/oicMsg/oauth2/requests').AuthorizationRequest;
-const AuthorizationResponse = require('../nodeOIDCMsg/src/oicMsg/oauth2/responses').AuthorizationResponse;
-const AccessTokenResponse = require('../nodeOIDCMsg/src/oicMsg/oauth2/responses').AccessTokenResponse;
+const AuthorizationRequest = require('../nodeOIDCService/src/OIDCClient/nodeOIDCMsg/src/oicMsg/oauth2/requests').AuthorizationRequest;
+const AuthorizationResponse = require('../nodeOIDCService/src/OIDCClient/nodeOIDCMsg/src/oicMsg/oauth2/responses').AuthorizationResponse;
+const AccessTokenResponse = require('../nodeOIDCService/src/OIDCClient/nodeOIDCMsg/src/oicMsg/oauth2/responses').AccessTokenResponse;
 
 class DB{
     constructor(){
@@ -30,7 +30,7 @@ describe('Test Client', function() {
             'client_secret': 'abcdefghijklmnop'
         }
         client = new RP({stateDb:new DB(), config:conf});
-        client.stateDb.set('ABCDE', new State().toJSON({iss:'issuer'}));
+        client.stateDb.set('ABCDE', State.toJSON({iss:'issuer'}));
     });
 
     it('Test construct authorization request', function() {      
@@ -42,32 +42,27 @@ describe('Test Client', function() {
     });
 
     it('Test construct accesstoken request', function() { 
-        let reqArgs = {}; 
-        let authRequest = new AuthorizationRequest({redirect_uri:'https://example.com/cli/authz_cb', state: 'state'});
-        let authResponse = new AuthorizationResponse({code:'access_code'});
-        let _state = new State({auth_request: authRequest.toJSON(), auth_response: authResponse.toJSON()});
-        client.stateDb.set('ABCDE', _state.toJSON());
+        let reqArgs = {};
+        client.stateDb.set('ABCDE', State.toJSON({auth_request: AuthorizationRequest.toJSON({redirect_uri:'https://example.com/cli/authz_cb', state: 'state'}), auth_response: AuthorizationResponse.toJSON({code:'access_code'})}));
         let msg = client.service['accessToken'].construct(reqArgs, {state: 'ABCDE'});
         assert.deepEqual(Object.keys(msg.claims).length, 6);
     });
 
     it('Test construct refreshtoken request', function() { 
-        let authRequest = new AuthorizationRequest({redirect_uri:'https://example.com/cli/authz_cb', state: 'state'});
-        let tokenResponse = new AccessTokenResponse({refresh_token:'refresh_with_me', access_token:'access'});
-        let authResponse = new AuthorizationResponse({code:'access_code'});
-        let _state = new State({auth_request: authRequest.toJSON(), auth_response: authResponse.toJSON(), token_response: tokenResponse.toJSON()});
-        client.stateDb.set('ABCDE', _state.toJSON());
+        client.stateDb.set('ABCDE', State.toJSON({auth_request: AuthorizationRequest.toJSON({redirect_uri:'https://example.com/cli/authz_cb', state: 'state'}), token_response: AccessTokenResponse.toJSON({refresh_token:'refresh_with_me', access_token:'access'}), auth_response: AuthorizationResponse.toJSON({code:'access_code'})}));        
         let reqArgs = {};
-
         let msg = client.service['refresh_token'].construct(reqArgs, {state: 'ABCDE'});
         assert.deepEqual(Object.keys(msg.claims).length, 4);
     });
     it('Test userinfo request init', function() { 
-        let authRequest = new AuthorizationRequest({redirect_uri:'https://example.com/cli/authz_cb', state: 'state'});
+        /*let authRequest = new AuthorizationRequest({redirect_uri:'https://example.com/cli/authz_cb', state: 'state'});
         let tokenResponse = new AccessTokenResponse({refresh_token:'refresh_with_me', access_token:'access'});
         let authResponse = new AuthorizationResponse({code:'access_code'});
         let _state = new State({auth_request: authRequest.toJSON(), auth_response: authResponse.toJSON(), token_response: tokenResponse.toJSON()});
-        client.stateDb.set('ABCDE', _state.toJSON());
+        client.stateDb.set('ABCDE', _state.toJSON());*/
+
+        client.stateDb.set('ABCDE', State.toJSON({auth_request: AuthorizationRequest.toJSON({redirect_uri:'https://example.com/cli/authz_cb', state: 'state'}), token_response: AccessTokenResponse.toJSON({refresh_token:'refresh_with_me', access_token:'access'}), auth_response: AuthorizationResponse.toJSON({code:'access_code'})}));        
+        
         let reqArgs = {};
 
         let srv = client.service['userinfo'];

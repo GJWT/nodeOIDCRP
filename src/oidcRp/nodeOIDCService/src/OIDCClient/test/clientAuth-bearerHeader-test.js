@@ -59,9 +59,9 @@ function getServiceContext(){
 
 function getServices(){
   let db = new DB();
-  let authRequest = new AuthorizationRequest().toJSON({redirect_uri: 'http://example.com', state: 'ABCDE'});
-  let authResponse = new AuthorizationResponse().toJSON({access_token: 'token', state: 'ABCDE'});
-  db.set('ABCDE', new State().toJSON({iss:'Issuer', auth_request:authRequest, auth_response:authResponse}));
+  let authRequest = AuthorizationRequest.toJSON({redirect_uri: 'http://example.com', state: 'ABCDE'});
+  let authResponse = AuthorizationResponse.toJSON({access_token: 'token', state: 'ABCDE'});
+  db.set('ABCDE', State.toJSON({iss:'Issuer', auth_request:authRequest, auth_response:authResponse}));
   return buildServices(DEFAULT_SERVICES, OicFactory, getServiceContext(), db, CLIENT_AUTHN_METHOD);
 }
 
@@ -103,18 +103,11 @@ describe('Test bearer header', () => {
   });
 
   it('test construct with token', () => {
-    services['authorization'].stateDb.set('AAAA', new State({iss:'Issuer'}).toJSON());
-    const resp1 = new AuthorizationResponse({code:'auth_grant', state: 'AAAA'});
-    services['authorization'].parseResponse(resp1.toUrlEncoded({code:'auth_grant', state: 'AAAA'}), 'urlencoded');
+    services['authorization'].stateDb.set('AAAA', State.toJSON({iss:'Issuer'}));
+    services['authorization'].parseResponse(AuthorizationResponse.toUrlEncoded({code:'auth_grant', state: 'AAAA'}), 'urlencoded');
     // based on state find the code and then get an access token
-    const resp2 = new AccessTokenResponse({
-      access_token: 'token1',
-      token_type: 'Bearer',
-      expires_in: 0,
-      state: 'AAAA',
-    });
     let response2 = services['accessToken'].parseResponse(
-      resp2.toUrlEncoded({
+      AccessTokenResponse.toUrlEncoded({
         access_token: 'token1',
         token_type: 'Bearer',
         expires_in: 0,

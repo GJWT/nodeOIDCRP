@@ -11,6 +11,8 @@ const URINormalizer = require('./webFinger/uriNormalizer').URINormalizer;
 const URL_ENCODED = require('./util').URL_ENCODED;
 const JSON_ENCODED = require('./util').JSON_ENCODED;
 const getHttpBody = require('./util').getHttpBody;
+//const caFactory = require('../src/clientAuth/clientAuth').ClientAuthnMethod;
+const caFactory = require('../src/clientAuth/privateKeyJWT').clientAuthFactory;
 
 /**
  * @fileoverview Method call structure for Services
@@ -125,10 +127,12 @@ class Service extends StateInterface{
     this.responseBodyType = 'json';
 
     this.serviceContext = serviceContext;
-    this.clientAuthMethod = clientAuthnMethod;
     this.events = null;
     this.endpoint = '';
     this.defaultRequestArgs = {};
+
+    this.clientAuthMethod = clientAuthnMethod || caFactory;
+
     if (conf){
       this.conf = conf;
       let params = ['msg_type', 'response_cls', 'error_msg',
@@ -301,7 +305,9 @@ class Service extends StateInterface{
     if (this.postParseResponse){
       for (let i = 0; i < this.postParseResponse.length; i++) {
         let meth = this.postParseResponse[i];
-        meth(resp, serviceContext, state, params);
+        if (meth){
+          meth(resp, serviceContext, state, params);
+        }
       }
     }
   }
@@ -329,15 +335,16 @@ class Service extends StateInterface{
     try{
       this.msgType = new this.msgType();
     }catch(err){
-      console.log(err);
+      //console.log(err);
     }
     
+    /*
     if (this.msgType && this.msgType.cParam && 
         Object.keys(this.msgType.cParam).indexOf('state') === -1) {
       if (params && params['state']) {
         delete params['state'];
       }
-    }
+    }*/
     let args = null;
 
     //try {
@@ -347,9 +354,10 @@ class Service extends StateInterface{
     }*/
     this.msgType.claims = Object.assign(this.msgType.claims, args);
     //args = new this.msgType(args);
+    params = postArgs;
     return this.doPostConstruct(this.msgType, postArgs);
   }
-
+  
   /**
    *  Find out which endpoint the request should be sent to
    *  Picks the endpoint (URL) to which the request will be sent.
@@ -390,7 +398,7 @@ class Service extends StateInterface{
    */
   uriAndBody(request, method, params) {
     method = method || 'POST';
-    let resp = {}
+    let resp = {};
     let uri = this.getEndpoint(params);
     if (params && params['headers']){
       resp['hArgs'] = {'headers': params['headers']};
@@ -427,6 +435,8 @@ class Service extends StateInterface{
       httpArgs = {};
     }
     if (authMethod) {
+      /*return this.clientAuthMethod[authMethod].prototype.construct(
+        request, this, httpArgs, params);*/
       return this.clientAuthMethod(authMethod).prototype.construct(
           request, this, httpArgs, params);
     } else {
@@ -714,7 +724,7 @@ class Service extends StateInterface{
       args['iss'] = this.serviceContext.issuer;
     }
     let contentType = null;
-
+    
     if (bodyType == 'urlEncoded'){
       contentType = URL_ENCODED;
     }else{
@@ -728,7 +738,7 @@ class Service extends StateInterface{
 
     let methods = ['POST', 'PUT'];
     if (methods.indexOf(method) !== -1){
-      info['body'] = getHttpBody(request, contentType);
+      info['body'] = getHttpBody(request, contentType);  
       _headers = Object.assign(_headers, {'Content-Type': contentType});
     } 
     
@@ -810,9 +820,9 @@ class Service extends StateInterface{
     let responseObj = this.responseCls;    
     try {
       if (sformat === 'urlencoded') {
-        resp = responseObj.prototype.fromUrlEncoded(info);
+        resp = responseObj.fromUrlEncoded(info);
       }else if (sformat === 'json'){
-        resp = responseObj.prototype.fromJSON(info);
+        resp = responseObj.fromJSON(info);
       }else if (sformat == 'dict'){
         resp = new responseObj(info);
       }
@@ -843,7 +853,7 @@ class Service extends StateInterface{
           var errMsg = errMsgs[i];
           try {
             if (sformat === 'urlencoded') {
-              resp = new errMsg().fromUrlEncoded(info);
+              resp = errMsg.fromUrlEncoded(info);
               break;
             }
           } catch (err) {
@@ -875,9 +885,9 @@ class Service extends StateInterface{
         console.log(err);
       }
 
-      if (resp && resp.claims && Object.keys(resp.claims).indexOf('scope') !== -1) {
+      if (resp && Object.keys(resp).indexOf('scope') !== -1) {
         if (params['scope']){
-          resp.claims['scope'] = params['scope'];
+          resp['scope'] = params['scope'];
         }
       }
     }

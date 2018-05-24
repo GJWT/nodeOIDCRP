@@ -209,13 +209,13 @@ class Message {
         signedJWT, secretOrPrivateKey, this, options, callback);
   }
 
-  /**
+   /**
    * Serialization of JSON type
    * @param {?Object<string, string>} obj Object that needs to be converted to JSON
    */
-  toJSON() {
-    if (!this.claims) {
-      Object.assign({}, this.getRequiredClaims(), this.getOptionalClaims());
+  static toJSON(obj) {
+    if (obj) {
+      this.claims = JSON.stringify(obj);
     }else if (typeof this.claims !== String){
       this.claims = JSON.stringify(this.claims);
     }
@@ -226,6 +226,61 @@ class Message {
    * Deserialization of JSON type
    * @param {string} jsonString Json object that needs to be deserialized
    * */
+  static fromJSON(jsonString) {
+    return JSON.parse(jsonString);
+  }
+
+  /**
+   * Serialization of URL Encoded type
+   * @param {?Object<string, string>} obj Object that needs to be URL encoded
+   */
+  static toUrlEncoded(obj) {
+    if (!obj) {
+      obj =
+          Object.assign({}, this.getRequiredClaims(), this.getOptionalClaims());
+    }
+    const str = [];
+    for (const p in obj)
+      str.push(`${encodeURIComponent(p)}=${encodeURIComponent(obj[p])}`);
+    return str.join('&');
+  }
+
+  /**
+   * Deserialization of URL Encoded string
+   * @param {string} obj Url encoded string that needs to be deserialized
+   * */
+  static fromUrlEncoded(urlEncodedString) {
+    if (typeof urlEncodedString === 'string') {
+      const obj = {};
+      urlEncodedString.replace(/([^=&]+)=([^&]*)/g, (m, key, value) => {
+        obj[decodeURIComponent(key)] = decodeURIComponent(value);
+      });
+      return obj;
+    } else {
+      return urlEncodedString;
+    }
+  }
+
+  
+  /**
+   * Serialization of JSON type
+   * @param {?Object<string, string>} obj Object that needs to be converted to JSON
+   */
+  /*
+  toJSON() {
+    if (!this.claims) {
+      Object.assign({}, this.getRequiredClaims(), this.getOptionalClaims());
+    }else if (typeof this.claims !== String){
+      this.claims = JSON.stringify(this.claims);
+    }
+    return this.claims;
+  }
+  
+  /**
+   * Deserialization of JSON type
+   * @param {string} jsonString Json object that needs to be deserialized
+   * */
+  /*
   fromJSON(claims) {
     if (claims){
       this.claims = JSON.parse(claims);
@@ -237,6 +292,7 @@ class Message {
    * Serialization of URL Encoded type
    * @param {?Object<string, string>} obj Object that needs to be URL encoded
    */
+  /*
   toUrlEncoded(obj) {
     if (!obj) {
       obj =
@@ -252,6 +308,8 @@ class Message {
    * Deserialization of URL Encoded string
    * @param {string} obj Url encoded string that needs to be deserialized
    * */
+
+  /*
   fromUrlEncoded(urlEncodedString) {
     if (typeof urlEncodedString == 'string') {
       const obj = {};

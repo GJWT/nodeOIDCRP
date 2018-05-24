@@ -6,8 +6,8 @@ const Key = require('./Key');
  * @extends Key
  */
 class SYMKey extends Key {
-  constructor(kty, alg, use, kid, key, x5c, x5t, x5u, k, mtrl, params) {
-    key = super(kty, alg, use, kid, key, x5c, x5t, x5u, params);
+  constructor(kty, alg, use, kid, key, x5c, x5t, x5u, k, mtrl, kwargs) {
+    key = super(kty, alg, use, kid, key, x5c, x5t, x5u, kwargs);
     this.members = ['kty', 'alg', 'use', 'kid', 'k'];
     this.publicMembers = members;
     this.required = ['k', 'kty'];
@@ -46,10 +46,10 @@ class SYMKey extends Key {
    *  Return an encryption key as per
    *  http://openid.net/specs/openid-connect-core-1_0.html#Encryption
    * @param {*} alg Encryption algorithm
-   * @param {*} params
+   * @param {*} kwargs
    * @return Encryption key as byte string
    */
-  encryptionKey(alg, params) {
+  encryptionKey(alg, kwargs) {
     if (!this.key) {
       return this.deserialize();
     }
